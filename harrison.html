@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harrison App</title>
+
+  <link rel="stylesheet" href="css/harrison.css">
+
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="theory-head">
+  <button class="back-btn" onclick="goBack()">⬅</button>
+  <h2 id="title">Harrison Notes</h2>
+</div>
+
+<!-- 🔍 SEARCHABLE DROPDOWN -->
+<div class="topic-select-box">
+
+  <input 
+    type="text" 
+    id="searchInput" 
+    placeholder="🔍 Search topic..."
+  />
+
+  <div id="dropdownList"></div>
+
+</div>
+
+<!-- CONTENT -->
+<div id="theoryBox" class="tab-page"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-tabs" id="tabBar"></div>
+
+<script type="module" src="js/HARRISON/loader.js"></script>
+
+<script>
+/* ================= TOPIC LIST ================= */
+
+const topics = [
+  {name:"Constipation", value:"constipation"},
+  {name:"Nausea", value:"nausea"},
+  {name:"Dyspnea", value:"dyspnea"},
+  {name:"Delirium", value:"delirium"},
+  {name:"Pain", value:"pain"}
+  
+];
+
+/* ================= ELEMENT ================= */
+
+const input = document.getElementById("searchInput");
+const list = document.getElementById("dropdownList");
+
+/* ================= RENDER ================= */
+
+function renderList(data){
+  list.innerHTML = "";
+
+  data.forEach(item=>{
+    const div = document.createElement("div");
+    div.className = "dropdown-item";
+    div.innerText = item.name;
+
+    div.onclick = ()=>{
+      input.value = item.name;
+      list.style.display = "none";
+
+      loadTopic(item.value); // ✅ main loader
+    };
+
+    list.appendChild(div);
+  });
+
+  list.style.display = data.length ? "block" : "none";
+}
+
+/* ================= SEARCH ================= */
+
+input.addEventListener("input", ()=>{
+  const val = input.value.toLowerCase();
+
+  const filtered = topics.filter(t =>
+    t.name.toLowerCase().includes(val)
+  );
+
+  renderList(filtered);
+});
+
+/* ================= FOCUS ================= */
+
+input.addEventListener("focus", ()=>{
+  renderList(topics);
+});
+
+/* ================= CLOSE ================= */
+
+document.addEventListener("click",(e)=>{
+  if(!e.target.closest(".topic-select-box")){
+    list.style.display = "none";
+  }
+});
+</script>
+
+</body>
+</html>
