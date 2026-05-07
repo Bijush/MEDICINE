@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- 🔥 RESPONSIVE -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 🔥 TITLE -->
+  <title>Pharma App - Dashboard</title>
+
+  <!-- 🔥 CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/navbar.css">
+</head>
+
+<body>
+
+<!-- 🔥 TOP NAVBAR -->
+<header class="topbar">
+
+  <div class="left">
+    <button id="menuBtn" aria-label="Menu">☰</button>
+  </div>
+
+  <div class="center">
+    <span class="app-title">Pharma App</span>
+  </div>
+
+  <div class="right">
+    <button onclick="refreshPage()" title="Refresh">⟳</button>
+    <button onclick="toggleDark()" title="Toggle Theme">🌙</button>
+  </div>
+
+</header>
+
+
+<!-- 🔥 SIDEBAR -->
+<aside id="sidebar"></aside>
+
+<!-- 🔥 OVERLAY (VERY IMPORTANT) -->
+<div id="overlay"></div>
+
+
+<!-- 🔥 MAIN CONTENT -->
+<main id="main">
+
+  <h2>📊 Dashboard</h2>
+
+  <!-- 🔥 AUTO MENU -->
+  <div id="menu"></div>
+
+</main>
+
+
+<!-- 🔥 JS (ORDER IMPORTANT) -->
+<script src="js/shared/sidebar.js"></script>
+<script src="js/dashboard/dashboard.js"></script>
+<script src="js/shared/navbar.js"></script>
+
+</body>
+</html>
