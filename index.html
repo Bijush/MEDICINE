@@ -1,22 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
   <meta charset="UTF-8">
 
   <!-- 🔥 RESPONSIVE -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <!-- 🔥 TITLE -->
   <title>Pharma App - Dashboard</title>
+
+  <!-- 🔥 PWA -->
+  <link rel="manifest" href="./manifest.json">
+
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+  <!-- 🔥 ICON -->
+  <link
+    rel="icon"
+    type="image/png"
+    sizes="192x192"
+    href="./icons/icon-192.png"
+  >
 
   <!-- 🔥 CSS -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="stylesheet" href="css/sidebar.css">
   <link rel="stylesheet" href="css/navbar.css">
-  
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0f172a">
+
+  <style>
+
+    /* 🔥 INSTALL BUTTON */
+
+    #installBtn{
+
+      position:fixed;
+      bottom:20px;
+      right:20px;
+
+      padding:12px 18px;
+
+      border:none;
+      border-radius:14px;
+
+      background:#0f172a;
+      color:white;
+
+      font-size:14px;
+      font-weight:600;
+
+      box-shadow:0 4px 12px rgba(0,0,0,0.2);
+
+      z-index:9999;
+
+      cursor:pointer;
+
+      display:none;
+
+    }
+
+  </style>
+
 </head>
 
 <body>
@@ -25,16 +76,25 @@
 <header class="topbar">
 
   <div class="left">
-    <button id="menuBtn" aria-label="Menu">☰</button>
+    <button id="menuBtn" aria-label="Menu">
+      ☰
+    </button>
   </div>
 
   <div class="center">
-    <span class="app-title">Pharma App</span>
+    <span class="app-title">
+      Pharma App
+    </span>
   </div>
 
   <div class="right">
-    <button onclick="refreshPage()" title="Refresh">⟳</button>
-    <button onclick="toggleDark()" title="Toggle Theme">🌙</button>
+    <button onclick="refreshPage()" title="Refresh">
+      ⟳
+    </button>
+
+    <button onclick="toggleDark()" title="Toggle Theme">
+      🌙
+    </button>
   </div>
 
 </header>
@@ -43,7 +103,7 @@
 <!-- 🔥 SIDEBAR -->
 <aside id="sidebar"></aside>
 
-<!-- 🔥 OVERLAY (VERY IMPORTANT) -->
+<!-- 🔥 OVERLAY -->
 <div id="overlay"></div>
 
 
@@ -58,17 +118,105 @@
 </main>
 
 
-<!-- 🔥 JS (ORDER IMPORTANT) -->
+<!-- 🔥 INSTALL BUTTON -->
+<button id="installBtn">
+  📲 Install App
+</button>
+
+
+<!-- 🔥 JS -->
 <script src="js/shared/sidebar.js"></script>
 <script src="js/dashboard/dashboard.js"></script>
 <script src="js/shared/navbar.js"></script>
 
 
 <script>
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("./service-worker.js")
-    .then(() => console.log("SW Registered"));
-}
+
+  // 🔥 SERVICE WORKER
+
+  if("serviceWorker" in navigator){
+
+    window.addEventListener("load", () => {
+
+      navigator.serviceWorker
+        .register("./service-worker.js")
+
+        .then(reg => {
+
+          console.log("✅ SW Registered", reg);
+
+        })
+
+        .catch(err => {
+
+          console.log("❌ SW Error", err);
+
+        });
+
+    });
+
+  }
+
+
+
+  // 🔥 INSTALL APP
+
+  let deferredPrompt;
+
+  const installBtn =
+    document.getElementById("installBtn");
+
+
+  window.addEventListener(
+    "beforeinstallprompt",
+    e => {
+
+      e.preventDefault();
+
+      deferredPrompt = e;
+
+      installBtn.style.display = "block";
+
+    }
+  );
+
+
+  installBtn.addEventListener(
+    "click",
+    async () => {
+
+      if(!deferredPrompt) return;
+
+      deferredPrompt.prompt();
+
+      const choice =
+        await deferredPrompt.userChoice;
+
+      console.log(choice);
+
+      deferredPrompt = null;
+
+      installBtn.style.display = "none";
+
+    }
+  );
+
+
+
+  // 🔥 APP INSTALLED
+
+  window.addEventListener(
+    "appinstalled",
+    () => {
+
+      console.log("✅ App Installed");
+
+      installBtn.style.display = "none";
+
+    }
+  );
+
 </script>
+
 </body>
 </html>
