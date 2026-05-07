@@ -1,0 +1,92 @@
+/* 🔥 MAIN CONTAINER */
+#main {
+  margin-left: 0;
+  padding: 20px;
+  transition: 0.3s;
+
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* 🔥 GRID SYSTEM */
+#menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 20px;
+  margin-top: 10px;
+}
+
+/* 🔥 CARD (GLASS UI) */
+.card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(14px);
+
+  border-radius: 20px;
+  padding: 28px 20px;
+
+  text-align: center;
+  cursor: pointer;
+
+  color: white;
+
+  transition: 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* 🔥 ICON TEXT */
+.card h3 {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* 🔥 HOVER EFFECT */
+.card:hover {
+  transform: translateY(-10px) scale(1.04);
+  background: rgba(255,255,255,0.25);
+}
+
+/* 🔥 CLICK EFFECT */
+.card:active {
+  transform: scale(0.97);
+}
+
+/* 🔥 LIGHT GLOW EFFECT */
+.card::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+
+  background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 60%);
+  opacity: 0;
+  transition: 0.4s;
+}
+
+.card:hover::before {
+  opacity: 1;
+}
+
+/* 🔥 SIDEBAR PUSH */
+#sidebar.active ~ #main {
+  margin-left: 250px;
+}
+
+/* 📱 MOBILE OPTIMIZATION */
+@media (max-width: 600px) {
+  #main {
+    padding: 15px;
+  }
+
+  .card {
+    padding: 22px;
+  }
+
+  .card h3 {
+    font-size: 18px;
+  }
+}

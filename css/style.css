@@ -1,0 +1,85 @@
+/* 🔥 RESET (VERY IMPORTANT) */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 🔥 ROOT VARIABLES */
+:root {
+  --primary: #667eea;
+  --secondary: #764ba2;
+
+  --text: #1e293b;
+  --text-light: #ffffff;
+
+  --bg-dark: #0f172a;
+
+  --radius: 16px;
+  --transition: 0.3s;
+}
+
+/* 🔥 HTML FIX (IMPORTANT FOR SCROLL BUG) */
+html {
+  overflow-x: hidden;
+}
+
+/* 🌐 BODY */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh;
+
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+
+  color: var(--text);
+
+  overflow-x: hidden; /* 🔥 prevents left-right scroll */
+
+  transition: var(--transition);
+
+  /* 🔥 PERFORMANCE FIX */
+  will-change: transform;
+}
+
+/* 🔥 WHEN SIDEBAR OPEN (LOCK SCROLL) */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+/* 🔥 HEADING */
+h2 {
+  color: var(--text-light);
+  margin: 20px 10px;
+  font-size: 26px;
+  font-weight: 600;
+}
+
+/* 🔥 GLOBAL BUTTON */
+button {
+  font-family: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+/* 🔥 SCROLLBAR */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 10px;
+}
+
+/* 🌙 DARK MODE */
+body.dark {
+  background: var(--bg-dark);
+  color: white;
+}
+
+/* 🔥 DARK TEXT FIX */
+body.dark h2 {
+  color: white;
+}

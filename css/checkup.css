@@ -1,1 +1,175 @@
+/* ============================= */
+/* 🔥 GLOBAL */
+/* ============================= */
 
+body{
+  background: linear-gradient(135deg, #eef2ff, #f8fafc);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* ============================= */
+/* 🔥 FILTER BOX */
+/* ============================= */
+
+.filter-box{
+  position: relative;
+  margin: 15px;
+}
+
+.filter-input{
+  background: rgba(255,255,255,0.7);
+  backdrop-filter: blur(10px);
+  padding:14px;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid #e5e7eb;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.filter-input:hover{
+  box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+
+/* ============================= */
+/* 🔥 BUTTON */
+/* ============================= */
+
+button{
+  margin: 10px 15px;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover{
+  transform: translateY(-1px);
+  box-shadow:0 8px 20px rgba(99,102,241,0.4);
+}
+
+/* ============================= */
+/* 🔥 DROPDOWN */
+/* ============================= */
+
+.checkup-dropdown{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  animation: fadeIn 0.2s ease;
+}
+
+/* 🔥 ANIMATION */
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+/* ============================= */
+/* 🔥 HEADER */
+/* ============================= */
+
+.checkup-dropdown .dropdown-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px;
+  font-weight:600;
+
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+.dropdown-header button{
+  background:none;
+  border:none;
+  color:white;
+  font-size:20px;
+  cursor:pointer;
+}
+
+/* ============================= */
+/* 🔍 SEARCH */
+/* ============================= */
+
+.checkup-dropdown input{
+  margin:10px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #e5e7eb;
+  background:#f9fafb;
+  outline:none;
+}
+
+/* ============================= */
+/* 🔥 OPTIONS */
+/* ============================= */
+
+.checkup-dropdown #filterOptions{
+  flex:1;
+  overflow-y:auto;
+  padding-bottom:100px;
+}
+
+/* ============================= */
+/* 🔥 OPTION CARD */
+/* ============================= */
+
+.checkup-dropdown .option{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin:6px 10px;
+  padding:14px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s;
+  background:#fff;
+  border:1px solid #f1f5f9;
+}
+
+.checkup-dropdown .option:hover{
+  background:#eef2ff;
+  border-color:#c7d2fe;
+}
+
+/* ============================= */
+/* 🔥 CHECKBOX */
+/* ============================= */
+
+.checkup-dropdown .option input{
+  margin:0;
+  transform: scale(1.2);
+  accent-color:#6366f1;
+}
+
+/* ============================= */
+/* 🔥 DIVIDER */
+/* ============================= */
+
+.divider{
+  height:1px;
+  background:#e5e7eb;
+  margin:8px 10px;
+}
+
+/* ============================= */
+/* 🔥 HIDDEN */
+/* ============================= */
+
+.hidden{
+  display:none;
+}
