@@ -1,13 +1,9 @@
+
+import { normalize } from "./normalize.js";
+
 // 🌍 GLOBAL LINK ENGINE (UPDATED)
 
-// 🔥 NORMALIZE
-function normalize(str){
-  return (str || "")
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, "_")
-    .trim();
-}
+
 
 // 🔥 ARRAY NORMALIZE
 function normalizeArr(arr){

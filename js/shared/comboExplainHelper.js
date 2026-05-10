@@ -1,15 +1,6 @@
-// 💊 COMBO EXPLAIN HELPER (AI READY)
 
-// ================= 🔥 NORMALIZE =================
-function normalize(str){
 
-  return (str || "")
-    .toString()
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
-}
+import { normalize } from "./normalize.js";
 
 
 // ================= 🔥 SAFE ARRAY =================

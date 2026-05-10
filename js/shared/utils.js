@@ -1,21 +1,10 @@
+
+import { normalize } from "./normalize.js";
+
+
+
 // ⚙️ GENERAL UTILITIES (REUSABLE)
 
-
-// ================= NORMALIZE =================
-
-function normalize(str){
-
-  return (str || "")
-    .toString()
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, "_")
-    .trim();
-
-}
-
-
-// ================= SAFE ARRAY =================
 
 function safeArray(val){
 
@@ -30,78 +19,178 @@ function safeArray(val){
 
 // ================= TYPE =================
 
-export function getType(item){
+export function getType(item = {}){
 
-  if(item?.type){
+  try{
 
-    return item.type
-      .toLowerCase();
+    const type = item?.type;
 
-  }
+    // ================= DIRECT TYPE =================
 
-  const comp =
-    item?.composition;
+    if(type){
 
-  if(!comp)
+      // 🔥 string
+      if(typeof type === "string"){
+
+        const t = normalize(type);
+
+        if(
+          [
+            "single",
+            "double",
+            "triple",
+            "multi"
+          ].includes(t)
+        ){
+          return t;
+        }
+
+      }
+
+      // 🔥 object
+      if(typeof type === "object"){
+
+        const t = normalize(
+
+          type?.en ||
+          type?.name ||
+          ""
+
+        );
+
+        if(
+          [
+            "single",
+            "double",
+            "triple",
+            "multi"
+          ].includes(t)
+        ){
+          return t;
+        }
+
+      }
+
+    }
+
+
+    // ================= COMPOSITION =================
+
+    const comp = item?.composition;
+
+    if(!comp){
+
+      return "single";
+
+    }
+
+
+    // ================= ARRAY =================
+
+    if(Array.isArray(comp)){
+
+      // 🔥 object array
+      if(typeof comp[0] === "object"){
+
+        const total = comp.filter(c => {
+
+          return (
+
+            c &&
+
+            (
+              c?.ingredient?.en ||
+              c?.ingredient ||
+              c?.name
+            )
+
+          );
+
+        }).length;
+
+        return mapType(total);
+
+      }
+
+      // 🔥 string array
+      const total = comp
+
+        .map(c =>
+
+          typeof c === "string"
+            ? c.trim()
+            : ""
+        )
+
+        .filter(Boolean)
+
+        .length;
+
+      return mapType(total);
+
+    }
+
+
+    // ================= STRING =================
+
+    if(typeof comp === "string"){
+
+      const text = comp
+        .toLowerCase()
+        .trim();
+
+      // 🔥 multi separator detect
+      const parts = text
+
+        .split(
+          /,|\+|\/|&|\band\b|\bwith\b/i
+        )
+
+        .map(x => x.trim())
+
+        .filter(Boolean);
+
+      if(parts.length){
+
+        return mapType(parts.length);
+
+      }
+
+    }
+
+
+    // ================= OBJECT =================
+
+    if(typeof comp === "object"){
+
+      const keys = Object.keys(comp)
+
+        .filter(Boolean);
+
+      if(keys.length){
+
+        return mapType(keys.length);
+
+      }
+
+    }
+
+
+    // ================= FALLBACK =================
+
     return "single";
 
+  }catch(err){
 
-  // 🔥 ARRAY COMPOSITION
-  if(Array.isArray(comp)){
-
-    return mapType(
-
-      comp
-        .filter(Boolean)
-        .length
-
+    console.error(
+      "❌ getType ERROR =",
+      err
     );
 
-  }
-
-
-  // 🔥 OBJECT COMPOSITION
-  if(
-
-    Array.isArray(comp) &&
-    typeof comp[0] === "object"
-
-  ){
-
-    return mapType(
-
-      comp.filter(i =>
-
-        i?.ingredient
-
-      ).length
-
-    );
+    return "single";
 
   }
 
-
-  // 🔥 STRING COMPOSITION
-  const text =
-    comp
-      .toString()
-      .toLowerCase();
-
-  if(/[+,/&]/.test(text)){
-
-    const parts = text
-
-      .split(/,|\+|\/|&/)
-
-      .map(x => x.trim())
-
-      .filter(Boolean);
-
-    return mapType(parts.length);
-
-  }
-
-  return "single";
 }
 
 
@@ -109,16 +198,29 @@ export function getType(item){
 
 export function mapType(n){
 
-  if(n <= 1)
-    return "single";
+  // ================= SAFE NUMBER =================
 
-  if(n === 2)
-    return "double";
+  n = Number(n) || 1;
 
-  if(n === 3)
-    return "triple";
 
-  return "multi";
+  // ================= TYPE MAP =================
+
+  const types = {
+
+    1: "single",
+    2: "double",
+    3: "triple",
+    4: "fourth",
+    5: "fifth",
+    6: "sixth"
+
+  };
+
+
+  // ================= RETURN =================
+
+  return types[n] || "multi";
+
 }
 
 
@@ -484,5 +586,14 @@ export function mergeBrands(data = []){
   return Array.from(
     map.values()
   );
+
+}
+
+export function t(en="", bn=""){
+
+  return {
+    en,
+    bn
+  };
 
 }

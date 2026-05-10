@@ -1,3 +1,7 @@
+
+import {normalize} from "./normalize.js";
+
+
 // 🔥 REUSABLE FILTER MODULE (UPGRADED)
 
 
@@ -8,18 +12,50 @@ let DATA = [];
 
 let onChange = null;
 
+let selectedMedicalFilters = {};
 
-// ================= 🔥 NORMALIZE =================
-function normalize(str){
 
-  return (str || "")
+function safePretty(text){
+
+  try{
+
+    if(
+      typeof prettyKey ===
+      "function"
+    ){
+
+      return prettyKey(text);
+
+    }
+
+  }catch(err){
+
+    console.warn(
+      "prettyKey error:",
+      err
+    );
+
+  }
+
+  return (text || "")
+
     .toString()
-    .toLowerCase()
+
+    .replace(/_/g," ")
+
+    .replace(/-/g," ")
+
+    .replace(
+      /\b[a-z]/g,
+      c => c.toUpperCase()
+    )
+
     .trim();
+
 }
 
-
 // ================= 🔥 SAFE GROUP =================
+
 function getGroup(item){
 
   // 🟢 string support
@@ -47,7 +83,11 @@ export function initFilters(data, callback){
 
   renderFilters();
 
-  updateFilterText();
+renderMedicalFilters();
+
+updateFilterText();
+
+updateMedicalFilterText();
 }
 
 
@@ -57,8 +97,36 @@ export function setFilterData(data){
   DATA = Array.isArray(data)
     ? data
     : [];
+    
+    // 🔥 RESET CACHE
+  window.__medicalFiltersCache =
+    null;
+
+  // 🔥 CLEAN INVALID FILTERS
+
+  Object.keys(selectedMedicalFilters)
+
+    .forEach(key => {
+
+      if(
+        !getMedicalFields()
+          .includes(key)
+      ){
+
+        delete selectedMedicalFilters[key];
+
+      }
+
+    });
 
   renderFilters();
+
+  renderMedicalFilters();
+
+  updateFilterText();
+
+  updateMedicalFilterText();
+
 }
 
 
@@ -83,42 +151,99 @@ function getGroups(){
 
 
 // ================= 🔥 RENDER =================
+
 function renderFilters(){
 
-  const box = document.getElementById("filterOptions");
+  const box = document.getElementById(
+    "filterOptions"
+  );
 
-  if(!box) return;
+  if(!box){
+    return;
+  }
 
   const cats = getGroups();
 
-  box.innerHTML = cats.map((c, i) => `
 
-    <label class="option">
+  // ✅ EMPTY
+  if(!cats.length){
 
-      <input
-        type="checkbox"
-        value="${c}"
+    box.innerHTML = `
 
-        ${selectedFilters.has(c)
-          ? "checked"
-          : ""
-        }
+      <div class="empty">
 
-        onchange="window.toggleFilter('${c}')"
-      />
+        No filters found
 
-      <span>
-        ${c.toUpperCase()}
-      </span>
+      </div>
 
-    </label>
+    `;
 
-    ${i !== cats.length - 1
-      ? `<div class="divider"></div>`
-      : ""
-    }
+    return;
 
-  `).join("");
+  }
+
+
+  // ✅ RENDER
+  box.innerHTML = cats
+
+    .sort((a,b)=>
+
+      safePretty(a)
+
+        .localeCompare(
+          safePretty(b)
+        )
+
+    )
+
+    .map((c, i) => `
+
+      <label class="option">
+
+        <input
+          type="checkbox"
+
+          value="${c}"
+
+          ${selectedFilters.has(c)
+            ? "checked"
+            : ""
+          }
+
+          onchange="
+            window.toggleFilter(
+              '${c}'
+            )
+          "
+        />
+
+        <span>
+
+          ${
+            c === "all"
+
+              ? "All"
+
+              : safePretty(c)
+          }
+
+        </span>
+
+      </label>
+
+      ${i !== cats.length - 1
+
+        ? `
+          <div class="divider"></div>
+        `
+
+        : ""
+      }
+
+    `)
+
+    .join("");
+
 }
 
 
@@ -167,9 +292,14 @@ export function toggleFilter(c){
 // ================= 🔥 TEXT UPDATE =================
 function updateFilterText(){
 
-  const el = document.getElementById("filterText");
+  const el =
+    document.getElementById(
+      "filterText"
+    );
 
-  if(!el) return;
+  if(!el){
+    return;
+  }
 
   // 🟢 ALL
   if(selectedFilters.has("all")){
@@ -177,22 +307,31 @@ function updateFilterText(){
     el.innerText = "All";
 
     return;
+
   }
 
-  const arr = [...selectedFilters];
+  const arr =
+    [...selectedFilters];
+
 
   // 🟢 MANY
   if(arr.length > 2){
 
-    el.innerText = `${arr.length} selected`;
+    el.innerText =
+      `${arr.length} selected`;
 
     return;
+
   }
+
 
   // 🟢 SMALL
   el.innerText = arr
-    .map(x => x.toUpperCase())
+
+    .map(safePretty)
+
     .join(", ");
+
 }
 
 
@@ -252,18 +391,54 @@ export function resetFilters(){
 }
 
 
+
 // ================= 🔥 CLICK OUTSIDE CLOSE =================
+
 document.addEventListener("click", e => {
 
-  const box = document.querySelector(".filter-box");
+  // ================= OLD FILTER =================
 
-  if(!box?.contains(e.target)){
+  const normalBox =
+
+    document.querySelectorAll(
+      ".filter-box"
+    )[1];
+
+  if(
+    !normalBox?.contains(e.target)
+  ){
 
     document
-      .getElementById("filterDropdown")
+      .getElementById(
+        "filterDropdown"
+      )
       ?.classList
       .add("hidden");
+
   }
+
+
+  // ================= MEDICAL FILTER =================
+
+  const medicalBox =
+
+    document.querySelectorAll(
+      ".filter-box"
+    )[0];
+
+  if(
+    !medicalBox?.contains(e.target)
+  ){
+
+    document
+      .getElementById(
+        "medicalFilterDropdown"
+      )
+      ?.classList
+      .add("hidden");
+
+  }
+
 });
 
 
@@ -273,3 +448,628 @@ window.toggleFilter = toggleFilter;
 window.toggleDropdown = toggleDropdown;
 
 window.filterSearchList = filterSearchList;
+
+// new code adding here
+
+// ================= 🔥 MEDICAL FILTER =================
+
+function getMedicalFields(){
+
+  return [
+
+    "group",
+    "subgroup",
+    "type",
+    "category",
+    "route",
+
+    "therapeuticCategory",
+
+    "symptoms",
+    "diseases",
+    "bestFor",
+
+    "usageType",
+
+    "rx",
+    "otc",
+    "antibiotic",
+    "controlledDrug",
+    "emergencyUse",
+    "strengths",
+"brands",
+"safety",
+"mechanism"
+
+  ];
+
+}
+
+
+// ================= 🔥 AUTO FILTER DATA =================
+
+function getDynamicFilters(){
+
+  const result = {};
+
+  const allowed =
+    getMedicalFields();
+
+
+  DATA.forEach(item => {
+
+    // ✅ SAFE CHECK
+    if(
+      !item ||
+      typeof item !== "object"
+    ){
+      return;
+    }
+
+    allowed.forEach(key => {
+
+      let val =
+        item?.[key];
+
+
+      // ================= EMPTY =================
+
+      if(
+        val === undefined ||
+        val === null ||
+        val === ""
+      ){
+        return;
+      }
+
+
+      // ================= INIT =================
+
+      if(!result[key]){
+
+        result[key] =
+          new Set();
+
+      }
+
+
+      // ================= ARRAY =================
+
+      if(Array.isArray(val)){
+
+        val.forEach(v => {
+
+          // 🔥 object support
+          if(
+            typeof v === "object"
+          ){
+
+            v =
+              v?.en ||
+              v?.name ||
+              "";
+
+          }
+
+          v = normalize(v);
+
+          // 🔥 skip empty
+          if(v){
+
+            result[key].add(v);
+
+          }
+
+        });
+
+        return;
+
+      }
+
+
+      // ================= OBJECT =================
+
+      if(
+        typeof val === "object"
+      ){
+
+        // 🔥 multilingual array
+        if(
+          Array.isArray(val?.en)
+        ){
+
+          val.en.forEach(v => {
+
+            v = normalize(v);
+
+            if(v){
+
+              result[key].add(v);
+
+            }
+
+          });
+
+          return;
+
+        }
+
+        val =
+          val?.en ||
+          val?.name ||
+          "";
+
+      }
+
+
+      // ================= BOOLEAN =================
+
+      if(
+        typeof val === "boolean"
+      ){
+
+        result[key].add(
+
+          val
+            ? "yes"
+            : "no"
+
+        );
+
+        return;
+
+      }
+
+
+      // ================= NUMBER =================
+
+      if(
+        typeof val === "number"
+      ){
+
+        val =
+          val.toString();
+
+      }
+
+
+      // ================= NORMAL =================
+
+      val = normalize(val);
+
+      if(val){
+
+        result[key].add(val);
+
+      }
+
+    });
+
+  });
+
+
+  // ================= CLEAN EMPTY =================
+
+  Object.keys(result)
+
+    .forEach(key => {
+
+      if(
+        result[key].size === 0
+      ){
+
+        delete result[key];
+
+      }
+
+    });
+
+
+  return result;
+
+}
+
+
+// ================= 🔥 RENDER =================
+
+export function renderMedicalFilters(){
+
+  const box =
+    document.getElementById(
+      "medicalFilterOptions"
+    );
+
+  if(!box) return;
+
+  const filters =
+
+  window.__medicalFiltersCache ||
+
+  (
+    window.__medicalFiltersCache =
+
+      getDynamicFilters()
+  );
+
+
+  // ================= EMPTY =================
+
+  if(
+    !Object.keys(filters).length
+  ){
+
+    box.innerHTML = `
+
+      <div class="empty">
+
+        No medical filters found
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  // ================= RENDER =================
+
+  box.innerHTML =
+
+    Object.entries(filters)
+
+      .map(([field, values]) => `
+
+        <div class="medical-group">
+
+          <h4>
+
+            ${safePretty(field)}
+
+          </h4>
+
+          <div class="medical-items">
+
+            ${[...values]
+
+.sort((a,b)=>
+
+  safePretty(a)
+
+    .localeCompare(
+
+      safePretty(b)
+
+    )
+
+)
+
+              .map(v => `
+
+<label
+  class="option"
+  data-search="${normalize(v)}"
+>
+
+                  <input
+                    type="checkbox"
+
+                    ${selectedMedicalFilters?.[field]
+
+                      ?.has(v)
+
+                        ? "checked"
+                        : ""
+                    }
+
+                    onchange="
+                      window.toggleMedicalFilter(
+                        '${field}',
+                        '${v}'
+                      )
+                    "
+                  />
+
+                  <span>
+
+${
+  v === "yes"
+    ? "Yes"
+    : v === "no"
+      ? "No"
+      : safePretty(v)
+}
+
+                  </span>
+
+                </label>
+
+              `)
+
+              .join("")}
+
+          </div>
+
+        </div>
+
+      `)
+
+      .join("");
+
+
+  // ================= UPDATE TEXT =================
+
+  updateMedicalFilterText();
+
+}
+
+
+// ================= 🔥 TOGGLE =================
+
+export function toggleMedicalFilter(
+  field,
+  value
+){
+
+  // ================= SAFE =================
+
+  field = normalize(field);
+  value = normalize(value);
+
+  if(
+    !field ||
+    !value
+  ){
+    return;
+  }
+
+
+  // ================= INIT =================
+
+  if(
+    !selectedMedicalFilters[field]
+  ){
+
+    selectedMedicalFilters[field] =
+      new Set();
+
+  }
+
+  const set =
+    selectedMedicalFilters[field];
+
+
+  // ================= TOGGLE =================
+
+  if(set.has(value)){
+
+    set.delete(value);
+
+  }else{
+
+    set.add(value);
+
+  }
+
+
+  // ================= REMOVE EMPTY =================
+
+  if(set.size === 0){
+
+    delete selectedMedicalFilters[field];
+
+  }
+
+
+  // ================= UPDATE UI =================
+
+  updateMedicalFilterText();
+
+
+  // ================= CALLBACK =================
+
+  if(
+    typeof onChange ===
+    "function"
+  ){
+
+    onChange();
+
+  }
+
+
+  // ================= DEBUG =================
+
+  
+
+}
+
+// ================= 🔥 UPDATE TEXT =================
+
+function updateMedicalFilterText(){
+
+  const el =
+
+    document.getElementById(
+      "medicalFilterText"
+    );
+
+  if(!el){
+    return;
+  }
+
+  const selected = [];
+
+
+  Object.values(
+
+    selectedMedicalFilters
+
+  )
+
+  .forEach(set => {
+
+    [...set].forEach(v => {
+
+      selected.push(v);
+
+    });
+
+  });
+
+
+  // ✅ EMPTY
+  if(!selected.length){
+
+    el.innerText =
+      "Select Medical Filters";
+
+    return;
+
+  }
+
+
+  // ✅ SMALL
+  if(selected.length <= 2){
+
+    el.innerText =
+
+      selected
+
+        .slice(0,2)
+
+        .map(safePretty)
+
+        .join(", ");
+
+    return;
+
+  }
+
+
+  // ✅ LARGE
+  el.innerText =
+
+    `${selected.length} selected`;
+
+}
+
+// ================= 🔥 GET =================
+
+export function getMedicalFilters(){
+
+  // ✅ MODERN BROWSER
+  if(
+    typeof structuredClone ===
+    "function"
+  ){
+
+    return structuredClone(
+      selectedMedicalFilters
+    );
+
+  }
+
+  // ✅ FALLBACK
+  return JSON.parse(
+
+    JSON.stringify(
+      selectedMedicalFilters
+    )
+
+  );
+
+}
+
+
+// ================= 🔥 DROPDOWN =================
+
+export function toggleMedicalDropdown(e){
+
+  e?.stopPropagation();
+
+  const dropdown =
+
+    document.getElementById(
+      "medicalFilterDropdown"
+    );
+
+  if(!dropdown){
+    return;
+  }
+
+
+  // ✅ CLOSE NORMAL FILTER
+  document
+
+    .getElementById(
+      "filterDropdown"
+    )
+
+    ?.classList
+
+    .add("hidden");
+
+
+  // ✅ TOGGLE MEDICAL
+  dropdown.classList.toggle(
+    "hidden"
+  );
+
+}
+
+let medicalFilterSearchTimeout;
+
+window.filterMedicalList =
+
+function(val = ""){
+
+  clearTimeout(
+    medicalFilterSearchTimeout
+  );
+
+  medicalFilterSearchTimeout =
+
+    setTimeout(() => {
+
+      val = normalize(val);
+
+      const options =
+
+        document.querySelectorAll(
+          "#medicalFilterOptions .option"
+        );
+
+      options.forEach(el => {
+
+        const text =
+
+          el.dataset.search ||
+
+          normalize(el.innerText);
+
+        el.dataset.search =
+          text;
+
+        el.style.display =
+
+          text.includes(val)
+
+            ? ""
+
+            : "none";
+
+      });
+
+    }, 120);
+
+};
+
+
+// ================= 🔥 GLOBAL =================
+
+window.toggleMedicalDropdown =
+  toggleMedicalDropdown;
+
+window.toggleMedicalFilter =
+  toggleMedicalFilter;

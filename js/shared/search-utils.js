@@ -1,5 +1,6 @@
-// 🔍 SEARCH UTILITIES (UPGRADED)
 
+
+import { normalize } from "./normalize.js";
 
 // ================= 🔥 ESCAPE REGEX =================
 export function escapeRegExp(str = ""){
@@ -26,20 +27,6 @@ export function escapeHtml(str = ""){
     .replace(/'/g, "&#039;");
 }
 
-
-// ================= 🔥 NORMALIZE =================
-export function normalize(str){
-
-  return (str || "")
-    .toString()
-    .toLowerCase()
-
-    .replace(/[^\w\s]/g, "")
-
-    .replace(/\s+/g, " ")
-
-    .trim();
-}
 
 
 // ================= 🔥 SAFE ARRAY =================
