@@ -20,11 +20,13 @@ import {
   mergeBrands
 } from "../js/shared/utils.js";
 
-import {
-  UI_RULES
-} from "./uiRules.js";
 
 import { normalize } from "../js/shared/normalize.js";
+
+import {
+
+  renderExtraFields
+} from "../js/shared/medicineExtraFieldRenderer.js";
 
 // ================= STATE =================
 
@@ -105,84 +107,6 @@ function get(obj, path, fallback = ""){
 }
 
 
-// ================= SEARCHABLE TEXT =================
-
-function buildSearchText(item){
-
-  return [
-
-    item.name,
-    item.name_bn,
-
-    item.generic,
-    item.generic_bn,
-
-    getText(item.group),
-    item.group_bn,
-
-    getText(item.class),
-    item.class_bn,
-
-    getText(item.subgroup),
-
-    ...(Array.isArray(item.tags)
-      ? item.tags
-      : []),
-
-    ...(Array.isArray(item.tags_bn)
-      ? item.tags_bn
-      : []),
-
-    ...(Array.isArray(item.symptoms)
-      ? item.symptoms
-      : item.symptoms?.en || []),
-
-    ...(Array.isArray(item.symptoms_bn)
-      ? item.symptoms_bn
-      : item.symptoms?.bn || []),
-
-    ...(Array.isArray(item.diseases)
-      ? item.diseases
-      : item.diseases?.en || []),
-
-    ...(Array.isArray(item.diseases_bn)
-      ? item.diseases_bn
-      : item.diseases?.bn || []),
-
-    ...(Array.isArray(item.brands)
-      ? item.brands
-      : []),
-
-    ...(Array.isArray(item.searchableText)
-      ? item.searchableText
-      : []),
-
-    ...(Array.isArray(item.searchableText_bn)
-      ? item.searchableText_bn
-      : []),
-
-    ...(Array.isArray(item.bestFor)
-      ? item.bestFor
-      : item.bestFor?.en || []),
-
-    ...(Array.isArray(item.bestFor_bn)
-      ? item.bestFor_bn
-      : item.bestFor?.bn || []),
-
-    ...(Array.isArray(item.therapeuticCategory)
-      ? item.therapeuticCategory
-      : item.therapeuticCategory?.en || []),
-
-    ...(Array.isArray(item.therapeuticCategory_bn)
-      ? item.therapeuticCategory_bn
-      : item.therapeuticCategory?.bn || [])
-
-  ]
-  .filter(Boolean)
-  .join(" ")
-  .toLowerCase();
-
-}
 
 
 // ================= LOAD =================
@@ -376,80 +300,221 @@ DATA = DATA.map(i => {
     
     const medicalCache = {};
 
-[
-  "group",
-  "subgroup",
-  "type",
-  "category",
-  "route",
-  "therapeuticCategory",
-  "symptoms",
-  "diseases",
-  "bestFor",
-  "usageType",
-  "rx",
-  "otc",
-  "antibiotic",
-  "controlledDrug",
-  "emergencyUse",
-  "strengths",
-  "brands",
-  "safety",
-  "mechanism"
-]
+Object.entries(i || {})
 
-.forEach(field => {
+.forEach(([field, val]) => {
 
-  let val = i?.[field];
+  // ================= EMPTY =================
 
   if(
     val === undefined ||
-    val === null
+    val === null ||
+    val === ""
   ){
     return;
   }
 
+  // ================= SKIP =================
+
+  if(
+    [
+      "id",
+      "ui",
+      "medicalCache",
+      "searchText",
+
+      "nameLower",
+      "genericLower",
+      "compLower",
+
+      "groupLower",
+      "categoryLower",
+      "typeLower"
+    ]
+
+    .includes(field)
+  ){
+    return;
+  }
+
+  // ================= ARRAY =================
+
   if(Array.isArray(val)){
 
-    medicalCache[field] = val
+    const arr = val
 
-      .map(v =>
+      .map(v => {
 
-        typeof v === "object"
+        if(typeof v === "object"){
 
-          ? (
-              v?.en ||
-              v?.name ||
-              ""
-            )
+          return (
 
-          : v
+  v?.en ||
 
-      )
+  v?.bn ||
 
-      .map(normalize);
+  v?.name ||
+
+  v?.value ||
+
+  v?.ingredient?.en ||
+
+  v?.ingredient ||
+
+  ""
+
+);
+
+        }
+
+        return v;
+
+      })
+
+      .map(normalize)
+
+      .filter(Boolean);
+
+    if(arr.length){
+
+      medicalCache[
+  normalize(field)
+] = arr;
+
+    }
 
     return;
 
   }
 
+  // ================= OBJECT =================
+
   if(typeof val === "object"){
 
-    if(Array.isArray(val?.en)){
+  // 🔥 multilingual array
+  if(Array.isArray(val?.en)){
 
-      medicalCache[field] =
-        val.en.map(normalize);
+  const arr = [
 
-      return;
+    ...(val?.en || []),
+
+    ...(val?.bn || [])
+
+  ]
+
+  .map(v => {
+
+    // 🔥 object support
+    if(typeof v === "object"){
+
+      return (
+
+        v?.en ||
+
+        v?.bn ||
+
+        v?.name ||
+
+        v?.value ||
+
+        v?.ingredient?.en ||
+
+        v?.ingredient ||
+
+        ""
+
+      );
 
     }
 
-    val =
-      val?.en ||
-      val?.name ||
-      "";
+    return v;
+
+  })
+
+  .map(normalize)
+
+  .filter(Boolean);
+
+  if(arr.length){
+
+    medicalCache[
+      normalize(field)
+    ] = arr;
 
   }
+
+  return;
+
+}
+
+  // 🔥 nested object extract
+  const objArr = Object.values(val)
+
+    .flatMap(v => {
+
+      if(Array.isArray(v)){
+        return v;
+      }
+
+      return [v];
+
+    })
+
+    .map(v => {
+
+      if(typeof v === "object"){
+
+        return (
+
+          v?.en ||
+
+          v?.bn ||
+
+          v?.name ||
+
+          v?.ingredient?.en ||
+
+          v?.ingredient ||
+
+          ""
+
+        );
+
+      }
+
+      return v;
+
+    })
+
+    .map(normalize)
+
+    .filter(Boolean);
+
+  if(objArr.length){
+
+    medicalCache[
+  normalize(field)
+] = objArr;
+
+    return;
+
+  }
+
+  val =
+
+  val?.en ||
+
+  val?.bn ||
+
+  val?.name ||
+
+  val?.value ||
+
+  "";
+
+}
+
+  // ================= BOOLEAN =================
 
   if(typeof val === "boolean"){
 
@@ -458,9 +523,25 @@ DATA = DATA.map(i => {
 
   }
 
-  medicalCache[field] = [
-    normalize(val)
-  ];
+  // ================= NUMBER =================
+
+  if(typeof val === "number"){
+
+    val = val.toString();
+
+  }
+
+  // ================= FINAL =================
+
+  val = normalize(val);
+
+  if(val){
+
+    medicalCache[
+  normalize(field)
+] = [val];
+
+  }
 
 });
     
@@ -743,11 +824,12 @@ const activeMedicalFilters =
 
   Object.entries(medicalFilters)
 
-    .filter(([_, values]) =>
+.filter(([_, values]) =>
 
-      values?.size
+  Array.isArray(values) &&
+  values.length
 
-    );
+);
 
 if(activeMedicalFilters.length){
 
@@ -758,24 +840,31 @@ if(activeMedicalFilters.length){
 
     return activeMedicalFilters.every(
 
-      ([field, values]) => {
+([field, values]) => {
 
-        const arr =
-          cache[field] || [];
+  const arr =
 
-        return [...values]
+  cache[
+    normalize(field)
+  ] || [];
 
-          .some(v =>
+  return values
 
-            arr.some(x =>
+    .some(v => {
 
-              x.includes(v)
+      v = normalize(v);
 
-            )
+      return arr.some(x => {
 
-          );
+        x = normalize(x);
 
-      }
+        return x === v;
+
+      });
+
+    });
+
+}
 
     );
 
@@ -1414,12 +1503,15 @@ window.toggleGroup = function(group){
   update();
 
 };
+
+
 function renderCurrent(){
 
   let list = [...DATA];
 
   const filters = getSelectedFilters();
-
+  
+const medicalFilters = getMedicalFilters();
 
   // ================= FILTER =================
 
@@ -1435,6 +1527,58 @@ function renderCurrent(){
 
   }
 
+
+// ================= MEDICAL FILTER =================
+
+const activeMedicalFilters =
+
+  Object.entries(medicalFilters)
+
+.filter(([_, values]) =>
+
+  Array.isArray(values) &&
+  values.length
+
+);
+
+if(activeMedicalFilters.length){
+
+  list = list.filter(item => {
+
+    const cache =
+      item.medicalCache || {};
+
+    return activeMedicalFilters.every(
+
+([field, values]) => {
+
+  const arr =
+
+  cache[
+    normalize(field)
+  ] || [];
+
+  return values.some(v => {
+
+    v = normalize(v);
+
+    return arr.some(x => {
+
+      x = normalize(x);
+
+      return x === v;
+
+    });
+
+  });
+
+}
+
+    );
+
+  });
+
+}
 
   // ================= TAB =================
 
@@ -1548,647 +1692,6 @@ function getRxWarning(item){
   }
 
   return "";
-}
-
-
-// prettier key label
-function prettyKey(str=""){
-
-  return str
-    .replace(/([A-Z])/g, " $1")
-    .replace(/_/g, " ")
-    .replace(/\b\w/g, c => c.toUpperCase());
-
-}
-
-// ================= EXTRA FIELDS =================
-
-function renderValue(val, depth = 0){
-
-  // ================= SAFETY =================
-
-  if(depth > 5){
-
-    return `
-      <div class="value">
-        Too Deep...
-      </div>
-    `;
-  }
-
-
-  // ================= NULL =================
-
-  if(
-    val === null ||
-    val === undefined ||
-    val === ""
-  ){
-    return "";
-  }
-
-
-  // ================= STRING / NUMBER / BOOLEAN =================
-
-  if(
-    typeof val === "string" ||
-    typeof val === "number" ||
-    typeof val === "boolean"
-  ){
-
-    return `
-
-      <div class="value">
-
-        ${String(val)}
-
-      </div>
-
-    `;
-  }
-
-
-  // ================= ARRAY =================
-
-  if(Array.isArray(val)){
-
-    // 🔥 empty array
-    if(!val.length){
-      return "";
-    }
-
-    return `
-
-      <div class="tag-wrap">
-
-        ${val
-
-          .filter(Boolean)
-
-          .map(v => {
-
-            // ================= OBJECT IN ARRAY =================
-
-            if(typeof v === "object"){
-
-              // 🔥 composition style
-              if(
-                v?.ingredient ||
-                v?.strength
-              ){
-
-                return `
-
-                  <span class="tag">
-
-                    ${
-                      v?.ingredient?.en ||
-                      v?.ingredient ||
-                      v?.name ||
-                      ""
-                    }
-
-                    ${v?.strength
-                      ? `
-                        <small class="bn">
-                          ${v.strength}
-                        </small>
-                      `
-                      : ""
-                    }
-
-                  </span>
-
-                `;
-              }
-
-              // 🔥 multilingual object
-              if(
-                v?.en ||
-                v?.bn
-              ){
-
-                return `
-
-                  <span class="tag">
-
-                    ${v?.en || ""}
-
-                    ${v?.bn
-                      ? `
-                        <small class="bn">
-                          ${v.bn}
-                        </small>
-                      `
-                      : ""
-                    }
-
-                  </span>
-
-                `;
-              }
-
-              // 🔥 generic object fallback
-              return `
-
-                <span class="tag">
-
-                  ${
-                    Object.values(v)
-
-                      .filter(x =>
-
-                        typeof x === "string"
-
-                      )
-
-                      .slice(0,2)
-
-                      .join(" • ")
-
-                  }
-
-                </span>
-
-              `;
-            }
-
-            // ================= NORMAL VALUE =================
-
-            return `
-
-              <span class="tag">
-
-                ${v}
-
-              </span>
-
-            `;
-
-          })
-
-          .join("")}
-
-      </div>
-
-    `;
-  }
-
-
-  // ================= OBJECT =================
-
-  if(typeof val === "object"){
-
-    // ================= MULTILINGUAL ARRAY =================
-
-    if(
-      Array.isArray(val?.en) ||
-      Array.isArray(val?.bn)
-    ){
-
-      const enArr = val?.en || [];
-      const bnArr = val?.bn || [];
-
-      return `
-
-        <div class="tag-wrap">
-
-          ${enArr.map((v,i)=>`
-
-            <span class="tag">
-
-              ${v || ""}
-
-              ${bnArr?.[i]
-                ? `
-                  <small class="bn">
-                    ${bnArr[i]}
-                  </small>
-                `
-                : ""
-              }
-
-            </span>
-
-          `).join("")}
-
-        </div>
-
-      `;
-    }
-
-
-    // ================= MULTILINGUAL TEXT =================
-
-    if(
-      typeof val?.en === "string" ||
-      typeof val?.bn === "string"
-    ){
-
-      return `
-
-        <div class="value">
-
-          ${val?.en || ""}
-
-          ${val?.bn
-            ? `
-              <small class="bn">
-                ${val.bn}
-              </small>
-            `
-            : ""
-          }
-
-        </div>
-
-      `;
-    }
-
-
-    // ================= BOOLEAN STYLE OBJECT =================
-
-    const boolKeys =
-      Object.values(val)
-
-        .every(v =>
-
-          typeof v === "boolean"
-
-        );
-
-    if(boolKeys){
-
-      return `
-
-        <div class="tag-wrap">
-
-          ${Object.entries(val)
-
-            .map(([k,v]) => `
-
-              <span class="tag">
-
-                ${v ? "✅" : "❌"}
-
-                ${prettyKey(k)}
-
-              </span>
-
-            `)
-
-            .join("")}
-
-        </div>
-
-      `;
-    }
-
-
-    // ================= HUGE OBJECT LIMIT =================
-
-    const entries =
-
-      Object.entries(val)
-
-        .filter(([_,v]) =>
-
-          v !== null &&
-          v !== undefined &&
-          v !== ""
-        )
-
-        .slice(0, 25);
-
-
-    // 🔥 empty object
-    if(!entries.length){
-      return "";
-    }
-
-
-    // ================= NESTED OBJECT =================
-
-    return `
-
-      <div class="nested-object">
-
-        ${entries
-
-          .map(([k,v]) => `
-
-            <div class="nested-item">
-
-              <b class="nested-key">
-
-                ${prettyKey(k)}:
-
-              </b>
-
-              <div class="nested-value">
-
-                ${renderValue(
-                  v,
-                  depth + 1
-                )}
-
-              </div>
-
-            </div>
-
-          `)
-
-          .join("")}
-
-      </div>
-
-    `;
-  }
-
-
-  // ================= FALLBACK =================
-
-  return `
-
-    <div class="value">
-
-      ${String(val)}
-
-    </div>
-
-  `;
-}
-
-function renderExtraFields(item){
-
-  try{
-
-    // ================= UI CONFIG =================
-
-    const hiddenFields = [
-
-  // 🔥 GLOBAL HIDE
-  ...UI_RULES.hiddenFields,
-  
-  // 🔥 HIDE DUPLICATE AI SCORE
-  "score",
-
-  // 🔥 LOCAL HIDE
-  ...(item?.ui?.hiddenFields || []),
-
-  // 🔥 EXTRA
-  "name",
-  "group",
-  "category",
-  "composition"
-
-];
-
-
-    const fieldOrder =
-      item?.ui?.order || [];
-
-
-    const customLabels =
-      item?.ui?.labels || {};
-
-
-    const badgeFields =
-      item?.ui?.badges || [];
-
-
-    // ================= FILTER =================
-
-    let fields = [
-
-  // 🔥 CONFIG FIELDS
-  ...CONFIG.fields,
-
-  // 🔥 AUTO DETECT NEW FIELDS
-  ...Object.keys(item || {})
-
-    .filter(k =>
-
-      !CONFIG.fields.some(
-        f => f.id === k
-      )
-
-    )
-
-    .map(k => ({
-
-      id: k,
-
-      label: prettyKey(k)
-
-    }))
-
-];
-
-
-// ================= REMOVE HIDDEN =================
-
-fields = fields.filter(f =>
-
-  !hiddenFields.includes(f.id)
-
-);
-
-
-// ================= REMOVE DUPLICATE =================
-
-fields = fields.filter(
-
-  (f,i,self)=>
-
-    i === self.findIndex(
-      x => x.id === f.id
-    )
-
-);
-
-
-// ================= CUSTOM SORT =================
-
-fields.sort((a,b)=>{
-
-  const ai =
-    fieldOrder.indexOf(a.id);
-
-  const bi =
-    fieldOrder.indexOf(b.id);
-
-
-  // ✅ BOTH NOT IN ORDER
-  if(ai === -1 && bi === -1){
-
-    return (a.label || a.id)
-
-      .localeCompare(
-        b.label || b.id
-      );
-
-  }
-
-
-  // ✅ A NOT FOUND
-  if(ai === -1){
-    return 1;
-  }
-
-
-  // ✅ B NOT FOUND
-  if(bi === -1){
-    return -1;
-  }
-
-
-  // ✅ ORDER PRIORITY
-  return ai - bi;
-
-});
-
-const importantKeywords =
-
-  UI_RULES.importantFields || [];
-
-
-    // ================= RENDER =================
-
-    return fields
-
-  .map(f => {
-
-    const val =
-      item?.[f.id];
-
-    // ================= EMPTY CHECK =================
-
-    if(
-      val === undefined ||
-      val === null
-    ){
-      return "";
-    }
-
-    // 🔥 empty string
-    if(
-      typeof val === "string" &&
-      !val.trim()
-    ){
-      return "";
-    }
-
-    // 🔥 empty array
-    if(
-      Array.isArray(val) &&
-      !val.length
-    ){
-      return "";
-    }
-
-    // 🔥 empty object
-    if(
-      typeof val === "object" &&
-      !Array.isArray(val) &&
-      !Object.keys(val).length
-    ){
-      return "";
-    }
-
-
-    // ================= LABEL =================
-
-    const label =
-
-  customLabels[f.id]
-
-  ||
-
-  UI_RULES.labels?.[f.id]
-
-  ||
-
-  f.label
-
-  ||
-
-  prettyKey(f.id);
-
-
-    // ================= BADGE =================
-
-    const badge =
-      badgeFields.includes(f.id);
-
-
-    // ================= HIGHLIGHT =================
-
-    const isImportant =
-
-      importantKeywords.some(k =>
-
-        f.id
-          .toLowerCase()
-          .includes(k)
-
-      );
-
-
-    // ================= RENDER =================
-
-    return `
-
-      <div
-        data-field="${f.id}"
-
-        class="
-          field
-          field-${f.id}
-          ${isImportant ? "important-field" : ""}
-        ">
-
-        <div class="field-head">
-
-          <b>
-            ${label}:
-          </b>
-
-          ${badge
-            ? `
-              <span class="tag">
-                ⭐ Important
-              </span>
-            `
-            : ""
-          }
-
-        </div>
-
-        <div class="field-body">
-
-          ${renderValue(val)}
-
-        </div>
-
-      </div>
-
-    `;
-
-  })
-
-      .join("");
-
-  }catch(err){
-
-    console.error(
-      "❌ renderExtraFields ERROR =",
-      err
-    );
-
-    return "";
-  }
-
 }
 
 
