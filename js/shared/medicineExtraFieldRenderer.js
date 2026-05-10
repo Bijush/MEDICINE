@@ -395,7 +395,7 @@ export function renderExtraFields(item){
   "name",
   "group",
   "category",
-  "composition"
+"medicalCache"
 
 ];
 
