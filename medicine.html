@@ -22,7 +22,69 @@
 
   <!-- 🔍 SEARCH (IMPORTANT FIX) -->
   <input id="search" placeholder="Search medicine..." />
+<!-- 🔥 NEW MEDICAL FILTER -->
+<div class="filter-box medical-filter-box">
 
+  <!-- 🔥 HEADER -->
+
+  <div
+    class="filter-input"
+    onclick="
+      toggleMedicalDropdown(event)
+    ">
+
+    <span id="medicalFilterText">
+
+      Select Medical Filters
+
+    </span>
+
+    <span class="arrow">
+
+      ▼
+
+    </span>
+
+  </div>
+
+
+  <!-- 🔥 DROPDOWN -->
+
+  <div
+    id="medicalFilterDropdown"
+    class="dropdown hidden">
+
+
+    <!-- 🔍 SEARCH -->
+
+    <input
+
+      id="medicalFilterSearch"
+
+      class="filter-search"
+
+      placeholder="
+        Search medical filters...
+      "
+
+      oninput="
+        filterMedicalList(
+          this.value
+        )
+      "
+    />
+
+
+    <!-- 🔥 OPTIONS -->
+
+    <div
+      id="medicalFilterOptions">
+
+    </div>
+
+  </div>
+
+</div>
 </div>
 
 
