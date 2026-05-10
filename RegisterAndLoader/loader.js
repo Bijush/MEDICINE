@@ -3,7 +3,16 @@ import { DATA_FILES } from "./registry.js";
 import { getClassDesc } from "../js/shared/classHelper.js";
 import { generateComboExplain } from "../js/shared/comboExplainHelper.js";
 
+import { normalize } from "../js/shared/normalize.js";
 
+
+function normalizeArr(arr = []){
+
+  return arr.map(x =>
+    normalize(x)
+  );
+
+}
 // ================= 🔥 SAFE GET =================
 function get(obj, path, fallback = undefined){
 
@@ -18,25 +27,6 @@ function get(obj, path, fallback = undefined){
 
     return fallback;
   }
-}
-
-
-// ================= 🔥 NORMALIZE =================
-function normalize(str){
-
-  return (str || "")
-    .toString()
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, "_")
-    .trim();
-}
-
-function normalizeArr(arr){
-
-  return (arr || [])
-    .map(normalize)
-    .filter(Boolean);
 }
 
 

@@ -13,7 +13,7 @@ import { DATA as sexual } from "../data/medicine/sexual.js";
 
 import { DATA as painCombo } from "../data/medicine/combinations/pain_combo.js";
 
-
+import { normalize } from "../js/shared/normalize.js";
 // ================= 🔥 MASTER DATA =================
 
 export const DATA_FILES = [
@@ -29,27 +29,6 @@ export const DATA_FILES = [
   sexual,
   painCombo
 ];
-
-
-// ================= 🔥 IMPORT NORMALIZED DATA =================
-
-
-
-
-// ================= 🔥 NORMALIZE =================
-
-function normalize(str){
-
-  return (str || "")
-    .toString()
-    .toLowerCase()
-    .replace(/[^\w\s]/g, "")
-    .replace(/\s+/g, "_")
-    .trim();
-}
-
-
-// ================= 🔥 UTILITIES =================
 
 
 // 👉 all groups
