@@ -25,7 +25,10 @@ import { normalize } from "../js/shared/normalize.js";
 
 import {
 
-  renderExtraFields
+  renderExtraFields,
+  prettyKey,
+  renderValue
+
 } from "../js/shared/medicineExtraFieldRenderer.js";
 
 // ================= STATE =================
@@ -62,6 +65,9 @@ function getText(v){
 
   return "";
 }
+
+
+
 
 
 // ================= COMPOSITION TEXT =================
