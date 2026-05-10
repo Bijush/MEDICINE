@@ -510,7 +510,9 @@ function getDynamicFilters(){
 
       let val =
 
-  item?.medicalCache?.[key]
+  item?.medicalCache?.[
+  normalize(key)
+]
 
   ||
 
@@ -550,9 +552,20 @@ function getDynamicFilters(){
           ){
 
             v =
-              v?.en ||
-              v?.name ||
-              "";
+
+  v?.en ||
+
+  v?.bn ||
+
+  v?.name ||
+
+  v?.value ||
+
+  v?.ingredient?.en ||
+
+  v?.ingredient ||
+
+  "";
 
           }
 
@@ -580,29 +593,69 @@ function getDynamicFilters(){
 
         // 🔥 multilingual array
         if(
-          Array.isArray(val?.en)
-        ){
+  Array.isArray(val?.en)
+){
 
-          val.en.forEach(v => {
+  [
 
-            v = normalize(v);
+    ...(val?.en || []),
 
-            if(v){
+    ...(val?.bn || [])
 
-              result[key].add(v);
+  ]
 
-            }
+  .forEach(v => {
 
-          });
+    // 🔥 object support
+    if(typeof v === "object"){
 
-          return;
+      v =
 
-        }
+        v?.en ||
+
+        v?.bn ||
+
+        v?.name ||
+
+        v?.value ||
+
+        v?.ingredient?.en ||
+
+        v?.ingredient ||
+
+        "";
+
+    }
+
+    v = normalize(v);
+
+    if(v){
+
+      result[key].add(v);
+
+    }
+
+  });
+
+  return;
+
+}
 
         val =
-          val?.en ||
-          val?.name ||
-          "";
+
+  val?.en ||
+
+  val?.bn ||
+
+  val?.name ||
+
+  val?.value ||
+
+  val?.ingredient?.en ||
+
+  val?.ingredient ||
+
+  "";
 
       }
 
@@ -963,29 +1016,21 @@ function updateMedicalFilterText(){
 
 export function getMedicalFilters(){
 
-  // ✅ MODERN BROWSER
-  if(
-    typeof structuredClone ===
-    "function"
-  ){
+  const result = {};
 
-    return structuredClone(
-      selectedMedicalFilters
-    );
+  Object.entries(
+    selectedMedicalFilters
+  )
 
-  }
+  .forEach(([key,set]) => {
 
-  // ✅ FALLBACK
-  return JSON.parse(
+    result[key] = [...set];
 
-    JSON.stringify(
-      selectedMedicalFilters
-    )
+  });
 
-  );
+  return result;
 
 }
-
 
 // ================= 🔥 DROPDOWN =================
 
