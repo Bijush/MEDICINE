@@ -509,7 +509,12 @@ function getDynamicFilters(){
     allowed.forEach(key => {
 
       let val =
-        item?.[key];
+
+  item?.medicalCache?.[key]
+
+  ||
+
+  item?.[key];
 
 
       // ================= EMPTY =================
