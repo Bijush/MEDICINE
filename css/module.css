@@ -1574,3 +1574,58 @@ button:active{
     0 6px 16px rgba(99,102,241,.25);
 
 }
+.bilingual-text{
+
+  display:flex;
+
+  flex-direction:column;
+
+  gap:8px;
+
+}
+
+.bilingual-en{
+
+  font-weight:600;
+
+  color:#111827;
+
+  line-height:1.7;
+
+}
+
+.bilingual-bn{
+
+  color:#374151;
+
+  line-height:1.8;
+
+  padding-left:4px;
+
+  border-left:3px solid #c7d2fe;
+
+}
+
+.google-search-link {
+
+  color: inherit;
+
+  text-decoration: none;
+
+  font-weight: 600;
+
+  border-bottom:
+    1px dashed #999;
+
+}
+
+
+.google-search-link:hover {
+
+  color: #2563eb;
+
+  border-color:
+    #2563eb;
+
+}
+
