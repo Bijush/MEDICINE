@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>Learn Composition</title>
+
+  <!-- 🔥 GLOBAL -->
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <link rel="stylesheet" href="css/composition.css">
+  
+  <link rel="stylesheet" href="css/module.css">
+
+</head>
+
+<body>
+
+  <div class="composition-page">
+
+    <div class="composition-title">
+      Learn Composition
+    </div>
+
+    <div class="composition-search-box">
+<label class="api-toggle">
+
+  <input
+    type="checkbox"
+    id="apiToggle"
+  />
+
+  <span>
+
+    Online API Mode
+
+  </span>
+
+</label>
+
+      <input
+        type="text"
+        id="compositionSearchInput"
+        placeholder="Search composition like Paracetamol..."
+      />
+
+    </div>
+
+
+    <!-- 🔥 MEDICAL FILTER -->
+
+    <div class="filter-box medical-filter-box">
+
+      <!-- 🔥 HEADER -->
+
+      <div
+        class="filter-input"
+        onclick="
+          toggleMedicalDropdown(event)
+        ">
+
+        <span id="medicalFilterText">
+
+          Select Medical Filters
+
+        </span>
+
+        <span class="arrow">
+
+          ▼
+
+        </span>
+
+      </div>
+
+
+      <!-- 🔥 DROPDOWN -->
+
+      <div
+        id="medicalFilterDropdown"
+        class="dropdown hidden">
+
+
+        <!-- 🔍 SEARCH -->
+
+        <input
+
+          id="medicalFilterSearch"
+
+          class="filter-search"
+
+          placeholder="
+            Search medical filters...
+          "
+
+          oninput="
+            filterMedicalList(
+              this.value
+            )
+          "
+        />
+
+
+        <!-- 🔥 OPTIONS -->
+
+        <div
+          id="medicalFilterOptions">
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div id="compositionResults">
+
+      <div class="composition-empty">
+        Search a composition to learn details.
+      </div>
+
+    </div>
+
+  </div>
+
+  <script
+    type="module"
+    src="./js/composition/compositionApp.js"
+  ></script>
+
+</body>
+</html>

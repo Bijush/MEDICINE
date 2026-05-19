@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+
+    🩺 AI Diagnosis
+
+  </title>
+
+
+  <!-- ========================= -->
+  <!-- GLOBAL -->
+  <!-- ========================= -->
+
+  <link
+    rel="stylesheet"
+    href="css/style.css"
+  >
+
+
+  <!-- ========================= -->
+  <!-- MODULE UI -->
+  <!-- ========================= -->
+
+  <link
+    rel="stylesheet"
+    href="css/module.css"
+  >
+
+<link
+    rel="stylesheet"
+    href="css/diagnosis.css"
+  >
+  <!-- ========================= -->
+  <!-- EXTRA -->
+  <!-- ========================= -->
+
+
+
+</head>
+
+<body>
+
+
+<!-- ========================= -->
+<!-- PAGE HEADER -->
+<!-- ========================= -->
+
+<div class="top diagnosis-top">
+
+  <h2 class="diagnosis-title">
+
+    🩺 AI Diagnosis
+
+  </h2>
+
+
+  <!-- ======================= -->
+  <!-- SEARCH -->
+  <!-- ======================= -->
+
+  <input
+
+    id="search"
+
+    placeholder="
+      Search symptoms...
+      Example:
+      fever cough pain
+    "
+
+  />
+
+
+  <!-- ======================= -->
+  <!-- MEDICAL FILTER -->
+  <!-- ======================= -->
+
+  <div class="filter-box medical-filter-box">
+
+
+    <!-- HEADER -->
+
+    <div
+
+      class="filter-input"
+
+      onclick="
+        toggleMedicalDropdown(event)
+      "
+
+    >
+
+      <span id="medicalFilterText">
+
+        Select Symptoms
+
+      </span>
+
+      <span class="arrow">
+
+        ▼
+
+      </span>
+
+    </div>
+
+
+    <!-- DROPDOWN -->
+
+    <div
+
+      id="medicalFilterDropdown"
+
+      class="dropdown hidden"
+
+    >
+
+
+      <!-- SEARCH -->
+
+      <input
+
+        id="medicalFilterSearch"
+
+        class="filter-search"
+
+        placeholder="
+          Search symptoms...
+        "
+
+        oninput="
+          filterMedicalList(
+            this.value
+          )
+        "
+
+      />
+
+
+      <!-- OPTIONS -->
+
+      <div
+
+        id="medicalFilterOptions"
+
+      ></div>
+
+    </div>
+
+  </div>
+
+
+  <!-- ======================= -->
+  <!-- SELECTED -->
+  <!-- ======================= -->
+
+  <div
+
+    id="selectedSymptoms"
+
+    class="symptom-selected"
+
+  ></div>
+
+
+  <!-- ======================= -->
+  <!-- BUTTON -->
+  <!-- ======================= -->
+
+  <button id="analyzeBtn">
+
+    Analyze Symptoms
+
+  </button>
+
+</div>
+
+
+<!-- ========================= -->
+<!-- RESULTS -->
+<!-- ========================= -->
+
+<div id="diagnosisResults"></div>
+
+
+<!-- ========================= -->
+<!-- FIREBASE -->
+<!-- ========================= -->
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+
+<!-- ========================= -->
+<!-- REQUIRED -->
+<!-- ========================= -->
+
+<script src="js/firebase/firebase.js"></script>
+
+<script src="js/firebase/auth.js"></script>
+
+
+<!-- ========================= -->
+<!-- FILTER ENGINE -->
+<!-- ========================= -->
+
+<script
+
+  type="module"
+
+  src="./js/shared/filters.js"
+
+></script>
+
+
+<!-- ========================= -->
+<!-- MODULE -->
+<!-- ========================= -->
+
+<script
+
+  type="module"
+
+  src="./js/diagnosis/diagnosisApp.js"
+
+></script>
+
+</body>
+
+</html>

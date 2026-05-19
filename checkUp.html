@@ -1,53 +1,154 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>AI Diagnosis</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<html lang="en">
 
-  <link rel="stylesheet" href="css/module.css">
-  <link rel="stylesheet" href="css/checkup.css">
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="
+      width=device-width,
+      initial-scale=1.0
+    "
+  />
+
+  <title>
+    AI Medical Diagnosis
+  </title>
+
+  <!-- CSS -->
+
+  <link
+    rel="stylesheet"
+    href="./css/checkup.css"
+  />
+
 </head>
 
 <body>
 
-<div class="container">
+  <!-- ===================== -->
+  <!-- APP -->
+  <!-- ===================== -->
 
-  <h2>🧠 AI Doctor Diagnosis</h2>
+  <div class="app">
 
-  <div class="filter-box">
+    <!-- HEADER -->
 
-    <div id="filterText" class="filter-input" onclick="window.toggleDropdown(event)">
-      Select Symptoms
-    </div>
+    <div class="app-header">
 
-    <!-- 🔥 CLASS CHANGED -->
-    <div id="filterDropdown" class="checkup-dropdown hidden" onclick="event.stopPropagation()">
+      <div class="app-title">
 
-      <div class="dropdown-header">
-        <span>Select Symptoms</span>
-        <button onclick="window.closeDropdown()">✖</button>
+        🩺 AI Medical Diagnosis
+
       </div>
 
-      <input 
-        type="text" 
-        placeholder="Search symptoms..." 
-        oninput="window.filterSearchList?.(this.value)"
-      />
+      <div class="app-subtitle">
 
-      <div id="filterOptions"></div>
+        Smart symptom-based
+        disease prediction system
+
+      </div>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- SYMPTOM INPUT -->
+    <!-- ===================== -->
+
+    <div class="section">
+
+      <div class="section-title">
+
+        Symptoms
+
+      </div>
+
+      <div id="symptomInput"></div>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- BUTTON -->
+    <!-- ===================== -->
+
+    <div class="diagnose-wrap">
+
+      <button id="diagnoseBtn">
+
+        Diagnose Now
+
+      </button>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- EMERGENCY -->
+    <!-- ===================== -->
+
+    <div
+      id="emergencyBanner"
+      class="section"
+    ></div>
+
+    <!-- ===================== -->
+    <!-- TOP CONFIDENCE -->
+    <!-- ===================== -->
+
+    <div
+      id="confidenceBar"
+      class="section"
+    ></div>
+
+    <!-- ===================== -->
+    <!-- RESULTS -->
+    <!-- ===================== -->
+
+    <div class="section">
+
+      <div class="section-title">
+
+        Diagnosis Results
+
+      </div>
+<div id="followupQuestions"></div>
+      <div
+        id="diagnosisResults"
+      ></div>
+
+    </div>
+
+    <!-- ===================== -->
+    <!-- ALL CONFIDENCE -->
+    <!-- ===================== -->
+
+    <div class="section">
+
+      <div class="section-title">
+
+        Disease Confidence
+
+      </div>
+
+      <div
+        id="allConfidenceBars"
+      ></div>
 
     </div>
 
   </div>
 
-  <button onclick="window.startDiagnosis()">Start Diagnosis</button>
-
-  <div id="result"></div>
-
-</div>
-
-<script type="module" src="js/checkup/checkup.js"></script>
+  <!-- ===================== -->
+  <!-- JS -->
+  <!-- ===================== -->
+<script src="
+https://cdn.jsdelivr.net/npm/@tensorflow/tfjs
+"></script>
+  <script
+    type="module"
+    src="./js/checkup/checkup.js"
+  ></script>
 
 </body>
 </html>
