@@ -211,6 +211,12 @@ body{
 
 .selected-symptoms{
 
+  position:sticky;
+
+  top:10px;
+
+  z-index:999;
+
   display:flex;
 
   flex-wrap:wrap;
@@ -218,20 +224,63 @@ body{
   gap:10px;
 
   margin-bottom:20px;
+
+  padding:12px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.95
+    );
+
+  backdrop-filter:
+    blur(10px);
+
+  border-radius:16px;
+
+  box-shadow:
+    0 4px 14px
+    rgba(0,0,0,0.08);
+
+  max-height:120px;
+
+  overflow-y:auto;
 }
 
 .selected-chip{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:6px;
 
   background:#2563eb;
 
   color:#fff;
 
   padding:
-    8px 12px;
+    8px 14px;
 
   border-radius:999px;
 
   font-size:13px;
+
+  font-weight:600;
+
+  box-shadow:
+    0 2px 8px
+    rgba(
+      37,
+      99,
+      235,
+      0.3
+    );
+
+  animation:
+    chipPop 0.2s ease;
 }
 
 /* ============================= */
@@ -1269,4 +1318,36 @@ body{
   .symptom-list{
     grid-template-columns:1fr;
   }
+}
+.advanced-toggle {
+
+  width: 100%;
+
+  padding: 14px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: #2f66ff;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: 600;
+
+  margin-top: 15px;
+
+  margin-bottom: 15px;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(0,0,0,0.15);
+}
+
+.advanced-toggle:active {
+
+  transform: scale(0.98);
 }
