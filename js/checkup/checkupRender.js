@@ -19,10 +19,16 @@ export function renderCheckupResults(
   // ==========================
 
   if (
-    !result ||
-    !result.allResults ||
-    result.allResults.length === 0
-  ) {
+
+  !result ||
+
+  !Array.isArray(
+    result.allResults
+  ) ||
+
+  result.allResults.length === 0
+
+){
 
     container.innerHTML = `
 
@@ -41,8 +47,12 @@ export function renderCheckupResults(
   // ==========================
 
   const top =
-    result.topMatch;
-    if (!top) {
+
+  result.topMatch ||
+
+  result.allResults?.[0];
+
+if (!top) {
 
   container.innerHTML = `
 
@@ -654,19 +664,111 @@ ${
             ">
 
               ${disease
-                .medicines
-                .map(
-                  med => `
-                  <div class="
-                    diag-med-item
-                  ">
+  .medicines
+  .map(
+    med => `
 
-                    💊 ${med}
+    <div class="
+      diag-med-item
+    ">
 
-                  </div>
-                `
-                )
-                .join("")}
+      <div class="
+        diag-med-name
+      ">
+
+        💊 ${
+          typeof med === "string"
+
+            ? med
+
+            : med.name || "Unknown Medicine"
+        }
+
+      </div>
+
+      ${
+        typeof med === "object" &&
+        med.dosage
+
+        ? `
+
+        <div class="
+          diag-med-dose
+        ">
+
+          Dosage:
+          ${med.dosage}
+
+        </div>
+
+        `
+
+        : ""
+      }
+
+      ${
+        typeof med === "object" &&
+        med.frequency
+
+        ? `
+
+        <div class="
+          diag-med-frequency
+        ">
+
+          Frequency:
+          ${med.frequency}
+
+        </div>
+
+        `
+
+        : ""
+      }
+
+      ${
+        typeof med === "object" &&
+        med.purpose
+
+        ? `
+
+        <div class="
+          diag-med-purpose
+        ">
+
+          Purpose:
+          ${med.purpose}
+
+        </div>
+
+        `
+
+        : ""
+      }
+
+      ${
+        typeof med === "object" &&
+        med.warning
+
+        ? `
+
+        <div class="
+          diag-med-warning
+        ">
+
+          ⚠️ ${med.warning}
+
+        </div>
+
+        `
+
+        : ""
+      }
+
+    </div>
+  `
+  )
+  .join("")}
 
             </div>
 
@@ -1028,9 +1130,9 @@ if (
 
 ) {
 
-  delete window.currentUserSymptoms[
+  window.currentUserSymptoms[
     symptomKey
-  ];
+  ] = false;
 
   delete window.confidenceBoosts[
     symptomKey
@@ -1040,6 +1142,19 @@ if (
 // ==================
 // OPTION MAPPED
 // ==================
+
+Object.values(symptomMap)
+
+.forEach(sym => {
+
+  delete window.currentUserSymptoms[
+    sym
+  ];
+
+  delete window.confidenceBoosts[
+    sym
+  ];
+});
 
 if (
 

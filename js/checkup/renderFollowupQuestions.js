@@ -1,172 +1,4 @@
-// ==============================
-// AUTO FOLLOWUP ENGINE
-// ==============================
 
-import {
-  getSelectedSymptoms
-} from "./symptomInputUI.js";
-
-
-// ==============================
-// SYMPTOM ALIAS
-// ==============================
-
-const SYMPTOM_ALIAS = {
-
-  night_sweats:
-    "sweating",
-
-  smoking:
-    "chronic_cough",
-
-  dry_cough:
-    "dry_cough",
-
-  yellow_sputum:
-    "yellow_sputum",
-
-  blood_in_sputum:
-    "blood_in_sputum",
-
-  chest_tightness:
-    "chest_tightness",
-
-  wheezing:
-    "wheezing",
-
-  vomiting_blood:
-    "vomiting_blood",
-
-  body_ache:
-    "body_ache",
-
-  bloating:
-    "bloating",
-
-  diarrhea:
-    "diarrhea",
-
-  chills:
-    "chills"
-};
-
-
-// ==============================
-// QUESTION MAP
-// ==============================
-
-
-
-const FOLLOWUP_MAP = {
-
-  fever: [
-
-    {
-      label:
-        "Chills?",
-
-      symptom:
-        "chills"
-    },
-
-    {
-      label:
-        "Body ache?",
-
-      symptom:
-        "body_ache"
-    },
-
-    {
-      label:
-        "Night sweating?",
-
-      symptom:
-        "night_sweats"
-    }
-  ],
-
-  cough: [
-
-    {
-      label:
-        "Dry cough?",
-
-      symptom:
-        "dry_cough"
-    },
-
-    {
-      label:
-        "Yellow sputum?",
-
-      symptom:
-        "yellow_sputum"
-    },
-
-    {
-      label:
-        "Blood in sputum?",
-
-      symptom:
-        "blood_in_sputum"
-    }
-  ],
-
-  breathing_difficulty: [
-
-    {
-      label:
-        "Wheezing?",
-
-      symptom:
-        "wheezing"
-    },
-
-    {
-      label:
-        "Chest tightness?",
-
-      symptom:
-        "chest_tightness"
-    },
-
-    {
-      label:
-        "Smoking history?",
-
-      symptom:
-        "smoking"
-    }
-  ],
-
-  abdominal_pain: [
-
-    {
-      label:
-        "Diarrhea?",
-
-      symptom:
-        "diarrhea"
-    },
-
-    {
-      label:
-        "Vomiting blood?",
-
-      symptom:
-        "vomiting_blood"
-    },
-
-    {
-      label:
-        "Bloating?",
-
-      symptom:
-        "bloating"
-    }
-  ]
-};
 
 // ==============================
 // MAIN
@@ -182,8 +14,7 @@ export function renderLiveFollowupQuestions() {
 
   if (!container) return;
 
-  const selected =
-    getSelectedSymptoms();
+  
 
   let html = "";
 
@@ -191,56 +22,105 @@ export function renderLiveFollowupQuestions() {
   // LOOP SELECTED SYMPTOMS
   // ==========================
 
-  Object.keys(selected)
+  (window.generatedFollowups || [])
 
-    .forEach(symptom => {
+.forEach(q => {
+  
+  if (
 
-      const questions =
+  !q ||
 
-        FOLLOWUP_MAP[
-          symptom
-        ];
+  !q.question
 
-      if (!questions) return;
+) {
 
-      html += `
+  return;
+}
 
-        <div class="
-          live-followup-card
-        ">
+  html += `
 
-          <div class="
-            live-followup-title
-          ">
+    <div class="
+      live-followup-card
+    ">
 
-            ${formatText(
-              symptom
-            )} Questions
+      <div class="
+        live-followup-title
+      ">
 
-          </div>
+        ${formatText(
 
-          ${questions.map(
-            q => `
+  q.question
+    ?.replace("?", "")
+    ?.slice(0, 40)
 
-              <button
-                class="
-                  live-followup-item
-                "
+  || "Followup"
 
-                data-symptom="
-                  ${q.symptom}
-                "
-              >
+)}
 
-                • ${q.label}
+      </div>
 
-              </button>
-            `
-          ).join("")}
+      <div class="
+        live-followup-options
+      ">
 
-        </div>
-      `;
-    });
+        ${(q.options || ["Yes", "No"])
+
+          .map(option => `
+
+            <button
+
+              class="
+                live-followup-item
+
+                ${
+                  window.followupAnswers?.[
+                    q.question
+                  ] === option
+
+                    ? "followup-selected"
+
+                    : ""
+                }
+              "
+
+              data-question="
+                ${q.question}
+              "
+
+              data-answer="
+                ${option}
+              "
+
+              data-symptom="
+                ${q.symptomKey || ""}
+              "
+
+              data-symptom-map='${JSON.stringify(
+                q.symptomKeyMap || {}
+              )}'
+
+            >
+
+              ${option}
+
+            </button>
+          `)
+
+          .join("")}
+
+      </div>
+
+      <div class="
+        live-followup-question
+      ">
+
+        ${q.question}
+
+      </div>
+
+    </div>
+  `;
+});
 
   container.innerHTML = html;
 
@@ -260,65 +140,210 @@ function attachFollowupEvents() {
     );
 
   buttons.forEach(btn => {
+    
+  btn.addEventListener(
 
-    btn.addEventListener(
+    "click",
 
-      "click",
+    () => {
 
-      () => {
+      // ==================
+      // DATA
+      // ==================
 
-        const rawSymptom =
+      const question =
 
-  btn.dataset.symptom
-    ?.trim();
+        btn.dataset.question
+          ?.trim();
 
-const symptom =
+      const answer =
 
-  SYMPTOM_ALIAS[
-    rawSymptom
-  ] || rawSymptom;
+        btn.dataset.answer
+          ?.trim();
 
-        if (!symptom) return;
+      const rawSymptom =
 
-        // ==================
-        // FIND CHECKBOX
-        // ==================
+        btn.dataset.symptom
+          ?.trim();
 
-        const checkbox =
+      const symptom =
+  rawSymptom;
 
-  document.querySelector(
-    `#symptomList input[value="${CSS.escape(symptom)}"]`
+      // ==================
+      // OPTION MAP
+      // ==================
+
+      let symptomMap = {};
+
+      try {
+
+        symptomMap = JSON.parse(
+          btn.dataset.symptomMap || "{}"
+        );
+
+      } catch {
+
+        symptomMap = {};
+      }
+
+      if (!question) return;
+
+      // ==================
+      // SAVE ANSWER
+      // ==================
+
+      window.followupAnswers ||= {};
+
+      window.followupAnswers[
+        question
+      ] = answer;
+
+      // ==================
+      // BUTTON UI
+      // ==================
+
+      document
+
+        .querySelectorAll(
+          `[data-question="${CSS.escape(question)}"]`
+        )
+
+        .forEach(button => {
+
+          button.classList.remove(
+            "followup-selected"
+          );
+        });
+
+      btn.classList.add(
+        "followup-selected"
+      );
+
+      // ==================
+      // GLOBAL SYMPTOMS
+      // ==================
+
+      window.currentUserSymptoms ||= {};
+
+      // ==================
+      // DEFAULT YES/NO
+      // ==================
+
+      if (
+
+        symptom &&
+
+        answer === "Yes"
+
+      ) {
+
+        window.currentUserSymptoms[
+          symptom
+        ] = true;
+        
+        const allMatchingCheckboxes =
+
+  document.querySelectorAll(
+    `.symptom-ui input[value="${CSS.escape(symptom)}"]`
   );
 
-        if (!checkbox) return;
+allMatchingCheckboxes.forEach(
+  box => {
 
-        // ==================
-        // AUTO CHECK
-        // ==================
-
-        checkbox.checked =
-  !checkbox.checked;
-
-        // ==================
-        // TRIGGER UPDATE
-        // ==================
-btn.classList.add(
-  "followup-selected"
-);
-        checkbox.dispatchEvent(
-
-  new Event(
-    "change",
-    {
-      bubbles: true
-    }
-  )
+    box.checked = true;
+  }
 );
       }
+
+if (
+
+  symptom &&
+
+  answer === "No"
+
+) {
+
+  delete window.currentUserSymptoms[
+    symptom
+  ];
+
+  const allMatchingCheckboxes =
+
+    document.querySelectorAll(
+      `.symptom-ui input[value="${CSS.escape(symptom)}"]`
     );
-  });
+
+  allMatchingCheckboxes.forEach(
+    box => {
+
+      box.checked = false;
+    }
+  );
 }
 
+      // ==================
+      // OPTION MAP SUPPORT
+      // ==================
+
+      Object.values(symptomMap)
+
+.forEach(sym => {
+
+  delete window.currentUserSymptoms[
+    sym
+  ];
+});
+
+      if (
+
+        symptomMap[answer]
+
+      ) {
+
+        window.currentUserSymptoms[
+          symptomMap[answer]
+        ] = true;
+      }
+
+      // ==================
+      // CHECKBOX SYNC
+      // ==================
+
+      const checkbox =
+
+  document.querySelector(
+    `.symptom-ui input[value="${CSS.escape(symptom)}"]`
+  );
+
+if (checkbox) {
+
+  checkbox.checked =
+    answer === "Yes";
+
+}
+
+      // ==================
+      // REDIAGNOSIS
+      // ==================
+
+      document.dispatchEvent(
+
+        new CustomEvent(
+
+          "followupUpdated",
+
+          {
+
+            detail:
+              window.currentUserSymptoms
+          }
+        )
+      );
+    }
+  );
+});
+
+}
 // ==============================
 // FORMAT
 // ==============================

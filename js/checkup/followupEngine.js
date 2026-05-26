@@ -1,5 +1,20 @@
 // ==============================
-// DYNAMIC FOLLOWUP ENGINE
+// AUTO FOLLOWUP ENGINE
+// CLEAN STRICT VERSION
+// ==============================
+
+import {
+  ALL_DISEASES
+}
+from "./register/dataRegistry.js";
+
+import {
+  getCanonicalSymptom
+}
+from "./symptomIntelligence.js";
+
+// ==============================
+// ENGINE
 // ==============================
 
 export function getFollowupQuestions(
@@ -10,580 +25,271 @@ export function getFollowupQuestions(
   const questions = [];
 
   // ==========================
-  // COUGH
+  // LOOP DISEASES
   // ==========================
 
-  if (
+  ALL_DISEASES.forEach(
+    disease => {
 
-    symptoms.cough ||
+      // ==========================
+      // ONLY TOP DISEASES
+      // ==========================
 
-    symptoms.dry_cough ||
+      if (
 
-    symptoms.wet_cough
+        topDiseases.length &&
 
-  ) {
+        !topDiseases.includes(
+          disease.disease
+        )
 
-    questions.push({
+      ) {
 
-      question:
-        "Is the cough dry?",
+        return;
+      }
 
-      symptomKey:
-        "dry_cough",
+      // ==========================
+      // DISEASE MATCH CHECK
+      // ==========================
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+      const diseaseSymptoms =
 
-    questions.push({
+        Object.keys(
+          disease.symptoms || {}
+        );
 
-      question:
-        "Is there yellow sputum?",
+      let matchedCount = 0;
 
-      symptomKey:
-        "yellow_sputum",
+      diseaseSymptoms.forEach(
+        symptom => {
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+          const canonical =
 
-    questions.push({
+            getCanonicalSymptom(
+              symptom
+            );
 
-      question:
-        "Any blood in sputum?",
+          if (
 
-      symptomKey:
-        "blood_in_sputum",
+            symptoms[
+              canonical
+            ] === true
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+          ) {
 
-    questions.push({
+            matchedCount++;
+          }
+        }
+      );
 
-      question:
-        "How long has the cough lasted?",
+      // ==========================
+      // MATCH RATIO
+      // ==========================
 
-      symptomKeyMap: {
+      const matchRatio =
 
-        "< 3 days":
-          "mild_cough",
+        matchedCount /
 
-        "1 week":
-          "chronic_cough",
+        Math.max(
+          diseaseSymptoms.length,
+          1
+        );
 
-        "2+ weeks":
-          "cough_more_than_2_weeks"
-      },
+      // ==========================
+      // IGNORE UNRELATED
+      // ==========================
 
-      options: [
-        "< 3 days",
-        "1 week",
-        "2+ weeks"
-      ]
-    });
+      if (
 
-    questions.push({
+        matchedCount === 0 ||
 
-      question:
-        "Does cough worsen at night?",
+        (
 
-      symptomKey:
-        "night_cough",
+          matchedCount < 2 &&
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
+          matchRatio < 0.12
 
-  // ==========================
-  // BREATHING
-  // ==========================
+        )
 
-  if (
+      ) {
 
-    symptoms.breathing_difficulty ||
+        return;
+      }
 
-    symptoms.wheezing
+      // ==========================
+      // SYMPTOM FOLLOWUPS
+      // ==========================
 
-  ) {
+      Object.entries(
 
-    questions.push({
+        disease.symptoms || {}
 
-      question:
-        "Do you hear wheezing sounds?",
+      ).forEach(
 
-      symptomKey:
-        "wheezing",
+        ([symptom, rule]) => {
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+          // ======================
+          // HAS FOLLOWUP?
+          // ======================
 
-    questions.push({
+          if (
 
-      question:
-        "Does breathing worsen at night?",
+            !rule.followup ||
 
-      symptomKey:
-        "night_breathing_problem",
+            window.followupAnswers?.[
+              rule.followup.question
+            ]
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+          ) {
 
-    questions.push({
+            return;
+          }
 
-      question:
-        "Do you smoke long-term?",
+          const canonicalSymptom =
 
-      symptomKey:
-        "long_term_smoking",
+            getCanonicalSymptom(
+              symptom
+            );
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+          // ======================
+          // RELATED MATCH
+          // ======================
 
-    questions.push({
+          const relatedMatch =
 
-      question:
-        "Does cold weather trigger symptoms?",
+            symptoms[
+              canonicalSymptom
+            ] === true;
 
-      symptomKey:
-        "cold_weather_trigger",
+          // ======================
+          // IGNORE UNRELATED
+          // ======================
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
+          if (
 
-  // ==========================
-  // FEVER
-  // ==========================
+            !relatedMatch &&
 
-  if (
+            matchedCount < 2
 
-    symptoms.fever ||
+          ) {
 
-    symptoms.high_fever
+            return;
+          }
 
-  ) {
+          // ======================
+          // ADD QUESTION
+          // ======================
 
-    questions.push({
+          questions.push({
 
-      question:
-        "Do you have chills?",
+            question:
 
-      symptomKey:
-        "chills",
+              rule.followup
+                .question ||
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
+              `More about ${symptom}?`,
 
-    questions.push({
+            options:
 
-      question:
-        "Is fever very high?",
+              rule.followup
+                .options || [
 
-      symptomKeyMap: {
+                "Yes",
+                "No"
+              ],
 
-        "Mild":
-          "mild_fever",
+            symptomKey:
 
-        "Moderate":
-          "fever",
+              rule.followup
+                .symptomKey ||
 
-        "Very High":
-          "high_fever"
-      },
+              canonicalSymptom,
 
-      options: [
-        "Mild",
-        "Moderate",
-        "Very High"
-      ]
-    });
+            symptomKeyMap:
 
-    questions.push({
+              rule.followup
+                .symptomMap || {},
 
-      question:
-        "How many days has fever lasted?",
+            priority:
 
-      symptomKeyMap: {
+              rule.followup
+                .priority || 1
+          });
+        }
+      );
 
-        "1-2 days":
-          "sudden_fever",
+      // ==========================
+      // RED FLAG FOLLOWUPS
+      // ==========================
 
-        "3-5 days":
-          "prolonged_fever",
+      Object.entries(
 
-        "1+ week":
-          "intermittent_fever"
-      },
+        disease.red_flags || {}
 
-      options: [
-        "1-2 days",
-        "3-5 days",
-        "1+ week"
-      ]
-    });
+      ).forEach(
 
-    questions.push({
+        ([symptom, rule]) => {
 
-      question:
-        "Any body ache?",
+          if (
 
-      symptomKey:
-        "body_ache",
+            !rule.followup ||
 
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
+            window.followupAnswers?.[
+              rule.followup.question
+            ]
 
-  // ==========================
-  // STOMACH
-  // ==========================
+          ) {
 
-  if (
+            return;
+          }
 
-    symptoms.abdominal_pain ||
+          questions.push({
 
-    symptoms.vomiting
+            question:
 
-  ) {
+              rule.followup
+                .question ||
 
-    questions.push({
+              `More about ${symptom}?`,
 
-      question:
-        "Where is the abdominal pain located?",
+            options:
 
-      symptomKeyMap: {
+              rule.followup
+                .options || [
 
-        "Upper Abdomen":
-          "upper_abdominal_pain",
+                "Yes",
+                "No"
+              ],
 
-        "Lower Abdomen":
-          "abdominal_pain",
+            symptomKey:
 
-        "Whole Abdomen":
-          "severe_abdominal_pain"
-      },
+              rule.followup
+                .symptomKey ||
 
-      options: [
-        "Upper Abdomen",
-        "Lower Abdomen",
-        "Whole Abdomen"
-      ]
-    });
+              getCanonicalSymptom(
+                symptom
+              ),
 
-    questions.push({
+            symptomKeyMap:
 
-      question:
-        "Any diarrhea?",
+              rule.followup
+                .symptomMap || {},
 
-      symptomKey:
-        "diarrhea",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any blood in vomit?",
-
-      symptomKey:
-        "vomiting_blood",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Pain after food?",
-
-      symptomKey:
-        "pain_after_food",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
-
-  // ==========================
-  // LIVER
-  // ==========================
-
-  if (
-
-    symptoms.yellow_skin ||
-
-    symptoms.jaundice
-
-  ) {
-
-    questions.push({
-
-      question:
-        "Is urine dark yellow?",
-
-      symptomKey:
-        "dark_urine",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any itching?",
-
-      symptomKey:
-        "itching",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any abdominal swelling?",
-
-      symptomKey:
-        "abdominal_swelling",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
-
-  // ==========================
-  // ASTHMA TARGETING
-  // ==========================
-
-  if (
-
-    topDiseases.includes(
-      "Asthma"
-    )
-
-  ) {
-
-    questions.push({
-
-      question:
-        "Any allergy history?",
-
-      symptomKey:
-        "allergy_history",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Do symptoms worsen with dust?",
-
-      symptomKey:
-        "dust_exposure",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any recurrent breathing attacks?",
-
-      symptomKey:
-        "recurrent_breathing_problem",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
-
-  // ==========================
-  // COPD TARGETING
-  // ==========================
-
-  if (
-
-    topDiseases.includes(
-      "Chronic Obstructive Pulmonary Disease"
-    )
-
-  ) {
-
-    questions.push({
-
-      question:
-        "How many years have you smoked?",
-
-      symptomKeyMap: {
-
-        "< 5 years":
-          "smoking",
-
-        "5-10 years":
-          "long_term_smoking",
-
-        "10+ years":
-          "long_term_smoking"
-      },
-
-      options: [
-        "< 5 years",
-        "5-10 years",
-        "10+ years"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Do you get breathless while walking?",
-
-      symptomKey:
-        "exercise_intolerance",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any chronic cough for months?",
-
-      symptomKey:
-        "chronic_cough",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
-
-  // ==========================
-  // PNEUMONIA TARGETING
-  // ==========================
-
-  if (
-
-    topDiseases.includes(
-      "Pneumonia"
-    )
-
-  ) {
-
-    questions.push({
-
-      question:
-        "Any chest pain during breathing?",
-
-      symptomKey:
-        "pleuritic_chest_pain",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any yellow sputum?",
-
-      symptomKey:
-        "yellow_sputum",
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-
-    questions.push({
-
-      question:
-        "Any high fever with chills?",
-
-      symptomKeyMap: {
-
-        "Yes":
-          "high_fever",
-
-        "No":
-          ""
-      },
-
-      options: [
-        "Yes",
-        "No"
-      ]
-    });
-  }
+            priority: 100
+          });
+        }
+      );
+    }
+  );
 
   // ==========================
   // REMOVE DUPLICATES
   // ==========================
 
-  return questions
+  const uniqueQuestions =
 
-    .filter(
+    questions.filter(
+
       (
         item,
         index,
@@ -598,7 +304,25 @@ export function getFollowupQuestions(
             q.question ===
             item.question
         )
-    )
+    );
 
-    .slice(0, 12);
+  // ==========================
+  // SORT
+  // ==========================
+
+  uniqueQuestions.sort(
+
+    (a, b) =>
+
+      (b.priority || 0) -
+
+      (a.priority || 0)
+  );
+
+  // ==========================
+  // LIMIT
+  // ==========================
+
+  return uniqueQuestions
+    .slice(0, 6);
 }
