@@ -98,6 +98,12 @@ function processClusters({
     disease.symptom_clusters || {};
 
   // ==========================
+  // CLUSTER ANALYSIS
+  // ==========================
+
+  const clusterAnalysis = [];
+
+  // ==========================
   // LOOP CLUSTERS
   // ==========================
 
@@ -135,6 +141,10 @@ function processClusters({
 
     let matchedCount = 0;
 
+    const matchedSymptoms = [];
+
+    const missingSymptoms = [];
+
     symptoms.forEach(symptom => {
 
       const isMatched =
@@ -146,11 +156,29 @@ function processClusters({
           matchCache
         ).matched;
 
-      if (
-        isMatched
-      ) {
+      // ======================
+      // MATCHED
+      // ======================
+
+      if (isMatched) {
 
         matchedCount++;
+
+        matchedSymptoms.push(
+          symptom
+        );
+
+      }
+
+      // ======================
+      // MISSING
+      // ======================
+
+      else {
+
+        missingSymptoms.push(
+          symptom
+        );
       }
     });
 
@@ -166,6 +194,27 @@ function processClusters({
     ) {
 
       score += bonus;
+
+      clusterAnalysis.push({
+
+        cluster:
+
+          cluster.name ||
+
+          "Clinical Cluster",
+
+        matchedSymptoms,
+
+        missingSymptoms,
+
+        matchedCount,
+
+        totalSymptoms:
+          symptoms.length,
+
+        status:
+          "strong_match"
+      });
     }
 
     // ========================
@@ -183,6 +232,27 @@ function processClusters({
 
       score +=
         bonus * 0.25;
+
+      clusterAnalysis.push({
+
+        cluster:
+
+          cluster.name ||
+
+          "Clinical Cluster",
+
+        matchedSymptoms,
+
+        missingSymptoms,
+
+        matchedCount,
+
+        totalSymptoms:
+          symptoms.length,
+
+        status:
+          "partial_match"
+      });
     }
   });
 
@@ -190,12 +260,17 @@ function processClusters({
   // FINAL SAFE LIMIT
   // ==========================
 
-  return Math.max(
-    0,
-    Number(
-      score.toFixed(2)
-    )
-  );
+  return {
+
+    score: Math.max(
+      0,
+      Number(
+        score.toFixed(2)
+      )
+    ),
+
+    clusterAnalysis
+  };
 }
 
 // ==============================
@@ -407,16 +482,23 @@ export function runDiagnosisEngine(
     // CLUSTERS
     // ==========================
 
-    score =
-  processClusters({
+    const clusterData =
 
-    disease,
+processClusters({
+
+  disease,
   userData,
   score,
   getMatch,
   matchCache
 
-  });
+});
+
+score =
+  clusterData.score;
+
+const clusterAnalysis =
+  clusterData.clusterAnalysis;
 
     // ==========================
     // PROGRESSION
@@ -863,7 +945,8 @@ if (
         matchedRedFlags,
 
         contradictions,
-        contradictionLevel
+contradictionLevel,
+clusterAnalysis
       });
 
     // ==========================

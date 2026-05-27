@@ -1,3 +1,8 @@
+
+import {
+  t
+}
+from "./translations/translate.js";
 // ==============================
 // DIAGNOSIS RENDERER
 // ==============================
@@ -342,7 +347,7 @@ if (!top) {
         diag-match-count
       ">
 
-        Matches:
+        ${t("match_count")}:
         ${top.matchCount || 0}
 
       </div>
@@ -625,16 +630,70 @@ if (!top) {
         }
 
         <!-- MEDICINES -->
+${(() => {
+
+  const allMedicines = Object.values(
+    disease.medicines || {}
+  ).flat();
+
+  return !allMedicines.length
+
+    ? `
+
+    <div class="
+      diag-no-medicine
+    ">
+
+      No medicine recommendation available
+
+    </div>
+
+    `
+
+    : `
+
+    <div class="
+      diag-section
+    ">
+
+      <div class="
+        diag-label
+      ">
+
+        Medicines
+
+      </div>
+
+      <div class="
+        diag-medicines
+      ">
+
+        ${allMedicines
+          .map(
+            med => `
+
+<div class="
+  diag-med-item
+  ${med.line || ""}
+">
+
+<div class="
+  diag-med-header
+">
+
 ${
-  !disease.medicines?.length
+  med.line
 
   ? `
 
   <div class="
-    diag-no-medicine
+    diag-med-line
+    ${med.line}
   ">
 
-    No medicine recommendation available
+    ${med.line
+      .replaceAll("_", " ")
+      .toUpperCase()}
 
   </div>
 
@@ -642,141 +701,164 @@ ${
 
   : ""
 }
-        ${
-          disease.medicines?.length
 
-          ? `
+<div class="
+  diag-med-name
+">
 
-          <div class="
-            diag-section
-          ">
+💊 ${
+  typeof med === "string"
 
-            <div class="
-              diag-label
-            ">
+    ? med
 
-              Medicines
+    : med.name || "Unknown Medicine"
+}
 
-            </div>
+</div>
 
-            <div class="
-              diag-medicines
-            ">
+</div>
 
-              ${disease
-  .medicines
-  .map(
-    med => `
+${
+  med.condition
 
-    <div class="
-      diag-med-item
-    ">
+  ? `
 
-      <div class="
-        diag-med-name
-      ">
+  <div class="
+    diag-med-condition
+  ">
 
-        💊 ${
-          typeof med === "string"
+    📌 ${med.condition}
 
-            ? med
+  </div>
 
-            : med.name || "Unknown Medicine"
-        }
+  `
+
+  : ""
+}
+
+${
+  med.dosage
+
+  ? `
+
+  <div class="
+    diag-med-dose
+  ">
+
+    Dosage:
+    ${med.dosage}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.frequency
+
+  ? `
+
+  <div class="
+    diag-med-frequency
+  ">
+
+    Frequency:
+    ${med.frequency}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.duration
+
+  ? `
+
+  <div class="
+    diag-med-duration
+  ">
+
+    Duration:
+    ${med.duration}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.max_daily
+
+  ? `
+
+  <div class="
+    diag-med-max
+  ">
+
+    Max:
+    ${med.max_daily}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.purpose
+
+  ? `
+
+  <div class="
+    diag-med-purpose
+  ">
+
+    Purpose:
+    ${med.purpose}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.warning
+
+  ? `
+
+  <div class="
+    diag-med-warning
+  ">
+
+    ⚠️ ${med.warning}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+</div>
+`
+          )
+          .join("")}
 
       </div>
 
-      ${
-        typeof med === "object" &&
-        med.dosage
-
-        ? `
-
-        <div class="
-          diag-med-dose
-        ">
-
-          Dosage:
-          ${med.dosage}
-
-        </div>
-
-        `
-
-        : ""
-      }
-
-      ${
-        typeof med === "object" &&
-        med.frequency
-
-        ? `
-
-        <div class="
-          diag-med-frequency
-        ">
-
-          Frequency:
-          ${med.frequency}
-
-        </div>
-
-        `
-
-        : ""
-      }
-
-      ${
-        typeof med === "object" &&
-        med.purpose
-
-        ? `
-
-        <div class="
-          diag-med-purpose
-        ">
-
-          Purpose:
-          ${med.purpose}
-
-        </div>
-
-        `
-
-        : ""
-      }
-
-      ${
-        typeof med === "object" &&
-        med.warning
-
-        ? `
-
-        <div class="
-          diag-med-warning
-        ">
-
-          ⚠️ ${med.warning}
-
-        </div>
-
-        `
-
-        : ""
-      }
-
     </div>
-  `
-  )
-  .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
+`;
+})()}
 
         <!-- TREATMENTS -->
 
@@ -863,6 +945,158 @@ ${
 
           : ""
         }
+        
+        
+<!-- CLUSTER ANALYSIS -->
+
+${
+  disease.clusterAnalysis?.length
+
+  ? `
+
+  <div class="
+    diag-section
+  ">
+
+    <div class="
+      diag-label
+    ">
+
+      Pattern Analysis
+
+    </div>
+
+    ${disease.clusterAnalysis
+      .map(
+        cluster => `
+
+        <div class="
+          diag-cluster-box
+        ">
+
+          <div class="
+            diag-cluster-title
+          ">
+
+            🧠
+            ${formatText(
+              cluster.cluster
+            )}
+
+          </div>
+
+          <div class="
+            diag-cluster-score
+          ">
+
+            Match:
+            ${cluster.matchedCount}
+            /
+            ${cluster.totalSymptoms}
+
+          </div>
+
+          <div class="
+            diag-cluster-status
+            ${cluster.status}
+          ">
+
+            ${
+              cluster.status ===
+              "strong_match"
+
+              ? "Strong Clinical Pattern"
+
+              : "Partial Clinical Pattern"
+            }
+
+          </div>
+
+          ${
+            cluster.matchedSymptoms
+              ?.length
+
+            ? `
+
+            <div class="
+              diag-sub-label
+            ">
+
+              ✅ Matched Symptoms
+
+            </div>
+
+            <div class="
+              diag-tags
+            ">
+
+              ${cluster
+                .matchedSymptoms
+                .map(
+                  item => `
+                  <span>
+                    ${formatText(item)}
+                  </span>
+                `
+                )
+                .join("")}
+
+            </div>
+
+            `
+
+            : ""
+          }
+
+          ${
+            cluster.missingSymptoms
+              ?.length
+
+            ? `
+
+            <div class="
+              diag-sub-label
+            ">
+
+              ❌ Missing Symptoms
+
+            </div>
+
+            <div class="
+              diag-tags
+            ">
+
+              ${cluster
+                .missingSymptoms
+                .map(
+                  item => `
+                  <span class="
+                    diag-contradiction
+                  ">
+                    ${formatText(item)}
+                  </span>
+                `
+                )
+                .join("")}
+
+            </div>
+
+            `
+
+            : ""
+          }
+
+        </div>
+      `
+      )
+      .join("")}
+
+  </div>
+
+  `
+
+  : ""
+}
 <!-- CONTRADICTIONS -->
 
 ${
@@ -961,9 +1195,114 @@ if (
   </div>
   `;
 }
+
+// ==========================
+// FINAL REPORT BUTTON
+// ==========================
+
+html += `
+
+<div class="
+  diag-report-wrap
+">
+
+<button
+  id="downloadReportBtn"
+  class="
+    diag-report-btn
+  "
+>
+
+  📄 Generate Final Report
+
+</button>
+
+</div>
+
+`;
   html += `</div>`;
 
   container.innerHTML = html;
+  
+  // ==========================
+// REPORT MODAL
+// ==========================
+
+if (
+
+  !document.getElementById(
+    "finalReportModal"
+  )
+
+) {
+
+  document.body.insertAdjacentHTML(
+
+    "beforeend",
+
+    `
+
+<div
+  id="finalReportModal"
+
+  class="
+    final-report-modal
+  "
+
+  style="
+    display:none;
+  "
+>
+
+<div class="
+  final-report-box
+">
+
+<button
+  id="closeFinalReport"
+  class="
+    close-report-btn
+  "
+>
+
+  ✖
+
+</button>
+
+<div
+  id="finalReportContent"
+>
+
+</div>
+
+</div>
+
+</div>
+
+`
+  );
+}
+  
+  // ==========================
+// REPORT BUTTON
+// ==========================
+
+const reportBtn =
+
+  document.getElementById(
+    "downloadReportBtn"
+  );
+
+if (reportBtn) {
+
+  reportBtn.onclick = () => {
+
+  generateFinalReport(
+    result
+  );
+};
+}
+
   // ==========================
 // FOLLOWUP BUTTON EVENTS
 // ==========================
@@ -1254,4 +1593,274 @@ function formatText(text = "") {
       /\b\w/g,
       l => l.toUpperCase()
     );
+}
+
+// ==============================
+// FINAL REPORT GENERATOR
+// ==============================
+
+function generateFinalReport(
+  result = {}
+) {
+
+  const top =
+
+    result.topMatch ||
+
+    result.allResults?.[0];
+
+  if (!top)
+    return;
+
+  const patientName =
+
+    document.getElementById(
+      "patientName"
+    )?.value || "Unknown";
+
+  const age =
+
+    document.getElementById(
+      "userAge"
+    )?.value || "Unknown";
+
+  const gender =
+
+    document.getElementById(
+      "userGender"
+    )?.value || "Unknown";
+
+  const duration =
+
+    document.getElementById(
+      "symptomDuration"
+    )?.value || "Unknown";
+
+  // ======================
+  // FLATTEN MEDICINES
+  // ======================
+
+  const allMedicines =
+
+    Object.values(
+      top.medicines || {}
+    ).flat();
+
+  const reportHTML = `
+
+<h2>
+  Medical Report Card
+</h2>
+
+<hr>
+
+<p>
+
+<b>Patient:</b>
+
+${patientName}
+
+</p>
+
+<p>
+
+<b>Age:</b>
+
+${age}
+
+</p>
+
+<p>
+
+<b>Gender:</b>
+
+${gender}
+
+</p>
+
+<p>
+
+<b>Duration:</b>
+
+${duration} days
+
+</p>
+
+<hr>
+
+<h3>
+Primary Diagnosis
+</h3>
+
+<p>
+
+<b>Disease:</b>
+
+${top.disease}
+
+</p>
+
+<p>
+
+<b>${t("confidence")}:</b>
+
+${top.confidence}%
+
+</p>
+
+<p>
+
+<b>Severity:</b>
+
+${top.severity}
+
+</p>
+
+<h3>
+Matched Symptoms
+</h3>
+
+<ul>
+
+${
+  top.matchedSymptoms
+    ?.map(
+      s => `
+<li>
+${formatText(s)}
+</li>
+`
+    )
+    .join("") || ""
+}
+
+</ul>
+
+<h3>
+Medicines
+</h3>
+
+<ul>
+
+${
+  allMedicines
+    .map(
+      med => {
+
+        // ====================
+        // STRING MEDICINE
+        // ====================
+
+        if (
+          typeof med === "string"
+        ) {
+
+          return `
+
+<li>
+
+💊 ${med}
+
+</li>
+`;
+        }
+
+        // ====================
+        // OBJECT MEDICINE
+        // ====================
+
+        const medicineName =
+
+          med.name ||
+          med.medicine ||
+          med.title ||
+          "Unknown Medicine";
+
+        const dose =
+
+          med.dosage
+            ? ` - ${med.dosage}`
+            : "";
+
+        const frequency =
+
+          med.frequency
+            ? ` (${med.frequency})`
+            : "";
+
+        const purpose =
+
+          med.purpose
+            ? ` - ${med.purpose}`
+            : "";
+
+        return `
+
+<li>
+
+💊
+
+${medicineName}
+
+${dose}
+
+${frequency}
+
+${purpose}
+
+</li>
+`;
+      }
+    )
+
+    .join("")
+}
+
+</ul>
+
+<h3>
+Recommendations
+</h3>
+
+<p>
+
+${top.recommendation || ""}
+
+</p>
+
+`;
+
+  // ======================
+  // SHOW MODAL
+  // ======================
+
+  const modal =
+
+    document.getElementById(
+      "finalReportModal"
+    );
+
+  const content =
+
+    document.getElementById(
+      "finalReportContent"
+    );
+
+  content.innerHTML =
+    reportHTML;
+
+  modal.style.display =
+    "flex";
+
+  // ======================
+  // CLOSE
+  // ======================
+
+  document.getElementById(
+    "closeFinalReport"
+  ).onclick = () => {
+
+    modal.style.display =
+      "none";
+  };
 }

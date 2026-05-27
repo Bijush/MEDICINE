@@ -102,10 +102,40 @@ export function diagnosePatient(
       userData
     );
 
-  console.log(
-    "RESULTS:",
-    allResults
-  );
+  // ==========================
+// SORT MEDICINES
+// ==========================
+
+allResults.forEach(result => {
+
+  if (
+    Array.isArray(
+      result.medicines
+    )
+  ) {
+
+    const order = {
+
+      first_line: 1,
+
+      second_line: 2,
+
+      third_line: 3
+
+    };
+
+    result.medicines.sort(
+
+      (a, b) =>
+
+        (order[a.line] || 99)
+
+        -
+
+        (order[b.line] || 99)
+    );
+  }
+});
 
   // ==========================
   // NO MATCH
