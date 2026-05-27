@@ -1,154 +1,152 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="
-      width=device-width,
-      initial-scale=1.0
-    "
-  />
-
-  <title>
-    AI Medical Diagnosis
-  </title>
-
-  <!-- CSS -->
-
-  <link
-    rel="stylesheet"
-    href="./css/checkup.css"
-  />
-
-</head>
-
-<body>
-
-  <!-- ===================== -->
-  <!-- APP -->
-  <!-- ===================== -->
-
-  <div class="app">
-
-    <!-- HEADER -->
-
-    <div class="app-header">
-
-      <div class="app-title">
-
-        🩺 AI Medical Diagnosis
-
+  <!DOCTYPE html>
+  <html lang="en">
+  
+  <head>
+  
+    <meta charset="UTF-8" />
+  
+    <meta
+      name="viewport"
+      content="
+        width=device-width,
+        initial-scale=1.0
+      "
+    />
+  
+    <title>
+      AI Medical Diagnosis
+    </title>
+  
+    <!-- CSS -->
+  
+    <link
+      rel="stylesheet"
+      href="./css/checkup.css"
+    />
+  
+  </head>
+  
+  <body>
+  
+    <!-- ===================== -->
+    <!-- APP -->
+    <!-- ===================== -->
+  
+    <div class="app">
+  
+      <!-- HEADER -->
+  
+      <div class="app-header">
+  
+        <div class="app-title">
+  
+          🩺 AI Medical Diagnosis
+  
+        </div>
+  
+        <div class="app-subtitle">
+  
+          Smart symptom-based
+          disease prediction system
+  
+        </div>
+  
       </div>
-
-      <div class="app-subtitle">
-
-        Smart symptom-based
-        disease prediction system
-
+  
+      <!-- ===================== -->
+      <!-- SYMPTOM INPUT -->
+      <!-- ===================== -->
+  
+      <div class="section">
+  
+        <div class="section-title">
+  
+          Symptoms
+  
+        </div>
+  
+        <div id="symptomInput"></div>
+  
       </div>
-
-    </div>
-
-    <!-- ===================== -->
-    <!-- SYMPTOM INPUT -->
-    <!-- ===================== -->
-
-    <div class="section">
-
-      <div class="section-title">
-
-        Symptoms
-
+  
+      <!-- ===================== -->
+      <!-- BUTTON -->
+      <!-- ===================== -->
+  
+      <div class="diagnose-wrap">
+  
+        <button id="diagnoseBtn">
+  
+          Diagnose Now
+  
+        </button>
+  
       </div>
-
-      <div id="symptomInput"></div>
-
-    </div>
-
-    <!-- ===================== -->
-    <!-- BUTTON -->
-    <!-- ===================== -->
-
-    <div class="diagnose-wrap">
-
-      <button id="diagnoseBtn">
-
-        Diagnose Now
-
-      </button>
-
-    </div>
-
-    <!-- ===================== -->
-    <!-- EMERGENCY -->
-    <!-- ===================== -->
-
-    <div
-      id="emergencyBanner"
-      class="section"
-    ></div>
-
-    <!-- ===================== -->
-    <!-- TOP CONFIDENCE -->
-    <!-- ===================== -->
-
-    <div
-      id="confidenceBar"
-      class="section"
-    ></div>
-
-    <!-- ===================== -->
-    <!-- RESULTS -->
-    <!-- ===================== -->
-
-    <div class="section">
-
-      <div class="section-title">
-
-        Diagnosis Results
-
-      </div>
-<div id="followupQuestions"></div>
+  
+      <!-- ===================== -->
+      <!-- EMERGENCY -->
+      <!-- ===================== -->
+  
       <div
-        id="diagnosisResults"
+        id="emergencyBanner"
+        class="section"
       ></div>
-
-    </div>
-
-    <!-- ===================== -->
-    <!-- ALL CONFIDENCE -->
-    <!-- ===================== -->
-
-    <div class="section">
-
-      <div class="section-title">
-
-        Disease Confidence
-
-      </div>
-
+  
+      <!-- ===================== -->
+      <!-- TOP CONFIDENCE -->
+      <!-- ===================== -->
+  
       <div
-        id="allConfidenceBars"
+        id="confidenceBar"
+        class="section"
       ></div>
-
+  
+      <!-- ===================== -->
+      <!-- RESULTS -->
+      <!-- ===================== -->
+  
+      <div class="section">
+  
+        <div class="section-title">
+  
+          Diagnosis Results
+  
+        </div>
+  <div id="followupQuestions"></div>
+        <div
+          id="diagnosisResults"
+        ></div>
+  
+      </div>
+  
+      <!-- ===================== -->
+      <!-- ALL CONFIDENCE -->
+      <!-- ===================== -->
+  
+      <div class="section">
+  
+        <div class="section-title">
+  
+          Disease Confidence
+  
+        </div>
+  
+        <div
+          id="allConfidenceBars"
+        ></div>
+  
+      </div>
+  
     </div>
-
-  </div>
-
-  <!-- ===================== -->
-  <!-- JS -->
-  <!-- ===================== -->
-<script src="
-https://cdn.jsdelivr.net/npm/@tensorflow/tfjs
-"></script>
-  <script
-    type="module"
-    src="./js/checkup/checkup.js"
-  ></script>
-
-</body>
-</html>
+  
+    <!-- ===================== -->
+    <!-- JS -->
+    <!-- ===================== -->
+  
+    <script
+      type="module"
+      src="./js/checkup/checkup.js"
+    ></script>
+  
+  </body>
+  </html>
