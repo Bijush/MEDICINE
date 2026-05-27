@@ -25,6 +25,10 @@ from "../../../data/checkup/fever/tuberculosis.js";
 
 import { VIRAL_FEVER }
 from "../../../data/checkup/fever/viralFever.js";
+import { RED_EYE_HEADACHE }
+from "../../../data/checkup/eye/redEyeData.js";
+import { MIGRAINE_EYE_PAIN }
+from "../../../data/checkup/eye/migraineEyePain.js";
 /*
 // ==============================
 // LIVER
@@ -122,7 +126,10 @@ export const ALL_DISEASES = [
   ...INFLUENZA,
   ...TUBERCULOSIS,
   
-  ...VIRAL_FEVER
+  ...VIRAL_FEVER,
+
+ ...RED_EYE_HEADACHE,
+ ...MIGRAINE_EYE_PAIN
 /*
 // liver
 
