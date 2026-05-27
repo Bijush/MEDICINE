@@ -1,6 +1,7 @@
 // ==============================
 // AUTO TRANSLATOR
 // ULTRA FIXED VERSION
+// BILINGUAL SUPPORT VERSION
 // ==============================
 
 import { BN_MAP }
@@ -122,7 +123,7 @@ export function t(
 
   key,
 
-  lang = "en"
+  lang = "both"
 
 ) {
 
@@ -130,7 +131,51 @@ export function t(
     return "";
 
   // ==========================
-  // BANGLA
+  // BOTH LANGUAGE
+  // ==========================
+
+  if (
+    lang === "both"
+  ) {
+
+    const en =
+
+      makeEnglish(
+        key
+      );
+
+    const bn =
+
+      makeBangla(
+        key
+      );
+
+    // ========================
+    // AVOID DUPLICATE
+    // ========================
+
+    if (
+
+      en.toLowerCase() ===
+
+      bn.toLowerCase()
+
+    ) {
+
+      return en;
+    }
+
+    // ========================
+    // FINAL BILINGUAL
+    // ========================
+
+    return `${en}
+
+(${bn})`;
+  }
+
+  // ==========================
+  // BANGLA ONLY
   // ==========================
 
   if (
@@ -144,7 +189,7 @@ export function t(
   }
 
   // ==========================
-  // ENGLISH
+  // ENGLISH ONLY
   // ==========================
 
   return makeEnglish(
