@@ -18,11 +18,26 @@ body{
     Arial,
     sans-serif;
 
-  background:#f4f7fb;
+  background:
+    linear-gradient(
+      135deg,
+      #dbeafe,
+      #eff6ff,
+      #ffffff
+    );
+
+  background-attachment:fixed;
 
   color:#222;
 
   min-height:100vh;
+
+  background-image:
+    radial-gradient(
+      circle at top right,
+      rgba(37,99,235,0.12),
+      transparent 30%
+    );
 }
 
 /* ============================= */
@@ -47,25 +62,61 @@ body{
 
   text-align:center;
 
-  margin-bottom:30px;
+  padding:28px 20px;
+
+  border-radius:30px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color:white;
+
+  margin-bottom:28px;
+
+  box-shadow:
+    0 10px 35px rgba(
+      37,
+      99,
+      235,
+      0.25
+    );
 }
 
 .app-title{
 
-  font-size:32px;
+  font-size:36px;
 
-  font-weight:700;
+  font-weight:800;
 
-  color:#1d4ed8;
+  color:#ffffff;
 
-  margin-bottom:10px;
+  margin-bottom:12px;
+
+  text-shadow:
+    0 4px 12px rgba(
+      0,
+      0,
+      0,
+      0.18
+    );
 }
 
 .app-subtitle{
 
-  font-size:15px;
+  font-size:18px;
 
-  color:#666;
+  color:rgba(
+    255,
+    255,
+    255,
+    0.92
+  );
+
+  line-height:1.6;
 }
 
 /* ============================= */
@@ -74,17 +125,38 @@ body{
 
 .section{
 
-  background:#fff;
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.72
+    );
 
-  border-radius:18px;
+  backdrop-filter:
+    blur(14px);
 
-  padding:20px;
+  border:
+    1px solid rgba(
+      255,
+      255,
+      255,
+      0.25
+    );
+
+  border-radius:24px;
+
+  padding:22px;
 
   margin-bottom:20px;
 
   box-shadow:
-    0 4px 15px
-    rgba(0,0,0,0.06);
+    0 8px 24px rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
 }
 
 .section-title{
@@ -115,24 +187,42 @@ body{
 
   border:none;
 
-  outline:none;
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
 
-  background:#2563eb;
-
-  color:#fff;
+  color:white;
 
   padding:
-    14px 28px;
+    18px 34px;
 
-  border-radius:14px;
+  border-radius:999px;
 
-  font-size:16px;
+  font-size:18px;
 
   font-weight:700;
 
   cursor:pointer;
 
   transition:0.3s;
+
+  box-shadow:
+    0 10px 30px rgba(
+      37,
+      99,
+      235,
+      0.28
+    );
+}
+
+#diagnoseBtn:hover{
+
+  transform:
+    translateY(-3px)
+    scale(1.03);
 }
 
 #diagnoseBtn:hover{
@@ -150,18 +240,42 @@ body{
 
   width:100%;
 
-  padding:14px;
+  padding:18px 20px;
 
-  border-radius:12px;
+  border:none;
 
-  border:
-    1px solid #d1d5db;
+  border-radius:20px;
+
+  background:#ffffff;
+
+  box-shadow:
+    0 8px 24px rgba(
+      37,
+      99,
+      235,
+      0.12
+    );
+
+  font-size:16px;
+
+  transition:0.3s;
+
+  margin-bottom:20px;
+}
+
+.symptom-search:focus{
+
+  transform:scale(1.01);
 
   outline:none;
 
-  margin-bottom:20px;
-
-  font-size:15px;
+  box-shadow:
+    0 10px 30px rgba(
+      37,
+      99,
+      235,
+      0.22
+    );
 }
 
 .symptom-list{
@@ -174,21 +288,60 @@ body{
       minmax(220px,1fr)
     );
 
-  gap:12px;
+  gap:18px;
 }
 
 .symptom-item{
 
-  background:#f9fafb;
+  background:#fff;
 
-  border:
-    1px solid #e5e7eb;
+  border:none;
 
-  border-radius:12px;
+  border-radius:18px;
 
-  padding:12px;
+  padding:14px;
 
-  transition:0.3s;
+  transition:0.25s;
+
+  box-shadow:
+    0 6px 18px rgba(
+      0,
+      0,
+      0,
+      0.05
+    );
+}
+
+.symptom-item:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 10px 28px rgba(
+      37,
+      99,
+      235,
+      0.18
+    );
+
+  background:#eff6ff;
+}
+
+.symptom-item:hover{
+
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 10px 28px rgba(
+      37,
+      99,
+      235,
+      0.18
+    );
+
+  background:#eff6ff;
 }
 
 .symptom-item:hover{
@@ -1350,4 +1503,924 @@ body{
 .advanced-toggle:active {
 
   transform: scale(0.98);
+}
+
+/* ==========================
+FINAL REPORT MODAL
+========================== */
+
+.final-report-modal {
+
+  position: fixed;
+
+  inset: 0;
+
+  background: rgba(
+    0,
+    0,
+    0,
+    0.65
+  );
+
+  z-index: 99999;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: flex-start;
+
+  padding: 20px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  -webkit-overflow-scrolling: touch;
+
+  backdrop-filter: blur(6px);
+}
+
+/* ==========================
+REPORT BOX
+========================== */
+
+.final-report-box {
+
+  width: 100%;
+
+  max-width: 720px;
+
+  background: #ffffff;
+
+  border-radius: 28px;
+
+  padding: 32px;
+
+  margin-top: 25px;
+
+  margin-bottom: 25px;
+
+  box-shadow:
+
+    0 12px 45px rgba(
+      0,
+      0,
+      0,
+      0.22
+    );
+
+  position: relative;
+
+  animation:
+    reportFade 0.25s ease;
+
+  overflow: visible;
+
+  border: 1px solid #e5e7eb;
+}
+
+/* ==========================
+ANIMATION
+========================== */
+
+@keyframes reportFade {
+
+  from {
+
+    opacity: 0;
+
+    transform:
+      translateY(25px)
+      scale(0.96);
+  }
+
+  to {
+
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+/* ==========================
+CLOSE BUTTON
+========================== */
+
+.close-report-btn {
+
+  position: absolute;
+
+  top: 16px;
+
+  right: 16px;
+
+  width: 44px;
+
+  height: 44px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #ef4444;
+
+  color: white;
+
+  font-size: 20px;
+
+  cursor: pointer;
+
+  font-weight: bold;
+
+  transition: 0.25s;
+
+  box-shadow:
+
+    0 4px 12px rgba(
+      239,
+      68,
+      68,
+      0.35
+    );
+}
+
+.close-report-btn:hover {
+
+  transform:
+    scale(1.08)
+    rotate(90deg);
+
+  background: #dc2626;
+}
+
+/* ==========================
+TITLE
+========================== */
+
+#finalReportContent h2 {
+
+  font-size: 36px;
+
+  margin-bottom: 14px;
+
+  color: #111827;
+
+  font-weight: 800;
+
+  text-align: center;
+
+  line-height: 1.2;
+}
+
+/* ==========================
+SECTION TITLES
+========================== */
+
+#finalReportContent h3 {
+
+  margin-top: 28px;
+
+  margin-bottom: 12px;
+
+  font-size: 25px;
+
+  color: #1d4ed8;
+
+  border-left: 6px solid #2563eb;
+
+  padding-left: 12px;
+
+  font-weight: 700;
+}
+
+/* ==========================
+TEXT
+========================== */
+
+#finalReportContent p {
+
+  margin: 10px 0;
+
+  font-size: 18px;
+
+  color: #374151;
+
+  line-height: 1.7;
+}
+
+/* ==========================
+LABELS
+========================== */
+
+#finalReportContent b {
+
+  color: #111827;
+
+  font-weight: 700;
+}
+
+/* ==========================
+LISTS
+========================== */
+
+#finalReportContent ul {
+
+  padding-left: 24px;
+
+  margin-top: 12px;
+}
+
+#finalReportContent li {
+
+  margin-bottom: 12px;
+
+  font-size: 18px;
+
+  line-height: 1.6;
+
+  color: #374151;
+}
+
+/* ==========================
+LIST MARKER
+========================== */
+
+#finalReportContent li::marker {
+
+  color: #2563eb;
+}
+
+/* ==========================
+HR
+========================== */
+
+#finalReportContent hr {
+
+  border: none;
+
+  border-top: 1px solid #d1d5db;
+
+  margin: 24px 0;
+}
+
+/* ==========================
+MEDICINE LIST
+========================== */
+
+.report-medicine {
+
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+
+  background: #f9fafb;
+
+  border-radius: 14px;
+
+  padding: 12px 14px;
+
+  margin-bottom: 12px;
+
+  border: 1px solid #e5e7eb;
+}
+
+/* ==========================
+SEVERITY BADGE
+========================== */
+
+.report-severity {
+
+  display: inline-block;
+
+  padding: 8px 16px;
+
+  border-radius: 999px;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+  margin-top: 8px;
+
+  background: #dbeafe;
+
+  color: #1d4ed8;
+}
+
+/* ==========================
+CONFIDENCE BAR
+========================== */
+
+.report-confidence-wrap {
+
+  width: 100%;
+
+  height: 14px;
+
+  background: #e5e7eb;
+
+  border-radius: 999px;
+
+  overflow: hidden;
+
+  margin-top: 12px;
+
+  margin-bottom: 14px;
+}
+
+.report-confidence-bar {
+
+  height: 100%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #1d4ed8
+  );
+}
+
+/* ==========================
+MATCHED SYMPTOMS BOX
+========================== */
+
+.report-symptoms {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 10px;
+
+  margin-top: 14px;
+}
+
+.report-symptom-chip {
+
+  background: #eff6ff;
+
+  color: #1d4ed8;
+
+  padding: 10px 14px;
+
+  border-radius: 999px;
+
+  font-size: 15px;
+
+  font-weight: 600;
+
+  border: 1px solid #bfdbfe;
+}
+
+/* ==========================
+RECOMMENDATION BOX
+========================== */
+
+.report-recommendation {
+
+  margin-top: 18px;
+
+  background: #ecfdf5;
+
+  border: 1px solid #bbf7d0;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  color: #065f46;
+
+  font-size: 17px;
+
+  line-height: 1.6;
+
+  font-weight: 500;
+}
+
+/* ==========================
+PATIENT INFO GRID
+========================== */
+
+.report-patient-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(180px, 1fr)
+    );
+
+  gap: 14px;
+
+  margin-top: 18px;
+
+  margin-bottom: 18px;
+}
+
+.report-patient-card {
+
+  background: #f9fafb;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 18px;
+
+  padding: 16px;
+}
+
+/* ==========================
+MOBILE
+========================== */
+
+@media (
+  max-width: 768px
+) {
+
+  .final-report-modal {
+
+    padding: 12px;
+  }
+
+  .final-report-box {
+
+    padding: 22px;
+
+    border-radius: 20px;
+
+    margin-top: 12px;
+
+    margin-bottom: 12px;
+  }
+
+  #finalReportContent h2 {
+
+    font-size: 30px;
+  }
+
+  #finalReportContent h3 {
+
+    font-size: 22px;
+  }
+
+  #finalReportContent p,
+
+  #finalReportContent li {
+
+    font-size: 17px;
+  }
+
+  .close-report-btn {
+
+    width: 40px;
+
+    height: 40px;
+
+    font-size: 18px;
+  }
+
+  .report-symptom-chip {
+
+    font-size: 14px;
+
+    padding: 8px 12px;
+  }
+
+  .report-recommendation {
+
+    font-size: 16px;
+  }
+}
+/* ==========================
+SELECTED SYMPTOMS BOX
+========================== */
+
+.selected-symptoms {
+
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 12px;
+
+  margin-top: 14px;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border-radius: 22px;
+
+  max-height: 140px;
+
+  overflow-y: auto;
+
+  overflow-x: hidden;
+
+  border: 1px solid #e5e7eb;
+
+  align-items: flex-start;
+}
+
+/* ==========================
+SELECTED CHIP
+========================== */
+
+.selected-chip {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 10px 14px;
+
+  border-radius: 999px;
+
+  background: linear-gradient(
+    135deg,
+    #2563eb,
+    #1d4ed8
+  );
+
+  color: white;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  box-shadow:
+    0 6px 18px rgba(
+      37,
+      99,
+      235,
+      0.25
+    );
+
+  word-break: break-word;
+
+  max-width: 100%;
+}
+
+/* ==========================
+MEDICAL CHIP
+========================== */
+
+.medical-chip {
+
+  background: linear-gradient(
+    135deg,
+    #0f766e,
+    #14b8a6
+  );
+}
+
+/* ==========================
+SCROLLBAR
+========================== */
+
+.selected-symptoms::-webkit-scrollbar {
+
+  width: 6px;
+}
+
+.selected-symptoms::-webkit-scrollbar-thumb {
+
+  background: #94a3b8;
+
+  border-radius: 999px;
+}
+
+/* ==========================
+MOBILE
+========================== */
+
+@media (
+  max-width: 768px
+) {
+
+  .selected-symptoms {
+
+    max-height: 180px;
+
+    padding: 12px;
+  }
+
+  .selected-chip {
+
+    font-size: 15px;
+
+    padding: 10px 14px;
+  }
+}
+/* ==========================
+DROPDOWN TAB
+========================== */
+
+.dropdown-tab-wrap{
+
+  margin-bottom:20px;
+}
+
+.dropdown-tab-select{
+
+  width:100%;
+
+  padding:14px 18px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #1d4ed8
+    );
+
+  color:white;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  outline:none;
+
+  box-shadow:
+    0 8px 20px rgba(
+      37,
+      99,
+      235,
+      0.22
+    );
+}
+
+/* ==========================
+TAB CONTENT
+========================== */
+
+.tab-content{
+
+  display:none;
+}
+
+.tab-content.active{
+
+  display:block;
+}
+
+.symptom-category-title{
+
+  font-size:22px;
+
+  font-weight:800;
+
+  margin-bottom:16px;
+
+  color:#111827;
+}
+.extra-inputs{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      2,
+      1fr
+    );
+
+  gap:14px;
+
+  margin-bottom:22px;
+}
+
+.extra-inputs input,
+.extra-inputs select{
+
+  width:100%;
+
+  padding:16px;
+
+  border:none;
+
+  border-radius:18px;
+
+  background:#ffffff;
+
+  font-size:16px;
+
+  box-shadow:
+    0 6px 18px rgba(
+      0,
+      0,
+      0,
+      0.06
+    );
+
+  outline:none;
+
+  transition:0.25s;
+}
+
+.extra-inputs input:focus,
+.extra-inputs select:focus{
+
+  transform:scale(1.02);
+
+  box-shadow:
+    0 10px 24px rgba(
+      37,
+      99,
+      235,
+      0.16
+    );
+}
+#patientName{
+
+  grid-column:
+    1 / -1;
+}
+#symptomDuration{
+
+  grid-column:
+    1 / -1;
+}
+@media(max-width:768px){
+
+  .extra-inputs{
+
+    grid-template-columns:1fr;
+  }
+
+  #patientName,
+  #symptomDuration{
+
+    grid-column:auto;
+  }
+}
+/* ===================================== */
+/* FINAL TEXT VISIBILITY FIX */
+/* ===================================== */
+
+.diag-top-card,
+.diag-top-card *{
+
+  color:#ffffff !important;
+}
+
+/* MATCH / SEVERITY */
+
+.diag-top-card .severity-mild,
+.diag-top-card .severity-moderate,
+.diag-top-card .severity-severe,
+.diag-top-card .severity-critical,
+.diag-top-card .severity-emergency{
+
+  color:#ffffff !important;
+}
+
+/* TITLE */
+
+.diag-top-card .diag-top-title{
+
+  color:#ffffff !important;
+
+  font-weight:800;
+}
+
+/* CONFIDENCE */
+
+.diag-top-card .diag-top-confidence{
+
+  color:#ffffff !important;
+}
+
+/* REASON */
+
+.diag-top-card .diag-top-reason{
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.92
+    ) !important;
+}
+
+/* CATEGORY */
+
+.diag-top-card .diag-category{
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.85
+    ) !important;
+}
+
+/* BAR */
+
+.diag-top-card .diag-top-bar{
+
+  background:#ffffff !important;
+}
+
+/* BADGE */
+
+.diag-top-card .diag-top-badge{
+
+  background:#ffffff !important;
+
+  color:#1d4ed8 !important;
+}
+.diag-med-line{
+
+  display:inline-block;
+
+  padding:4px 10px;
+
+  border-radius:20px;
+
+  font-size:12px;
+
+  font-weight:bold;
+
+  margin-top:6px;
+
+  color:#fff;
+}
+
+.diag-med-line.first_line{
+  background:#22c55e;
+}
+
+.diag-med-line.second_line{
+  background:#f59e0b;
+}
+
+.diag-med-line.third_line{
+  background:#ef4444;
+}
+
+.diag-med-condition{
+
+  margin-top:8px;
+
+  color:#f59e0b;
+
+  font-size:13px;
+
+  font-weight:600;
+}
+
+.diag-med-duration,
+.diag-med-max{
+
+  margin-top:4px;
+
+  font-size:13px;
+
+  opacity:.9;
+}
+.diag-med-line.gas_relief{
+
+  background:
+    linear-gradient(
+      135deg,
+      #06b6d4,
+      #0891b2
+    );
+
+  color:white;
+
+  padding:
+    6px 14px;
+
+  border-radius:
+    999px;
+
+  font-size:
+    12px;
+
+  font-weight:
+    700;
+
+  display:inline-block;
+
+  margin-top:8px;
+
+  box-shadow:
+    0 4px 10px
+    rgba(0,0,0,.15);
 }
