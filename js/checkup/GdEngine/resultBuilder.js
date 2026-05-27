@@ -18,7 +18,9 @@ export function buildResult({
   matchedRedFlags = [],
 
   contradictions = [],
-  contradictionLevel = null
+contradictionLevel = null,
+
+clusterAnalysis = []
 
 }) {
 
@@ -548,7 +550,7 @@ export function buildResult({
     recommendedTests,
 
     matchedClusters,
-
+    clusterAnalysis,
     matchedRequiredSymptoms,
 
     matchedSymptoms,

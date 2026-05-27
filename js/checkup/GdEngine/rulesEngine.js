@@ -1016,26 +1016,7 @@ export function detectContradictions({
         // WEAK CLUSTER
         // ======================
 
-        if (
-
-          matchedCount > 0 &&
-
-          matchedCount <
-          (
-            cluster.minimum_match || 2
-          )
-
-        ) {
-
-          addContradiction(
-
-            `Incomplete cluster: ${clusterName}`,
-
-            "soft",
-
-            1
-          );
-        }
+      
       }
     );
   }
