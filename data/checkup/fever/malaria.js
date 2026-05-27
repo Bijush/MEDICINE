@@ -1,5 +1,6 @@
 // ==============================
 // MALARIA DATASET
+// UPDATED POWERFUL VERSION
 // ==============================
 
 export const MALARIA = [
@@ -12,6 +13,10 @@ export const MALARIA = [
     category: "fever",
 
     severity: "severe",
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -31,72 +36,354 @@ export const MALARIA = [
       }
     },
 
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
-      high_fever: {
-        present: true,
-        weight: 40
+  high_fever: {
+
+    present: true,
+
+    weight: 40,
+
+    followup: {
+
+      question:
+        "Is fever extremely high?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "very_high_fever"
       },
 
-      intermittent_fever: {
-        present: true,
-        weight: 35
+      priority: 10
+    }
+  },
+
+  intermittent_fever: {
+
+    present: true,
+
+    weight: 35,
+
+    followup: {
+
+      question:
+        "Does fever come and go repeatedly?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "recurrent_fever"
       },
 
-      chills: {
-        present: true,
-        weight: 40
+      priority: 9
+    }
+  },
+
+  chills: {
+
+    present: true,
+
+    weight: 40,
+
+    followup: {
+
+      question:
+        "Do chills occur before fever?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "pre_fever_chills"
       },
 
-      rigor: {
-        present: true,
-        weight: 35
+      priority: 9
+    }
+  },
+
+  rigor: {
+
+    present: true,
+
+    weight: 35,
+
+    followup: {
+
+      question:
+        "Do you experience severe shivering?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "severe_shivering"
       },
 
-      sweating: {
-        present: true,
-        weight: 30
+      priority: 8
+    }
+  },
+
+  sweating: {
+
+    present: true,
+
+    weight: 30,
+
+    followup: {
+
+      question:
+        "Do you sweat heavily after fever?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "post_fever_sweating"
       },
 
-      headache: {
-        present: true,
-        weight: 20
+      priority: 8
+    }
+  },
+
+  headache: {
+
+    present: true,
+
+    weight: 20,
+
+    followup: {
+
+      question:
+        "Is headache severe?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "severe_headache"
       },
 
-      body_ache: {
-        present: true,
-        weight: 20
+      priority: 5
+    }
+  },
+
+  body_ache: {
+
+    present: true,
+
+    weight: 20,
+
+    followup: {
+
+      question:
+        "Is body pain severe?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "severe_body_ache"
       },
 
-      muscle_pain: {
-        present: true,
-        weight: 20
+      priority: 6
+    }
+  },
+
+  muscle_pain: {
+
+    present: true,
+
+    weight: 20,
+
+    followup: {
+
+      question:
+        "Do muscles feel extremely painful?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "severe_muscle_pain"
       },
 
-      nausea: {
-        present: true,
-        weight: 15
+      priority: 5
+    }
+  },
+
+  nausea: {
+
+    present: true,
+
+    weight: 15,
+
+    followup: {
+
+      question:
+        "Does nausea worsen after eating?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "food_triggered_nausea"
       },
 
-      vomiting: {
-        present: true,
-        weight: 15
+      priority: 4
+    }
+  },
+
+  vomiting: {
+
+    present: true,
+
+    weight: 15,
+
+    followup: {
+
+      question:
+        "Is vomiting frequent?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "persistent_vomiting"
       },
 
-      fatigue: {
-        present: true,
-        weight: 20
+      priority: 7
+    }
+  },
+
+  fatigue: {
+
+    present: true,
+
+    weight: 20,
+
+    followup: {
+
+      question:
+        "Do you feel extreme weakness?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "extreme_fatigue"
       },
-     
-     cyclical_fever: {
-  present: true,
-  weight: 45
+
+      priority: 5
+    }
+  },
+
+  cyclical_fever: {
+
+    present: true,
+
+    weight: 45,
+
+    followup: {
+
+      question:
+        "Does fever return at fixed intervals?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "periodic_fever"
+      },
+
+      priority: 12
+    }
+  },
+
+  abdominal_pain: {
+
+    present: true,
+
+    weight: 15,
+
+    followup: {
+
+      question:
+        "Is abdominal pain severe?",
+
+      options: [
+        "Yes",
+        "No"
+      ],
+
+      symptomMap: {
+
+        Yes:
+          "severe_abdominal_pain"
+      },
+
+      priority: 6
+    }
+  }
 },
-      abdominal_pain: {
-        present: true,
-        weight: 15
-      }
-    },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -120,6 +407,10 @@ export const MALARIA = [
         weight: 20
       }
     },
+
+    // ==========================
+    // TESTS
+    // ==========================
 
     tests: {
 
@@ -149,6 +440,10 @@ export const MALARIA = [
       }
     },
 
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
+
     complications: {
 
       cerebral_malaria: {
@@ -176,6 +471,10 @@ export const MALARIA = [
         weight: 70
       }
     },
+
+    // ==========================
+    // RED FLAGS
+    // ==========================
 
     red_flags: {
 
@@ -205,24 +504,187 @@ export const MALARIA = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+        symptoms: [
+
+          "chills",
+          "rigor",
+          "sweating"
+
+        ],
+
+        match: "all",
+
+        bonus: 35
+      },
+
+      {
+        symptoms: [
+
+          "cyclical_fever"
+
+        ],
+
+        match: "any",
+
+        bonus: 25
+      },
+
+      {
+        symptoms: [
+
+          "high_fever",
+          "headache"
+
+        ],
+
+        match: "all",
+
+        bonus: 15
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+        symptoms: [
+
+          "loss_of_smell"
+
+        ],
+
+        match: "any",
+
+        penalty: 20
+      },
+
+      {
+        symptoms: [
+
+          "sore_throat"
+
+        ],
+
+        match: "any",
+
+        penalty: 15
+      }
+    ],
+
+    // ==========================
+    // AGE RULES
+    // ==========================
+
+    age_rules: [
+
+      {
+        max_age: 12,
+
+        bonus: 5
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      chills: 15,
+
+      sweating: 10,
+
+      rigor: 20,
+
+      cyclical_fever: 20
+    },
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+        min_days: 2,
+
+        bonus: 10
+      },
+
+      {
+        min_days: 10,
+
+        penalty: 10
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY SYMPTOMS
+    // ==========================
+
+    emergency_symptoms: [
+
+      "shock",
+
+      "unconsciousness",
+
+      "seizure",
+
+      "severe_breathlessness"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Artemether",
+
       "Lumefantrine",
+
       "Primaquine",
+
       "Paracetamol",
+
       "IV Fluids"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Hospital Observation",
+
       "Antimalarial Therapy",
+
       "Hydration Support"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Use mosquito net",
+
       "Avoid mosquito exposure",
+
       "Remove stagnant water",
+
       "Early treatment completion"
     ]
   }

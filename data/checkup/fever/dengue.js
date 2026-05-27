@@ -1,5 +1,6 @@
 // ==============================
 // DENGUE DATASET
+// UPDATED POWERFUL VERSION
 // ==============================
 
 export const DENGUE = [
@@ -12,6 +13,10 @@ export const DENGUE = [
     category: "fever",
 
     severity: "severe",
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -31,12 +36,37 @@ export const DENGUE = [
       }
     },
 
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
       high_fever: {
-        present: true,
-        weight: 40
-      },
+
+  present: true,
+
+  weight: 40,
+
+  followup: {
+
+    question:
+      "Is fever very high?",
+
+    options: [
+      "Yes",
+      "No"
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "very_high_fever"
+    },
+
+    priority: 10
+  }
+},
 
       sudden_fever: {
         present: true,
@@ -54,9 +84,30 @@ export const DENGUE = [
       },
 
       body_ache: {
-        present: true,
-        weight: 30
-      },
+
+  present: true,
+
+  weight: 30,
+
+  followup: {
+
+    question:
+      "Is body pain severe?",
+
+    options: [
+      "Yes",
+      "No"
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "severe_body_ache"
+    },
+
+    priority: 8
+  }
+},
 
       muscle_pain: {
         present: true,
@@ -78,10 +129,31 @@ export const DENGUE = [
         weight: 15
       },
 
-      skin_rash: {
-        present: true,
-        weight: 25
-      },
+     skin_rash: {
+
+  present: true,
+
+  weight: 25,
+
+  followup: {
+
+    question:
+      "Did rash appear after fever?",
+
+    options: [
+      "Yes",
+      "No"
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "dengue_rash"
+    },
+
+    priority: 7
+  }
+},
 
       fatigue: {
         present: true,
@@ -91,8 +163,17 @@ export const DENGUE = [
       abdominal_pain: {
         present: true,
         weight: 20
+      },
+
+      bleeding_gums: {
+        present: true,
+        weight: 40
       }
     },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -111,6 +192,10 @@ export const DENGUE = [
         weight: 35
       }
     },
+
+    // ==========================
+    // TESTS
+    // ==========================
 
     tests: {
 
@@ -145,6 +230,10 @@ export const DENGUE = [
       }
     },
 
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
+
     complications: {
 
       dengue_hemorrhagic_fever: {
@@ -167,6 +256,10 @@ export const DENGUE = [
         weight: 40
       }
     },
+
+    // ==========================
+    // RED FLAGS
+    // ==========================
 
     red_flags: {
 
@@ -206,22 +299,197 @@ export const DENGUE = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+        symptoms: [
+
+          "pain_behind_eyes",
+          "platelet_low"
+
+        ],
+
+        match: "all",
+
+        bonus: 35
+      },
+
+      {
+        symptoms: [
+
+          "high_fever",
+          "body_ache"
+
+        ],
+
+        match: "all",
+
+        bonus: 20
+      },
+
+      {
+        symptoms: [
+
+          "bleeding_gums"
+
+        ],
+
+        match: "any",
+
+        bonus: 25
+      },
+
+      {
+        symptoms: [
+
+          "skin_rash",
+          "joint_pain"
+
+        ],
+
+        match: "all",
+
+        bonus: 20
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+        symptoms: [
+
+          "loss_of_smell"
+
+        ],
+
+        match: "any",
+
+        penalty: 25
+      },
+
+      {
+        symptoms: [
+
+          "chronic_cough"
+
+        ],
+
+        match: "any",
+
+        penalty: 20
+      }
+    ],
+
+    // ==========================
+    // AGE RULES
+    // ==========================
+
+    age_rules: [
+
+      {
+        max_age: 12,
+
+        bonus: 5
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      body_ache: 10,
+
+      fatigue: 8,
+
+      abdominal_pain: 10,
+
+      platelet_low: 15
+    },
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+        min_days: 2,
+
+        bonus: 10
+      },
+
+      {
+        min_days: 7,
+
+        penalty: 10
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY SYMPTOMS
+    // ==========================
+
+    emergency_symptoms: [
+
+      "shock",
+
+      "unconsciousness",
+
+      "black_stool",
+
+      "blood_in_vomit",
+
+      "spo2_below_90"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Paracetamol",
+
       "ORS",
+
       "IV Fluids"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Platelet Monitoring",
+
       "Hydration Therapy",
+
       "Hospital Observation"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Avoid mosquito exposure",
+
       "Drink plenty of fluids",
+
       "Avoid NSAIDs",
+
       "Immediate hospital visit if bleeding occurs"
     ]
   }

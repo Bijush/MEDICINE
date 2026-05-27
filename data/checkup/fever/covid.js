@@ -1,10 +1,12 @@
 // ==============================
 // COVID-19 DATASET
+// UPDATED PRO VERSION
 // ==============================
 
 export const COVID = [
 
   {
+
     id: "COV001",
 
     disease: "COVID-19",
@@ -12,6 +14,12 @@ export const COVID = [
     category: "fever",
 
     severity: "severe",
+
+    minimum_match: 3,
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -31,16 +39,51 @@ export const COVID = [
       }
     },
 
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
       fever: {
+
+        aliases: [
+          "high_fever"
+        ],
+
         present: true,
+
         weight: 35
       },
 
       dry_cough: {
+
+        aliases: [
+          "cough"
+        ],
+
         present: true,
-        weight: 40
+
+        weight: 40,
+
+        followup: {
+
+          question:
+            "Has cough lasted more than 5 days?",
+
+          options: [
+            "Yes",
+            "No"
+          ],
+
+          symptomMap: {
+
+            Yes:
+              "persistent_cough"
+          },
+
+          priority: 10
+        }
       },
 
       sore_throat: {
@@ -49,8 +92,33 @@ export const COVID = [
       },
 
       breathing_difficulty: {
+
+        aliases: [
+          "shortness_of_breath"
+        ],
+
         present: true,
-        weight: 45
+
+        weight: 45,
+
+        followup: {
+
+          question:
+            "Does breathing worsen while walking?",
+
+          options: [
+            "Yes",
+            "No"
+          ],
+
+          symptomMap: {
+
+            Yes:
+              "exercise_breathlessness"
+          },
+
+          priority: 14
+        }
       },
 
       body_ache: {
@@ -69,12 +137,35 @@ export const COVID = [
       },
 
       loss_of_smell: {
+
         present: true,
-        weight: 60
+
+        weight: 60,
+
+        followup: {
+
+          question:
+            "Did smell suddenly disappear?",
+
+          options: [
+            "Yes",
+            "No"
+          ],
+
+          symptomMap: {
+
+            Yes:
+              "sudden_loss_of_smell"
+          },
+
+          priority: 15
+        }
       },
 
       loss_of_taste: {
+
         present: true,
+
         weight: 60
       },
 
@@ -86,8 +177,17 @@ export const COVID = [
       chest_pain: {
         present: true,
         weight: 25
+      },
+
+      chills: {
+        present: true,
+        weight: 15
       }
     },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -106,6 +206,10 @@ export const COVID = [
         weight: 35
       }
     },
+
+    // ==========================
+    // TESTS
+    // ==========================
 
     tests: {
 
@@ -135,6 +239,10 @@ export const COVID = [
       }
     },
 
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
+
     complications: {
 
       covid_pneumonia: {
@@ -157,6 +265,10 @@ export const COVID = [
         weight: 70
       }
     },
+
+    // ==========================
+    // RED FLAGS
+    // ==========================
 
     red_flags: {
 
@@ -181,23 +293,220 @@ export const COVID = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+
+        symptoms: [
+
+          "loss_of_smell"
+
+        ],
+
+        match: "any",
+
+        bonus: 35
+      },
+
+      {
+
+        symptoms: [
+
+          "loss_of_taste"
+
+        ],
+
+        match: "any",
+
+        bonus: 35
+      },
+
+      {
+
+        symptoms: [
+
+          "dry_cough",
+          "fever"
+
+        ],
+
+        match: "all",
+
+        bonus: 20
+      },
+
+      {
+
+        symptoms: [
+
+          "breathing_difficulty",
+          "spo2_below_90"
+
+        ],
+
+        match: "all",
+
+        bonus: 40
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+
+        symptoms: [
+
+          "platelet_low"
+
+        ],
+
+        match: "any",
+
+        penalty: 30
+      },
+
+      {
+
+        symptoms: [
+
+          "pain_behind_eyes"
+
+        ],
+
+        match: "any",
+
+        penalty: 20
+      },
+
+      {
+
+        symptoms: [
+
+          "burning_urination"
+
+        ],
+
+        match: "any",
+
+        penalty: 20
+      }
+    ],
+
+    // ==========================
+    // AGE RULES
+    // ==========================
+
+    age_rules: [
+
+      {
+
+        min_age: 60,
+
+        bonus: 10
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      fatigue: 10,
+
+      dry_cough: 12,
+
+      breathing_difficulty: 15,
+
+      loss_of_smell: 20,
+
+      loss_of_taste: 20
+    },
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+
+        min_days: 3,
+
+        bonus: 10
+      },
+
+      {
+
+        min_days: 10,
+
+        bonus: 15
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY
+    // ==========================
+
+    emergency_symptoms: [
+
+      "spo2_below_90",
+
+      "unconsciousness",
+
+      "severe_breathlessness",
+
+      "chest_pressure"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Paracetamol",
+
       "ORS",
+
       "Oxygen",
+
       "Antiviral"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Isolation",
+
       "Oxygen Therapy",
+
       "Hospital Monitoring"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Wear mask",
+
       "Isolation",
+
       "Hydration",
+
       "Monitor SPO2"
     ]
   }
