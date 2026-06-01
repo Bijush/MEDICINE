@@ -47,9 +47,7 @@ import {
 
   getAllCompositions,
 
-  getMedicinesByComposition,
-
-  loadCompositionDatabase
+  getMedicinesByComposition
 
 } from "./compositionLoader.js";
 
@@ -76,12 +74,7 @@ const results =
     "#compositionResults"
   );
 
-const apiToggle =
 
-  document.querySelector(
-    "#apiToggle"
-  );
-  
 // ==============================
 // STATE
 // ==============================
@@ -90,7 +83,9 @@ const state = {
 
   query: "",
 
-  allCompositions: [],
+  allCompositions:
+
+    getAllCompositions(),
 
   filtered: []
 
@@ -114,10 +109,31 @@ window.__compositionMode = true;
 
 
 // ==============================
+// BUILD FILTER DATA
+// ==============================
+
+const filterData =
+
+  preprocessMedicineData(
+
+    state.allCompositions
+
+      .flatMap(comp =>
+
+        getMedicinesByComposition(
+          comp
+        )
+
+      )
+
+  );
+
+
+// ==============================
 // INIT FILTERS
 // ==============================
 
-initFilters([]);
+initFilters(filterData);
 
 renderMedicalFilters();
 
@@ -172,6 +188,7 @@ function renderApp() {
               compositionName
             );
 
+          // ✅ preprocess
           const prepared =
 
             preprocessMedicineData(
@@ -233,74 +250,10 @@ function renderApp() {
 
 
 // ==============================
-// INIT APP
+// DEFAULT RENDER
 // ==============================
 
-async function initApp(){
-
-  // ==========================
-  // LOAD DATABASE
-  // ==========================
-
-  await loadCompositionDatabase({
-
-  useAPI:
-
-    apiToggle?.checked
-
-});
-
-
-  // ==========================
-  // UPDATE STATE
-  // ==========================
-
-  state.allCompositions =
-    getAllCompositions();
-
-
-  // ==========================
-  // BUILD FILTER DATA
-  // ==========================
-
-  const filterData =
-
-    preprocessMedicineData(
-
-      state.allCompositions
-
-        .flatMap(comp =>
-
-          getMedicinesByComposition(
-            comp
-          )
-
-        )
-
-    );
-
-
-  // ==========================
-  // RE-INIT FILTERS
-  // ==========================
-
-  initFilters(filterData);
-
-
-  // ==========================
-  // RENDER
-  // ==========================
-
-  renderApp();
-
-}
-
-
-// ==============================
-// START APP
-// ==============================
-
-initApp();
+renderApp();
 
 
 // ==============================
@@ -384,22 +337,6 @@ document.addEventListener(
       target.dataset.field || ""
 
     );
-
-  }
-
-);
-
-apiToggle?.addEventListener(
-
-  "change",
-
-  async () => {
-
-    renderLoading(
-      results
-    );
-
-    await initApp();
 
   }
 
