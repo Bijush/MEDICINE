@@ -12,46 +12,45 @@ import {
 }
 from "./symptomIntelligence.js";
 
-import {t} from "./translations/translate.js";
-
-import { CURRENT_LANG } from "./checkup.js";
+import {
+  isUserFriendlySymptom,
+  generateSectionItems
+}
+from "./UIEngine/uiFunction.js";
 
 import {
-  isUserFriendlySymptom ,
-  generateSectionItems,
-  renderSymptomLabel,
-  formatText
-  
-} from "./UIEngine/uiFunction.js";
+  renderMainLayout,
+  setupTabs,
+  setupAdvancedToggle,
+  setupSearch,
+  setupCheckboxEvents,
+  setupLiveInputs,
+  setupSymptomInfoModal
+}
+from "./UIEngine/renderEngine.js";
 
 import {
- renderMainLayout,
- renderPatientInputs,
- renderTabs,
- renderSelectedTab,
- renderAdvancedTab,
- renderCategoryHTML,
- renderSymptomsTab,
- renderAdvancedSection,
- setupTabs,
- setupAdvancedToggle,
- setupSearch,
- setupCheckboxEvents,
- setupLiveInputs
- 
-} from "./UIEngine/renderEngine.js";
+  updateSelectedSymptoms
+}
+from "./UIEngine/updateSelectedSymptoms.js";
+
+import {
+  buildCategoryMap
+}
+from "./UIEngine/buildCategoryMap.js";
+
+
+// ==============================
+// GLOBAL SYMPTOM METADATA
 // ==============================
 
-import {
-  detectCategory
-  
-} from "./UIEngine/detectCategory.js";
+window.symptomMetadata = {};
 
 // ==============================
 // GENERATE CLEAN SYMPTOMS
 // ==============================
-
 function generateSymptoms() {
+  window.symptomMetadata = {};
 
   const symptomSet =
     new Set();
@@ -59,21 +58,76 @@ function generateSymptoms() {
   ALL_DISEASES.forEach(
     disease => {
 
-      Object.keys(
-        disease.symptoms || {}
-      ).forEach(symptom => {
+      Object.entries(
+  disease.symptoms || {}
+)
 
-        if (
-          isUserFriendlySymptom(
-            symptom
-          )
-        ) {
+.forEach(
 
-          symptomSet.add(
-            symptom
-          );
-        }
-      });
+  ([symptom, data]) => {
+
+    // ======================
+    // SAVE METADATA
+    // ======================
+
+    const oldMeta =
+
+  window
+  .symptomMetadata?.[
+    symptom
+  ] || {};
+
+window.symptomMetadata[
+  symptom
+] = {
+
+  ...data,
+
+  ...oldMeta,
+
+  // ======================
+  // KEEP RICH DATA
+  // ======================
+
+  label:
+    oldMeta.label ||
+    data.label,
+
+  description:
+    oldMeta.description ||
+    data.description,
+
+  warning:
+    oldMeta.warning ||
+    data.warning,
+
+  tips:
+    oldMeta.tips ||
+    data.tips,
+
+  icon:
+    oldMeta.icon ||
+    data.icon
+};
+
+    // ======================
+    // UI FILTER
+    // ======================
+
+    if (
+
+      isUserFriendlySymptom(
+        symptom
+      )
+
+    ) {
+
+      symptomSet.add(
+        symptom
+      );
+    }
+  }
+);
     }
   );
 
@@ -88,43 +142,6 @@ function generateSymptoms() {
       a.localeCompare(b)
   );
 }
-
-// ==============================
-// BUILD CATEGORY MAP
-// ==============================
-
-function buildCategoryMap(
-  symptoms
-) {
-
-  const grouped = {};
-
-  symptoms.forEach(
-    symptom => {
-
-      const category =
-        detectCategory(
-          symptom
-        );
-
-      if (
-        !grouped[category]
-      ) {
-
-        grouped[
-          category
-        ] = [];
-      }
-
-      grouped[
-        category
-      ].push(symptom);
-    }
-  );
-
-  return grouped;
-}
-
 
 // ==============================
 // INITIALIZE UI
@@ -207,6 +224,9 @@ export function renderSymptomInputUI(
     return;
   }
 
+
+generateSymptoms();
+
   // ==========================
   // AUTO GENERATE
   // ==========================
@@ -272,10 +292,15 @@ setupAdvancedToggle();
   container,
   selectedSymptoms,
   symptomCounter
+  
 
 );
 
+requestAnimationFrame(() => {
 
+  setupSymptomInfoModal();
+
+});
 // ==========================
 // LIVE EXTRA INPUT UPDATE
 // ==========================
@@ -303,6 +328,8 @@ setupLiveInputs(
 // ==============================
 
 function generateUIData() {
+  
+generateSymptoms();
 
   const autoSymptoms =
     generateSectionItems(
@@ -430,224 +457,5 @@ data[
 
 
 
-// ==============================
-// UPDATE SELECTED UI
-// ==============================
-
-function updateSelectedSymptoms(
-
-  container,
-
-  counter
-) {
-
-  // ==========================
-  // SELECTED CHECKBOXES
-  // ==========================
-
-  const selected =
-
-    document.querySelectorAll(
-      '.symptom-ui input[type="checkbox"]:checked'
-    );
-
-  // ==========================
-  // EXTRA INPUTS
-  // ==========================
-  
-    const patientName =
-
-  document.getElementById(
-    "patientName"
-  )?.value;
-  
-  const age =
-
-    document.getElementById(
-      "userAge"
-    )?.value;
-
-  const gender =
-
-    document.getElementById(
-      "userGender"
-    )?.value;
-
-  const duration =
-
-    document.getElementById(
-      "symptomDuration"
-    )?.value;
-
-  // ==========================
-  // TOTAL COUNT
-  // ==========================
-
-  let totalCount =
-    selected.length;
-    
-    if (patientName)
-  totalCount++;
-
-  if (age)
-    totalCount++;
-
-  if (gender)
-    totalCount++;
-
-  if (duration)
-    totalCount++;
-
-  // ==========================
-  // COUNTER
-  // ==========================
-
-  counter.innerHTML =
-
-    `Selected: ${totalCount}`;
-
-  // ==========================
-  // EMPTY
-  // ==========================
-
-  if (
-
-  !selected.length &&
-
-  !patientName &&
-
-  !age &&
-
-  !gender &&
-
-  !duration
-
-) {
-
-  container.innerHTML =
-    "";
-
-  return;
-}
-
-  // ==========================
-  // SYMPTOM CHIPS
-  // ==========================
-
-  let html =
-
-    Array.from(selected)
-
-    .map(
-      item => `
-
-      <div class="
-        selected-chip
-      ">
-
-        ✔
-
-        ${t(item.value, "en")}
-
-        (
-
-        ${t(item.value, "bn")}
-
-        )
-
-      </div>
-      `
-    )
-
-    .join("");
-
-
-// ==========================
-// NAME CHIP
-// ==========================
-
-if (patientName) {
-
-  html += `
-
-    <div class="
-      selected-chip
-      medical-chip
-    ">
-
-      🧑 Patient:
-      ${patientName}
-
-    </div>
-  `;
-}
-
-  // ==========================
-  // AGE CHIP
-  // ==========================
-
-  if (age) {
-
-    html += `
-
-      <div class="
-        selected-chip
-        medical-chip
-      ">
-
-        🎂 Age:
-        ${age}
-
-      </div>
-    `;
-  }
-
-  // ==========================
-  // GENDER CHIP
-  // ==========================
-
-  if (gender) {
-
-    html += `
-
-      <div class="
-        selected-chip
-        medical-chip
-      ">
-
-        👤 Gender:
-        ${formatText(gender)}
-
-      </div>
-    `;
-  }
-
-  // ==========================
-  // DURATION CHIP
-  // ==========================
-
-  if (duration) {
-
-    html += `
-
-      <div class="
-        selected-chip
-        medical-chip
-      ">
-
-        ⏳ Duration:
-        ${duration} days
-
-      </div>
-    `;
-  }
-
-  // ==========================
-  // FINAL
-  // ==========================
-
-  container.innerHTML =
-    html;
-}
 
 
