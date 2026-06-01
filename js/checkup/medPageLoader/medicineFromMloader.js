@@ -1,5 +1,5 @@
 import { ALL_DATA }
-from "../../../../RegisterAndLoader/loader.js";
+from "../../../RegisterAndLoader/loader.js";
 
 const normalizeKey = (value = "") =>
   String(value)
