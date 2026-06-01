@@ -139,183 +139,324 @@ export const VIRAL_FEVER = [
 
       body_ache: {
 
-        present: true,
+  category: "pain",
 
-        weight: 32,
+  present: true,
 
-        followup: {
+  weight: 32,
 
-          question:
-            "Is body pain severe?",
+  followup: {
 
-          options: [
+    question:
+      "Is body pain severe?",
 
-            "Yes",
+    options: [
 
-            "No"
+      "Yes",
 
-          ],
+      "No"
 
-          symptomMap: {
+    ],
 
-            Yes:
-              "body_ache"
-          },
+    symptomMap: {
 
-          priority: 8
-        }
+      Yes:
+        "body_ache"
+    },
+
+    priority: 8
+  }
+},
+
+muscle_pain: {
+
+  category: "pain",
+
+  present: true,
+
+  weight: 25,
+
+  followup: {
+
+    question:
+      "Do muscles feel extremely painful?",
+
+    options: [
+
+      "Yes",
+
+      "No"
+
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "muscle_pain"
+    },
+
+    priority: 7
+  }
+},
+
+headache: {
+
+  category: "neurology",
+
+  present: true,
+
+  weight: 22,
+
+  followup: {
+
+    question:
+      "Is headache severe?",
+
+    options: [
+
+      "Yes",
+
+      "No"
+
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "headache"
+    },
+
+    priority: 5
+  }
+},
+
+fatigue: {
+
+  category: "general",
+
+  label: {
+
+    en: "Fatigue",
+
+    bn: "ক্লান্তি"
+  },
+
+  description: {
+
+    en:
+      "Extreme tiredness, low energy, or lack of physical and mental strength.",
+
+    bn:
+      "অতিরিক্ত ক্লান্তি, শক্তি কমে যাওয়া বা শারীরিক ও মানসিক দুর্বলতা অনুভব করা।"
+  },
+
+  severity:
+    "moderate",
+
+  icon:
+    "😴",
+
+  causes: {
+
+    en:
+      "Can occur due to viral infections, lack of sleep, dehydration, anemia, stress, or chronic illness.",
+
+    bn:
+      "ভাইরাল সংক্রমণ, ঘুমের অভাব, পানিশূন্যতা, রক্তস্বল্পতা, মানসিক চাপ বা দীর্ঘস্থায়ী রোগের কারণে হতে পারে।"
+  },
+
+  warning: {
+
+    en:
+      "Seek medical attention if fatigue is severe, persistent, or associated with breathing difficulty, chest pain, or unconsciousness.",
+
+    bn:
+      "ক্লান্তি খুব বেশি হলে, দীর্ঘদিন স্থায়ী হলে, অথবা শ্বাসকষ্ট, বুকব্যথা বা অচেতনতার সাথে থাকলে দ্রুত চিকিৎসা নিন।"
+  },
+
+  tips: {
+
+    en:
+      "Drink enough water, get adequate rest, eat nutritious food, and avoid excessive physical exertion.",
+
+    bn:
+      "পর্যাপ্ত পানি পান করুন, বিশ্রাম নিন, পুষ্টিকর খাবার খান এবং অতিরিক্ত পরিশ্রম এড়িয়ে চলুন।"
+  },
+
+  severity_scale: {
+
+    en:
+      "Mild, Moderate, Severe",
+
+    bn:
+      "হালকা, মাঝারি, তীব্র"
+  },
+
+  present: true,
+
+  weight: 28,
+
+  followup: {
+
+    question:
+      "Do you feel extremely tired?",
+
+    options: [
+
+      "Yes",
+
+      "No"
+
+    ],
+
+    symptomMap: {
+
+      Yes:
+        "fatigue"
+    },
+
+    priority: 8
+  }
+},
+
+weakness: {
+
+  category: "general",
+
+  label: {
+
+    en: "Weakness",
+
+    bn: "দুর্বলতা"
+  },
+
+  description: {
+
+    en:
+      "A feeling of reduced physical strength, low stamina, or difficulty performing normal daily activities.",
+
+    bn:
+      "শারীরিক শক্তি কমে যাওয়া, সহনশক্তি হ্রাস পাওয়া বা দৈনন্দিন কাজ করতে কষ্ট হওয়ার অনুভূতি।"
+  },
+
+  severity:
+    "moderate",
+
+  icon:
+    "💪",
+
+  causes: {
+
+    en:
+      "May occur due to infections, dehydration, anemia, malnutrition, stress, lack of sleep, or chronic illnesses.",
+
+    bn:
+      "সংক্রমণ, পানিশূন্যতা, রক্তস্বল্পতা, অপুষ্টি, মানসিক চাপ, ঘুমের অভাব বা দীর্ঘস্থায়ী রোগের কারণে হতে পারে।"
+  },
+
+  warning: {
+
+    en:
+      "Seek medical attention if weakness is severe, sudden, worsening, or associated with breathing difficulty, chest pain, paralysis, or unconsciousness.",
+
+    bn:
+      "দুর্বলতা খুব বেশি হলে, হঠাৎ শুরু হলে, ক্রমশ বাড়লে অথবা শ্বাসকষ্ট, বুকব্যথা, পক্ষাঘাত বা অচেতনতার সাথে থাকলে দ্রুত চিকিৎসা নিন।"
+  },
+
+  tips: {
+
+    en:
+      "Stay hydrated, get enough rest, eat balanced nutritious meals, and avoid excessive physical exertion.",
+
+    bn:
+      "পর্যাপ্ত পানি পান করুন, বিশ্রাম নিন, সুষম পুষ্টিকর খাবার খান এবং অতিরিক্ত পরিশ্রম এড়িয়ে চলুন।"
+  },
+
+  severity_scale: {
+
+    en:
+      "Mild, Moderate, Severe",
+
+    bn:
+      "হালকা, মাঝারি, তীব্র"
+  },
+
+  present: true,
+
+  weight: 22,
+
+  followup: {
+
+    question: {
+
+      en:
+        "Are you unable to perform normal activities?",
+
+      bn:
+        "আপনি কি স্বাভাবিক দৈনন্দিন কাজ করতে পারছেন না?"
+    },
+
+    options: [
+
+      {
+        en: "Yes",
+        bn: "হ্যাঁ"
       },
 
-      muscle_pain: {
+      {
+        en: "No",
+        bn: "না"
+      }
 
-        present: true,
+    ],
 
-        weight: 25,
+    symptomMap: {
 
-        followup: {
+      Yes:
+        "weakness"
+    },
 
-          question:
-            "Do muscles feel extremely painful?",
+    priority: 6
+  }
+},
 
-          options: [
+sore_throat: {
 
-            "Yes",
+  category: "ENT",
 
-            "No"
+  present: true,
 
-          ],
+  weight: 20,
 
-          symptomMap: {
+  followup: {
 
-            Yes:
-              "muscle_pain"
-          },
+    question:
+      "Is throat pain severe?",
 
-          priority: 7
-        }
-      },
+    options: [
 
-      headache: {
+      "Yes",
 
-        present: true,
+      "No"
 
-        weight: 22,
+    ],
 
-        followup: {
+    symptomMap: {
 
-          question:
-            "Is headache severe?",
+      Yes:
+        "sore_throat"
+    },
 
-          options: [
-
-            "Yes",
-
-            "No"
-
-          ],
-
-          symptomMap: {
-
-            Yes:
-              "headache"
-          },
-
-          priority: 5
-        }
-      },
-
-      fatigue: {
-
-        present: true,
-
-        weight: 28,
-
-        followup: {
-
-          question:
-            "Do you feel extremely tired?",
-
-          options: [
-
-            "Yes",
-
-            "No"
-
-          ],
-
-          symptomMap: {
-
-            Yes:
-              "fatigue"
-          },
-
-          priority: 8
-        }
-      },
-
-      weakness: {
-
-        present: true,
-
-        weight: 22,
-
-        followup: {
-
-          question:
-            "Are you unable to perform normal activities?",
-
-          options: [
-
-            "Yes",
-
-            "No"
-
-          ],
-
-          symptomMap: {
-
-            Yes:
-              "weakness"
-          },
-
-          priority: 6
-        }
-      },
-
-      sore_throat: {
-
-        present: true,
-
-        weight: 20,
-
-        followup: {
-
-          question:
-            "Is throat pain severe?",
-
-          options: [
-
-            "Yes",
-
-            "No"
-
-          ],
-
-          symptomMap: {
-
-            Yes:
-              "sore_throat"
-          },
-
-          priority: 5
-        }
-      },
+    priority: 5
+  }
+},
 
       runny_nose: {
 
         present: true,
 
         weight: 20,
+        category: "ENT",
 
         followup: {
 
@@ -342,38 +483,41 @@ export const VIRAL_FEVER = [
 
       dry_cough: {
 
-        present: true,
+  category: "respiratory",
 
-        weight: 22,
+  present: true,
 
-        followup: {
+  weight: 22,
 
-          question:
-            "Does cough worsen at night?",
+  followup: {
 
-          options: [
+    question:
+      "Does cough worsen at night?",
 
-            "Yes",
+    options: [
 
-            "No"
+      "Yes",
 
-          ],
+      "No"
 
-          symptomMap: {
+    ],
 
-            Yes:
-              "dry_cough"
-          },
+    symptomMap: {
 
-          priority: 7
-        }
-      },
+      Yes:
+        "dry_cough"
+    },
+
+    priority: 7
+  }
+},
 
       sneezing: {
 
         present: true,
 
         weight: 15,
+        category: "ENT",
 
         followup: {
 
@@ -400,74 +544,81 @@ export const VIRAL_FEVER = [
 
       chills: {
 
-        present: true,
+  category: "general",
 
-        weight: 15,
+  present: true,
 
-        followup: {
+  weight: 15,
 
-          question:
-            "Do chills occur repeatedly?",
+  followup: {
 
-          options: [
+    question:
+      "Do chills occur repeatedly?",
 
-            "Yes",
+    options: [
 
-            "No"
+      "Yes",
 
-          ],
+      "No"
 
-          symptomMap: {
+    ],
 
-            Yes:
-              "chills"
-          },
+    symptomMap: {
 
-          priority: 5
-        }
-      },
+      Yes:
+        "chills"
+    },
 
-      loss_of_appetite: {
+    priority: 5
+  }
+},
 
-        present: true,
+loss_of_appetite: {
 
-        weight: 12,
+  category: "gastrointestinal",
 
-        followup: {
+  present: true,
 
-          question:
-            "Has appetite reduced significantly?",
+  weight: 12,
 
-          options: [
+  followup: {
 
-            "Yes",
+    question:
+      "Has appetite reduced significantly?",
 
-            "No"
+    options: [
 
-          ],
+      "Yes",
 
-          symptomMap: {
+      "No"
 
-            Yes:
-              "loss_of_appetite"
-          },
+    ],
 
-          priority: 3
-        }
-      },
+    symptomMap: {
 
-      mild_nausea: {
+      Yes:
+        "loss_of_appetite"
+    },
 
-        present: true,
+    priority: 3
+  }
+},
 
-        weight: 10
-      },
+mild_nausea: {
+
+  category: "gastrointestinal",
+
+  present: true,
+
+  weight: 10
+},
 
       watery_eyes: {
 
         present: true,
 
-        weight: 8
+        weight: 8,
+       category: "ENT"
       },
 
       // ======================
@@ -476,110 +627,128 @@ export const VIRAL_FEVER = [
 
       loss_of_smell: {
 
-        present: false,
+  category: "ENT",
 
-        weight: -60,
+  present: false,
 
-        followup: {
+  weight: -60,
 
-          question:
-            "Did smell suddenly disappear?",
+  followup: {
 
-          options: [
+    question:
+      "Did smell suddenly disappear?",
 
-            "Yes",
+    options: [
 
-            "No"
+      "Yes",
 
-          ],
+      "No"
 
-          symptomMap: {
+    ],
 
-            Yes:
-              "loss_of_smell"
-          },
+    symptomMap: {
 
-          priority: 12
-        }
-      },
+      Yes:
+        "loss_of_smell"
+    },
+
+    priority: 12
+  }
+},
 
       bleeding_gums: {
 
-        present: false,
+  category: "Tooth",
 
-        weight: -80,
+  present: false,
 
-        followup: {
+  weight: -80,
 
-          question:
-            "Any bleeding from gums?",
+  followup: {
 
-          options: [
+    question:
+      "Any bleeding from gums?",
 
-            "Yes",
+    options: [
 
-            "No"
+      "Yes",
 
-          ],
+      "No"
 
-          symptomMap: {
+    ],
 
-            Yes:
-              "bleeding_gums"
-          },
+    symptomMap: {
 
-          priority: 15
-        }
-      },
+      Yes:
+        "bleeding_gums"
+    },
 
-      vomiting_blood: {
+    priority: 15
+  }
+},
 
-        present: false,
+vomiting_blood: {
 
-        weight: -100
-      },
+  category: "gastrointestinal",
 
-      black_stool: {
+  present: false,
 
-        present: false,
+  weight: -100
+},
 
-        weight: -100
-      },
+black_stool: {
 
-      blood_in_sputum: {
+  category: "gastrointestinal",
 
-        present: false,
+  present: false,
 
-        weight: -90
-      },
+  weight: -100
+},
+
+blood_in_sputum: {
+
+  category: "respiratory",
+
+  present: false,
+
+  weight: -90
+},
 
       jaundice: {
 
-        present: false,
+  category: "liver",
 
-        weight: -80
-      },
+  present: false,
 
-      breathing_difficulty: {
+  weight: -80
+},
 
-        present: false,
+breathing_difficulty: {
 
-        weight: -85
-      },
+  category: "respiratory",
 
-      seizure: {
+  present: false,
 
-        present: false,
+  weight: -85
+},
 
-        weight: -100
-      },
+seizure: {
 
-      unconsciousness: {
+  category: "neurology",
 
-        present: false,
+  present: false,
 
-        weight: -100
-      }
+  weight: -100
+},
+
+unconsciousness: {
+
+  category: "neurology",
+
+  present: false,
+
+  weight: -100
+},
     },
 
     // ==========================
@@ -1072,6 +1241,81 @@ export const VIRAL_FEVER = [
 
 },
 
+supplements: [
+
+  {
+
+    name:
+      "Vitamin B Complex",
+
+    type:
+      "Vitamin Supplement",
+
+    purpose: {
+
+      en:
+        "May help improve fatigue and weakness.",
+
+      bn:
+        "ক্লান্তি ও দুর্বলতা কমাতে সহায়তা করতে পারে।"
+    }
+  },
+
+  {
+
+    name:
+      "Vitamin C",
+
+    type:
+      "Immune Support",
+
+    purpose: {
+
+      en:
+        "May support immune function.",
+
+      bn:
+        "রোগ প্রতিরোধ ক্ষমতাকে সমর্থন করতে পারে।"
+    }
+  },
+
+  {
+
+    name:
+      "Vitamin D3",
+
+    type:
+      "Vitamin Supplement",
+
+    purpose: {
+
+      en:
+        "May help maintain muscle strength.",
+
+      bn:
+        "পেশীর শক্তি বজায় রাখতে সহায়তা করতে পারে।"
+    }
+  },
+
+  {
+
+    name:
+      "Zinc",
+
+    type:
+      "Mineral Supplement",
+
+    purpose: {
+
+      en:
+        "May support recovery and immunity.",
+
+      bn:
+        "সুস্থতা ও রোগ প্রতিরোধে সহায়তা করতে পারে।"
+    }
+  }
+
+],
     // ==========================
     // TREATMENTS
     // ==========================
@@ -1106,7 +1350,38 @@ export const VIRAL_FEVER = [
 
       "Use mask if coughing"
 
-    ]
+    ],
+    
+    doctor_consultation: [
+
+  {
+    en: "Fever for more than 5 days",
+    bn: "৫ দিনের বেশি জ্বর থাকলে"
+  },
+
+  {
+    en: "Breathing difficulty",
+    bn: "শ্বাসকষ্ট হলে"
+  },
+
+  {
+    en: "Chest pain",
+    bn: "বুকে ব্যথা হলে"
+  },
+
+  {
+    en: "Severe dehydration",
+    bn: "তীব্র পানিশূন্যতা হলে"
+  }
+
+],
+disease_meaning: [
+  {
+    en: "A viral infection that causes fever, body aches, weakness, headache, and other flu-like symptoms. Most cases improve with rest, hydration, and supportive care.",
+    
+    bn: "ভাইরাসজনিত সংক্রমণের কারণে হওয়া জ্বর, যা শরীর ব্যথা, দুর্বলতা, মাথাব্যথা এবং ফ্লু-এর মতো অন্যান্য উপসর্গ সৃষ্টি করে। অধিকাংশ ক্ষেত্রে বিশ্রাম, পর্যাপ্ত পানি পান এবং সহায়ক চিকিৎসার মাধ্যমে সুস্থ হয়ে যায়।"
+  }
+],
 
   }
 
