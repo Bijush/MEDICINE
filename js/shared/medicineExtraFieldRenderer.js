@@ -5,6 +5,13 @@ from "../medicine/config.js";
 import { UI_RULES }
 from "../../engine/uiRules.js";
 
+import {
+
+  autoGoogleSearchValue
+
+}
+
+from "../composition/googleSearchLink.js";
 
 // prettier key label
 export function prettyKey(str=""){
@@ -18,7 +25,15 @@ export function prettyKey(str=""){
 
 // ================= EXTRA FIELDS =================
 
-export function renderValue(val, depth = 0){
+export function renderValue(
+
+  val,
+
+  depth = 0,
+
+  fieldKey = ""
+
+){
 
   // ================= SAFETY =================
 
@@ -55,7 +70,13 @@ export function renderValue(val, depth = 0){
 
       <div class="value">
 
-        ${String(val)}
+        ${autoGoogleSearchValue(
+
+          fieldKey,
+
+          String(val)
+
+        )}
 
       </div>
 
@@ -97,10 +118,16 @@ export function renderValue(val, depth = 0){
                   <span class="tag">
 
                     ${
-                      v?.ingredient?.en ||
-                      v?.ingredient ||
-                      v?.name ||
-                      ""
+                      autoGoogleSearchValue(
+
+                        fieldKey,
+
+                        v?.ingredient?.en ||
+                        v?.ingredient ||
+                        v?.name ||
+                        ""
+
+                      )
                     }
 
                     ${v?.strength
@@ -127,12 +154,28 @@ export function renderValue(val, depth = 0){
 
                   <span class="tag">
 
-                    ${v?.en || ""}
+                    ${
+                      autoGoogleSearchValue(
+
+                        fieldKey,
+
+                        v?.en || ""
+
+                      )
+                    }
 
                     ${v?.bn
                       ? `
                         <small class="bn">
-                          ${v.bn}
+
+                          ${autoGoogleSearchValue(
+
+                            fieldKey,
+
+                            v.bn
+
+                          )}
+
                         </small>
                       `
                       : ""
@@ -159,6 +202,18 @@ export function renderValue(val, depth = 0){
 
                       .slice(0,2)
 
+                      .map(x =>
+
+                        autoGoogleSearchValue(
+
+                          fieldKey,
+
+                          x
+
+                        )
+
+                      )
+
                       .join(" • ")
 
                   }
@@ -174,7 +229,13 @@ export function renderValue(val, depth = 0){
 
               <span class="tag">
 
-                ${v}
+                ${autoGoogleSearchValue(
+
+                  fieldKey,
+
+                  v
+
+                )}
 
               </span>
 
@@ -212,12 +273,26 @@ export function renderValue(val, depth = 0){
 
             <span class="tag">
 
-              ${v || ""}
+              ${autoGoogleSearchValue(
+
+                fieldKey,
+
+                v || ""
+
+              )}
 
               ${bnArr?.[i]
                 ? `
                   <small class="bn">
-                    ${bnArr[i]}
+
+                    ${autoGoogleSearchValue(
+
+                      fieldKey,
+
+                      bnArr[i]
+
+                    )}
+
                   </small>
                 `
                 : ""
@@ -235,31 +310,93 @@ export function renderValue(val, depth = 0){
 
     // ================= MULTILINGUAL TEXT =================
 
-    if(
-      typeof val?.en === "string" ||
-      typeof val?.bn === "string"
-    ){
 
-      return `
+if(
+  typeof val?.en === "string" ||
+  typeof val?.bn === "string"
+){
 
-        <div class="value">
+  return `
 
-          ${val?.en || ""}
+    <div class="bilingual-text">
 
-          ${val?.bn
-            ? `
-              <small class="bn">
-                ${val.bn}
-              </small>
-            `
-            : ""
+      ${Object.entries(val)
+
+        .map(([k,v]) => {
+
+          // =================
+          // STRING
+          // =================
+
+          if(
+            typeof v === "string"
+          ){
+
+            return `
+
+              <div class="bilingual-${k}">
+
+                ${autoGoogleSearchValue(
+
+                  fieldKey,
+
+                  v
+
+                )}
+
+              </div>
+
+            `;
+
           }
 
-        </div>
 
-      `;
-    }
+          // =================
+          // OBJECT
+          // =================
 
+          if(
+            typeof v === "object"
+            &&
+            v
+          ){
+
+            return `
+
+              <div class="nested-auto-group">
+
+                <div class="nested-auto-title">
+
+                  ${prettyKey(k)}
+
+                </div>
+
+                ${renderValue(
+
+                  v,
+
+                  depth + 1,
+
+                  fieldKey
+
+                )}
+
+              </div>
+
+            `;
+
+          }
+
+          return "";
+
+        })
+
+        .join("")}
+
+    </div>
+
+  `;
+}
 
     // ================= BOOLEAN STYLE OBJECT =================
 
@@ -324,40 +461,96 @@ export function renderValue(val, depth = 0){
 
     // ================= NESTED OBJECT =================
 
-    return `
+    // ================= NESTED OBJECT =================
 
-      <div class="nested-object">
+return `
 
-        ${entries
+  <div class="nested-object">
 
-          .map(([k,v]) => `
+    ${entries
 
-            <div class="nested-item">
+      .map(([k,v]) => {
 
-              <b class="nested-key">
+        // =====================
+        // AUTO FLATTEN OBJECT
+        // =====================
 
-                ${prettyKey(k)}:
+        if(
 
-              </b>
+          typeof v === "object" &&
 
-              <div class="nested-value">
+          !Array.isArray(v) &&
 
-                ${renderValue(
-                  v,
-                  depth + 1
-                )}
+          v !== null
+
+        ){
+
+          return `
+
+            <div class="nested-group">
+
+              <div class="nested-group-title">
+
+                ${prettyKey(k)}
 
               </div>
 
+              ${renderValue(
+
+                v,
+
+                depth + 1,
+
+                k
+
+              )}
+
             </div>
 
-          `)
+          `;
 
-          .join("")}
+        }
 
-      </div>
 
-    `;
+        // =====================
+        // NORMAL FIELD
+        // =====================
+
+        return `
+
+          <div class="nested-item">
+
+            <b class="nested-key">
+
+              ${prettyKey(k)}:
+
+            </b>
+
+            <div class="nested-value">
+
+              ${renderValue(
+
+                v,
+
+                depth + 1,
+
+                k
+
+              )}
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+
+      .join("")}
+
+  </div>
+
+`;
   }
 
 
@@ -367,7 +560,13 @@ export function renderValue(val, depth = 0){
 
     <div class="value">
 
-      ${String(val)}
+      ${autoGoogleSearchValue(
+
+        fieldKey,
+
+        String(val)
+
+      )}
 
     </div>
 
@@ -622,7 +821,15 @@ const importantKeywords =
 
         <div class="field-body">
 
-          ${renderValue(val)}
+          ${renderValue(
+
+  val,
+
+  0,
+
+  f.id
+
+)}
 
         </div>
 
