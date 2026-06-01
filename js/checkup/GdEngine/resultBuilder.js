@@ -1,3 +1,9 @@
+
+import {
+  medicineFromMloader
+}
+from "../medPageLoader/medicineFromMloader.js";
+
 export function buildResult({
 
   disease,
@@ -499,87 +505,120 @@ clusterAnalysis = []
   // FINAL RESULT
   // ==========================
 
-  return {
+  const {
+  symptoms,
+  tests,
+  causes,
+  risk_factors,
+  physical_exam,
+  red_flags,
+  symptom_clusters,
+  required_symptoms,
+  required_negative_symptoms,
+  ...autoFields
+} = disease;
+// medicine loader confidence
 
-    disease:
-      disease.disease,
+const intelligentMedicines =
 
-    medical_name:
-      disease.medical_name || "",
+  medicineFromMloader([
+    disease.disease,
+    ...matchedSymptoms
+  ]);
 
-    priority:
-      disease.priority || 0,
+console.log(
+  "Disease Name:",
+  disease.disease
+);
 
-    category:
-      disease.category,
+console.log(
+  "Disease:",
+  disease.disease
+);
 
-    severity:
-      disease.severity,
+console.log(
+  "Loader Medicines Length:",
+  intelligentMedicines?.length
+);
 
-    prevalence:
-      disease.prevalence || "",
+console.log(
+  "First Medicine:",
+  intelligentMedicines?.[0]
+);
 
-    contagious:
-      disease.contagious || false,
+console.log(
+  "Full Medicines:",
+  JSON.stringify(
+    intelligentMedicines,
+    null,
+    2
+  )
+);
+  
+return {
 
-    confidence:
-      Math.round(score),
+  // ======================
+  // AUTO DISEASE FIELDS
+  // ======================
 
-    confidenceLabel,
+  ...autoFields,
+intelligentMedicines,
+  // ======================
+  // CORE RESULT DATA
+  // ======================
 
-    confidenceExplanation,
+  confidence:
+    Math.round(score),
 
-    matchCount:
-      totalMatches,
+  confidenceLabel,
 
-    reason,
+  confidenceExplanation,
 
-    clinicalInterpretation,
+  matchCount:
+    totalMatches,
 
-    recommendation,
+  reason,
 
-    emergency:
-      emergencyDetected,
+  clinicalInterpretation,
 
-    emergencyReason,
+  recommendation,
 
-    recoveryAssessment,
+  emergency:
+    emergencyDetected,
 
-    differentialDiagnosis,
+  emergencyReason,
 
-    recommendedTests,
+  recoveryAssessment,
 
-    matchedClusters,
-    clusterAnalysis,
-    matchedRequiredSymptoms,
+  differentialDiagnosis,
 
-    matchedSymptoms,
+  recommendedTests,
 
-    matchedTests,
+  matchedClusters,
 
-    matchedRiskFactors,
+  clusterAnalysis,
 
-    matchedCauses,
+  matchedRequiredSymptoms,
 
-    matchedPhysicalExam,
+  matchedSymptoms,
 
-    matchedComplications,
+  matchedTests,
 
-    matchedRedFlags,
+  matchedRiskFactors,
 
-    contradictions,
+  matchedCauses,
 
-    contradictionLevel,
+  matchedPhysicalExam,
 
-    contradictionExplanation,
+  matchedComplications,
 
-    medicines:
-      disease.medicines || [],
+  matchedRedFlags,
 
-    treatments:
-      disease.treatments || [],
+  contradictions,
 
-    lifestyle_changes:
-      disease.lifestyle_changes || []
-  };
+  contradictionLevel,
+
+  contradictionExplanation
+
+};
 }
