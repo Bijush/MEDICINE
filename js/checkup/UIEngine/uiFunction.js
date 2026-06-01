@@ -14,7 +14,14 @@ import {
 }
 from "../translations/translate.js";
 
-const BLOCKED_PATTERNS = [
+
+
+// ==============================
+// EXACT BLOCKED WORDS
+// ==============================
+
+const BLOCKED_WORDS =
+new Set([
 
   // tests
 
@@ -24,7 +31,7 @@ const BLOCKED_PATTERNS = [
   "low",
   "abnormal",
 
-  // scan / imaging
+  // imaging
 
   "xray",
   "ct",
@@ -75,19 +82,64 @@ const BLOCKED_PATTERNS = [
   "coma",
   "sepsis",
 
-  // exposure/history
+  // history
 
   "history",
   "exposure",
   "contact",
 
-  // difficult terms
+  // difficult
 
   "ascites",
   "edema",
   "varices",
   "portal_vein"
+
+]);
+
+// ==============================
+// PARTIAL BLOCK PATTERNS
+// ==============================
+
+const BLOCKED_PARTIALS = [
+
+  "_test",
+  "_scan",
+  "_exam",
+  "_level",
+  "_grade",
+  "_stage"
+
 ];
+
+// ==============================
+// VALID SYMPTOM CACHE
+// ==============================
+
+const VALID_SYMPTOMS =
+new Set();
+
+ALL_DISEASES.forEach(
+  disease => {
+
+    Object.keys(
+
+      disease.symptoms || {}
+
+    )
+
+    .forEach(symptom => {
+
+      VALID_SYMPTOMS.add(
+        symptom
+      );
+    });
+  }
+);
+
+// ==============================
+// USER FRIENDLY CHECK
+// ==============================
 
 export function isUserFriendlySymptom(
   symptom
@@ -97,74 +149,86 @@ export function isUserFriendlySymptom(
   // INVALID
   // ==========================
 
-  if (!symptom)
+  if (
+
+    !symptom ||
+
+    typeof symptom !==
+    "string"
+
+  ) {
+
     return false;
+  }
 
   const lower =
-    symptom.toLowerCase();
+    symptom
+    .toLowerCase()
+    .trim();
 
   // ==========================
-  // BLOCKED PATTERNS
-  // ==========================
-
-  const blocked =
-    BLOCKED_PATTERNS.some(
-      pattern =>
-        lower.includes(
-          pattern
-        )
-    );
-
-  if (blocked)
-    return false;
-
-  // ==========================
-  // TOO LONG
+  // LENGTH
   // ==========================
 
   if (
-    symptom.length > 40
+    lower.length > 40
   ) {
 
     return false;
   }
 
   // ==========================
-  // VALID FORMAT
+  // FORMAT
   // ==========================
 
   const validFormat =
 
     /^[a-z0-9_]+$/.test(
-      symptom
+      lower
     );
 
   if (!validFormat)
     return false;
 
   // ==========================
-  // DATASET CHECK
+  // EXACT BLOCK
   // ==========================
 
-  let exists = false;
+  if (
 
-  ALL_DISEASES.forEach(
-    disease => {
+    BLOCKED_WORDS.has(
+      lower
+    )
 
-      if (
+  ) {
 
-        disease.symptoms?.[
-          symptom
-        ]
+    return false;
+  }
 
-      ) {
+  // ==========================
+  // PARTIAL BLOCK
+  // ==========================
 
-        exists = true;
-      }
-    }
+  const partialBlocked =
+
+    BLOCKED_PARTIALS.some(
+      pattern =>
+
+        lower.includes(
+          pattern
+        )
+    );
+
+  if (partialBlocked)
+    return false;
+
+  // ==========================
+  // DATASET EXISTS
+  // ==========================
+
+  return VALID_SYMPTOMS.has(
+    symptom
   );
-
-  return exists;
 }
 
 // ==============================

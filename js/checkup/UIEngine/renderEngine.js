@@ -3,6 +3,22 @@ import {
   renderSymptomLabel
 }
 from "./uiFunction.js";
+
+import {
+  updateSelectedSymptoms
+  
+} from "./updateSelectedSymptoms.js";
+
+import {
+  renderLiveFollowupQuestions
+}
+from "../renderFollowupQuestions.js";
+
+import {
+  CURRENT_LANG
+}
+from "../checkup.js";
+
 // ==============================
 // MAIN LAYOUT
 // ==============================
@@ -29,11 +45,12 @@ export function renderMainLayout(
       uiData
     )}
 
+    ${renderSymptomInfoModal()}
+
   </div>
 
   `;
 }
-
 
 // ui Patient input
 
@@ -251,22 +268,51 @@ export function renderCategoryHTML(
                 "
               >
 
-                <label>
+<label class="
+  symptom-label-wrap
+">
 
-                  <input
-                    type="checkbox"
-                    value="${symptom}"
-                  />
+  <div class="
+    symptom-left
+  ">
 
-                  <span>
+    <input
+      type="checkbox"
+      value="${symptom}"
+    />
 
-                    ${renderSymptomLabel(
-                      symptom
-                    )}
+    <span class="
+      symptom-name
+    ">
 
-                  </span>
+      
 
-                </label>
+      ${renderSymptomLabel(
+        symptom
+      )}
+
+    </span>
+
+  </div>
+
+  <button
+
+    type="button"
+
+    class="
+      symptom-info-btn
+    "
+
+    data-symptom="
+      ${symptom}
+    "
+  >
+
+    ℹ️
+
+  </button>
+
+</label>
 
               </div>
             `
@@ -411,22 +457,51 @@ export function renderAdvancedSection(
               "
             >
 
-              <label>
+              <label class="
+  symptom-label-wrap
+">
 
-                <input
-                  type="checkbox"
-                  value="${symptom}"
-                />
+  <div class="
+    symptom-left
+  ">
 
-                <span>
+    <input
+      type="checkbox"
+      value="${symptom}"
+    />
 
-                  ${renderSymptomLabel(
-                    symptom
-                  )}
+    <span class="
+      symptom-name
+    ">
 
-                </span>
+      
 
-              </label>
+      ${renderSymptomLabel(
+        symptom
+      )}
+
+    </span>
+
+  </div>
+
+  <button
+
+    type="button"
+
+    class="
+      symptom-info-btn
+    "
+
+    data-symptom="
+      ${symptom}
+    "
+  >
+
+    ℹ️
+
+  </button>
+
+</label>
 
             </div>
           `
@@ -595,10 +670,7 @@ export function setupSearch() {
       items.forEach(
         item => {
 
-          const symptom =
-
-            item.dataset.symptom
-            .toLowerCase();
+          const symptom = item.dataset.symptom.toLowerCase();
 
           item.style.display =
 
@@ -762,4 +834,414 @@ export function setupLiveInputs(
     );
   });
 }
+export function renderSymptomInfoModal() {
 
+  return `
+
+  <div
+    id="symptomInfoModal"
+    class="symptom-tooltip"
+  >
+
+    <button
+      id="closeSymptomModal"
+      class="symptom-modal-close"
+      type="button"
+    >
+
+      ✖
+
+    </button>
+
+    <div
+      id="symptomModalContent"
+    ></div>
+
+  </div>
+
+  `;
+}
+
+export function setupSymptomInfoModal() {
+
+  const buttons =
+
+    document.querySelectorAll(
+      ".symptom-info-btn"
+    );
+
+  const modal =
+
+    document.getElementById(
+      "symptomInfoModal"
+    );
+
+  const content =
+
+    document.getElementById(
+      "symptomModalContent"
+    );
+
+  const closeBtn =
+
+    document.getElementById(
+      "closeSymptomModal"
+    );
+
+  if (
+
+    !modal ||
+
+    !content
+
+  ) {
+
+    console.warn(
+      "Symptom modal elements not found"
+    );
+
+    return;
+  }
+
+  // ==========================
+  // CLOSE BUTTON
+  // ==========================
+
+  if (closeBtn) {
+
+    closeBtn.onclick = () => {
+
+      modal.style.display =
+        "none";
+    };
+  }
+
+  buttons.forEach(btn => {
+
+    btn.addEventListener(
+
+      "click",
+
+      e => {
+
+        e.stopPropagation();
+
+        const symptom =
+
+          btn.dataset.symptom
+            ?.trim();
+
+        const meta =
+
+          window
+          .symptomMetadata?.[
+            symptom
+          ] || {};
+
+        console.log(
+          "MODAL META JSON:",
+          JSON.stringify(
+            meta,
+            null,
+            2
+          )
+        );
+
+        // ======================
+        // BUILD HTML
+        // ======================
+
+        let html = `
+
+<div class="
+  symptom-modal-title
+">
+
+  ${renderSymptomLabel(
+    symptom
+  )}
+
+</div>
+
+`;
+
+        Object.entries(meta)
+
+        .forEach(
+
+          ([key, value]) => {
+
+            if (
+
+              value == null ||
+
+              key ===
+                "followup" ||
+
+              key ===
+                "present" ||
+
+              key ===
+                "weight"
+
+            ) {
+
+              return;
+            }
+
+            // OBJECT
+
+            if (
+
+              typeof value ===
+                "object" &&
+
+              !Array.isArray(
+                value
+              )
+
+            ) {
+
+              html += `
+
+<div class="
+  symptom-modal-section
+">
+
+  <b>${key}</b>
+
+  <br>
+
+  ${value.en || ""}
+
+  ${
+    value.bn
+
+      ? `<br><br>
+         (${value.bn})
+        `
+
+      : ""
+  }
+
+</div>
+
+`;
+
+              return;
+            }
+
+            // ARRAY
+
+            if (
+
+              Array.isArray(
+                value
+              )
+
+            ) {
+
+              html += `
+
+<div class="
+  symptom-modal-section
+">
+
+  <b>${key}</b>
+
+  <br>
+
+  ${value.join(
+    ", "
+  )}
+
+</div>
+
+`;
+
+              return;
+            }
+
+            // STRING / NUMBER
+
+            html += `
+
+<div class="
+  symptom-modal-section
+">
+
+  <b>${key}</b> :
+
+  ${value}
+
+</div>
+
+`;
+          }
+        );
+
+        content.innerHTML =
+          html;
+
+        // ======================
+        // SHOW
+        // ======================
+
+        // ======================
+// SHOW
+// ======================
+
+modal.style.display =
+  "block";
+
+modal.style.visibility =
+  "hidden";
+
+modal.style.left =
+  "0px";
+
+modal.style.top =
+  "0px";
+
+const rect =
+
+  btn.getBoundingClientRect();
+
+const tooltipWidth =
+
+  modal.offsetWidth;
+
+const tooltipHeight =
+
+  modal.offsetHeight;
+
+const screenWidth =
+
+  window.innerWidth;
+
+const screenHeight =
+
+  window.innerHeight;
+
+// ======================
+// HORIZONTAL POSITION
+// ======================
+
+let leftPosition =
+
+  rect.right + 10;
+
+// RIGHT OVERFLOW
+
+if (
+
+  leftPosition +
+  tooltipWidth >
+
+  screenWidth - 10
+
+) {
+
+  leftPosition =
+
+    rect.left -
+    tooltipWidth -
+    10;
+}
+
+// LEFT OVERFLOW
+
+if (
+  leftPosition < 10
+) {
+
+  leftPosition = 10;
+}
+
+// ======================
+// VERTICAL POSITION
+// ======================
+
+let topPosition =
+
+  rect.top +
+  window.scrollY -
+
+  (tooltipHeight / 2) +
+
+  (rect.height / 2);
+
+// TOP LIMIT
+
+if (
+  topPosition < 10
+) {
+
+  topPosition = 10;
+}
+
+// BOTTOM LIMIT
+
+const maxTop =
+
+  window.scrollY +
+
+  screenHeight -
+
+  tooltipHeight -
+
+  10;
+
+if (
+  topPosition > maxTop
+) {
+
+  topPosition = maxTop;
+}
+
+// ======================
+// APPLY
+// ======================
+
+modal.style.left =
+
+  `${leftPosition}px`;
+
+modal.style.top =
+
+  `${topPosition}px`;
+
+modal.style.visibility =
+  "visible";
+      }
+    );
+  });
+
+  // ==========================
+  // OUTSIDE CLICK CLOSE
+  // ==========================
+
+  document.addEventListener(
+
+    "click",
+
+    e => {
+
+      if (
+
+        !modal.contains(
+          e.target
+        ) &&
+
+        !e.target.closest(
+          ".symptom-info-btn"
+        )
+
+      ) {
+
+        modal.style.display =
+          "none";
+      }
+    }
+  );
+}
