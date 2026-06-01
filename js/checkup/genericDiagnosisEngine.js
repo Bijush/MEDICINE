@@ -1,3 +1,5 @@
+
+console.log("GENERIC ENGINE LOADED");
 // ==============================
 // GENERIC DIAGNOSIS ENGINE
 // POWERFUL UNIVERSAL VERSION

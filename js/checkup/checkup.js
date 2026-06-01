@@ -1,3 +1,6 @@
+
+
+
 // ==============================
 // CHECKUP MAIN
 // ==============================
@@ -122,7 +125,7 @@ window.currentUserSymptoms = {
         diagnoseBtn.disabled = false;
 
         diagnoseBtn.innerHTML =
-          "Start AI Diagnosis";
+          " 🔍 Diagnose";
 
         return;
       }
@@ -135,7 +138,13 @@ const result =
   diagnosePatient(
     userData
   );
+window.latestDiagnosisResult =
+  result;
 
+console.log(
+  "LATEST RESULT",
+  result
+);
 // ======================
 // FOLLOWUP QUESTIONS
 // ======================
@@ -186,12 +195,25 @@ renderMultipleConfidenceBars(
   result.allResults || []
 );
 
+
+setTimeout(() => {
+
+  document
+    .getElementById(
+      "diagnosisResults"
+    )
+    ?.scrollIntoView({
+      behavior: "smooth",
+      block: "start"
+    });
+
+}, 200);
 // button reset
 
 diagnoseBtn.disabled = false;
 
 diagnoseBtn.innerHTML =
-  "Start AI Diagnosis";
+  "    🔍 Diagnose";
 
   } // click function end
 
@@ -289,6 +311,8 @@ renderLiveFollowupQuestions();
     renderMultipleConfidenceBars(
       result.allResults || []
     );
+    
+    
   }
 );
 
@@ -298,3 +322,52 @@ document.addEventListener(
 
   initCheckup
 );
+// ==============================
+// BACK TO TOP
+// ==============================
+
+const backBtn =
+document.getElementById(
+  "backToTopBtn"
+);
+
+if (backBtn) {
+
+  window.addEventListener(
+    "scroll",
+    () => {
+
+      if (
+        window.scrollY > 400
+      ) {
+
+        backBtn.classList.add(
+          "show"
+        );
+
+      } else {
+
+        backBtn.classList.remove(
+          "show"
+        );
+
+      }
+
+    }
+  );
+
+  backBtn.addEventListener(
+    "click",
+    () => {
+
+      window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+      });
+
+    }
+  );
+}

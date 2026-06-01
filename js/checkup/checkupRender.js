@@ -3,6 +3,67 @@ import {
   t
 }
 from "./translations/translate.js";
+import {
+  renderMedicineValue
+}
+from "./medPageLoader/medicineRenderHelper.js";
+
+
+
+const AUTO_RENDER_FIELDS = {
+disease_meaning: {
+  title: "Meaning Of Diseases"
+},
+  matchedSymptoms: {
+    title: "Symptoms"
+  },
+
+  matchedTests: {
+    title: "Lab Tests"
+  },
+
+  matchedRedFlags: {
+    title: "Red Flags",
+    className: "diag-red-flag"
+  },
+
+  contradictions: {
+    title: "Contradictions",
+    className: "diag-contradiction"
+  },
+
+  treatments: {
+    title: "Treatments"
+  },
+
+  lifestyle_changes: {
+    title: "Lifestyle Advice"
+  },
+
+  supplements: {
+    title: "Supplements"
+  },
+
+  diet: {
+    title: "Diet"
+  },
+
+  prevention: {
+    title: "Prevention"
+  },
+
+  home_remedies: {
+    title: "Home Remedies"
+  },
+
+  recovery_signs: {
+    title: "Recovery Signs"
+  },
+  
+
+
+};
+
 // ==============================
 // DIAGNOSIS RENDERER
 // ==============================
@@ -145,6 +206,7 @@ if (!top) {
 
     ${emergencyHTML}
     
+    
     ${
   result.followupQuestions?.length
 
@@ -153,6 +215,7 @@ if (!top) {
   <div class="
     followup-box
   ">
+  
 
     <div class="
       followup-title
@@ -501,133 +564,7 @@ if (!top) {
 
         </div>
 
-        <!-- MATCHED SYMPTOMS -->
 
-        ${
-          disease.matchedSymptoms?.length
-
-          ? `
-
-          <div class="
-            diag-section
-          ">
-
-            <div class="
-              diag-label
-            ">
-
-              Symptoms
-
-            </div>
-
-            <div class="
-              diag-tags
-            ">
-
-              ${disease
-                .matchedSymptoms
-                .map(
-                  item => `
-                  <span>
-                    ${formatText(item)}
-                  </span>
-                `
-                )
-                .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
-
-        <!-- TESTS -->
-
-        ${
-          disease.matchedTests?.length
-
-          ? `
-
-          <div class="
-            diag-section
-          ">
-
-            <div class="
-              diag-label
-            ">
-
-              Lab Tests
-
-            </div>
-
-            <div class="
-              diag-tags
-            ">
-
-              ${disease
-                .matchedTests
-                .map(
-                  item => `
-                  <span>
-                    ${formatText(item)}
-                  </span>
-                `
-                )
-                .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
-
-        <!-- RED FLAGS -->
-
-        ${
-          disease.matchedRedFlags?.length
-
-          ? `
-
-          <div class="
-            diag-section
-          ">
-
-            <div class="
-              diag-label
-            ">
-
-              Red Flags
-
-            </div>
-
-            <div class="
-              diag-tags
-            ">
-
-              ${disease
-                .matchedRedFlags
-                .map(
-                  item => `
-                  <span class="
-                    diag-red-flag
-                  ">
-                    ${formatText(item)}
-                  </span>
-                `
-                )
-                .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
 
         <!-- MEDICINES -->
 ${(() => {
@@ -635,8 +572,20 @@ ${(() => {
   const allMedicines = Object.values(
     disease.medicines || {}
   ).flat();
+  
+const loaderMedicines =
 
-  return !allMedicines.length
+  disease.intelligentMedicines || [];
+  
+  const finalMedicines = [
+
+  ...allMedicines,
+
+  ...loaderMedicines
+];
+
+  return !allMedicines.length &&
+       !loaderMedicines.length
 
     ? `
 
@@ -668,7 +617,7 @@ ${(() => {
         diag-medicines
       ">
 
-        ${allMedicines
+        ${finalMedicines
           .map(
             med => `
 
@@ -686,16 +635,26 @@ ${
 
   ? `
 
-  <div class="
-    diag-med-line
-    ${med.line}
-  ">
+<div class="
+  diag-med-line
+  ${med.line}
+">
 
-    ${med.line
+  ${
+    {
+      first_line: "1ST LINE",
+      second_line: "2ND LINE",
+      third_line: "3RD LINE",
+      fourth_line: "4TH LINE",
+      emergency_line: "EMERGENCY"
+    }[med.line] ||
+
+    med.line
       .replaceAll("_", " ")
-      .toUpperCase()}
+      .toUpperCase()
+  }
 
-  </div>
+</div>
 
   `
 
@@ -711,7 +670,12 @@ ${
 
     ? med
 
-    : med.name || "Unknown Medicine"
+    : (
+        med.name ||
+        med.names?.primary?.en ||
+        med.names?.generic?.en ||
+        "Unknown Medicine"
+      )
 }
 
 </div>
@@ -727,7 +691,9 @@ ${
     diag-med-condition
   ">
 
-    📌 ${med.condition}
+📌 ${renderMedicineValue(
+  med.condition
+)}
 
   </div>
 
@@ -746,7 +712,9 @@ ${
   ">
 
     Dosage:
-    ${med.dosage}
+    ${renderMedicineValue(
+  med.dosage
+)}
 
   </div>
 
@@ -765,7 +733,9 @@ ${
   ">
 
     Frequency:
-    ${med.frequency}
+${renderMedicineValue(
+  med.frequency
+)}
 
   </div>
 
@@ -784,7 +754,9 @@ ${
   ">
 
     Duration:
-    ${med.duration}
+    ${renderMedicineValue(
+  med.duration
+)}
 
   </div>
 
@@ -793,6 +765,26 @@ ${
   : ""
 }
 
+${
+  med.brands?.length
+
+  ? `
+
+  <div class="
+    diag-med-brand
+  ">
+
+    Brand:
+    ${med.brands
+      .slice(0, 5)
+      .join(", ")}
+
+  </div>
+
+  `
+
+  : ""
+}
 ${
   med.max_daily
 
@@ -803,7 +795,9 @@ ${
   ">
 
     Max:
-    ${med.max_daily}
+    ${renderMedicineValue(
+  med.max_daily
+)}
 
   </div>
 
@@ -822,7 +816,10 @@ ${
   ">
 
     Purpose:
-    ${med.purpose}
+
+    ${renderMedicineValue(
+  med.purpose
+)}
 
   </div>
 
@@ -840,7 +837,119 @@ ${
     diag-med-warning
   ">
 
-    ⚠️ ${med.warning}
+    ⚠️ ${renderMedicineValue(
+      med.warning
+    )}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.group
+
+  ? `
+
+  <div class="
+    diag-med-symptoms
+  ">
+
+    <b>GROUP:</b><br>
+
+    ${renderMedicineValue(
+      med.group
+    )}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.symptoms
+
+  ? `
+
+  <div class="
+    diag-med-symptoms
+  ">
+
+    <b>Symptoms:</b><br>
+
+    ${renderMedicineValue(
+      med.symptoms
+    )}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.diseases
+
+  ? `
+
+  <div class="
+    diag-med-diseases
+  ">
+
+    <b>Diseases:</b><br>
+
+    ${renderMedicineValue(
+      med.diseases
+    )}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.sideEffects
+
+  ? `
+
+  <div class="
+    diag-med-sideeffects
+  ">
+
+    <b>Side Effects:</b><br>
+
+    ${renderMedicineValue(
+      med.sideEffects
+    )}
+
+  </div>
+
+  `
+
+  : ""
+}
+
+${
+  med.usageType
+
+  ? `
+
+  <div class="
+    diag-med-usage
+  ">
+
+    <b>Usage Type:</b><br>
+
+    ${renderMedicineValue(
+      med.usageType
+    )}
 
   </div>
 
@@ -860,91 +969,11 @@ ${
 `;
 })()}
 
-        <!-- TREATMENTS -->
+${renderAutoSections(
+  disease
+)}
 
-        ${
-          disease.treatments?.length
 
-          ? `
-
-          <div class="
-            diag-section
-          ">
-
-            <div class="
-              diag-label
-            ">
-
-              Treatments
-
-            </div>
-
-            <div class="
-              diag-tags
-            ">
-
-              ${disease
-                .treatments
-                .map(
-                  item => `
-                  <span>
-                    ${item}
-                  </span>
-                `
-                )
-                .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
-
-        <!-- LIFESTYLE -->
-
-        ${
-          disease
-            .lifestyle_changes
-            ?.length
-
-          ? `
-
-          <div class="
-            diag-section
-          ">
-
-            <div class="
-              diag-label
-            ">
-
-              Lifestyle Advice
-
-            </div>
-
-            <div class="
-              diag-tags
-            ">
-
-              ${disease
-                .lifestyle_changes
-                .map(
-                  item => `
-                  <span>
-                    ${item}
-                  </span>
-                `
-                )
-                .join("")}
-
-            </div>
-
-          </div>
-          `
-
-          : ""
-        }
         
         
 <!-- CLUSTER ANALYSIS -->
@@ -1097,69 +1126,7 @@ ${
 
   : ""
 }
-<!-- CONTRADICTIONS -->
 
-${
-  disease.contradictionLevel
-
-  ? `
-
-  <div class="
-    diag-contradiction-level
-    contradiction-${disease.contradictionLevel}
-  ">
-
-    Contradiction Level:
-    ${disease.contradictionLevel}
-
-  </div>
-
-  `
-
-  : ""
-}
-
-${
-  disease.contradictions?.length
-
-  ? `
-
-  <div class="
-    diag-section
-  ">
-
-    <div class="
-      diag-label
-    ">
-
-      Contradictions
-
-    </div>
-
-    <div class="
-      diag-tags
-    ">
-
-      ${disease
-        .contradictions
-        .map(
-          item => `
-          <span class="
-            diag-contradiction
-          ">
-            ❌ ${formatText(item)}
-          </span>
-        `
-        )
-        .join("")}
-
-    </div>
-
-  </div>
-  `
-
-  : ""
-}
         <!-- RECOMMENDATION -->
 
         <div class="
@@ -1301,6 +1268,179 @@ if (reportBtn) {
     result
   );
 };
+}
+
+
+const clearBtn =
+  document.getElementById(
+    "clearFollowupBtn"
+  );
+
+if (clearBtn) {
+
+  clearBtn.onclick = () => {
+
+    // ======================
+    // FOLLOWUP BUTTONS
+    // ======================
+
+    document
+      .querySelectorAll(
+        ".followup-option"
+      )
+      .forEach(btn => {
+
+        btn.classList.remove(
+          "selected-followup"
+        );
+
+      });
+
+    // ======================
+    // DROPDOWNS
+    // ======================
+
+    document
+      .querySelectorAll(
+        "select"
+      )
+      .forEach(select => {
+
+        select.selectedIndex = 0;
+
+        select.dispatchEvent(
+          new Event(
+            "change",
+            {
+              bubbles: true
+            }
+          )
+        );
+
+      });
+
+    // ======================
+    // CHECKBOXES
+    // ======================
+
+    document
+      .querySelectorAll(
+        "input[type='checkbox']"
+      )
+      .forEach(cb => {
+
+        cb.checked = false;
+
+        cb.dispatchEvent(
+          new Event(
+            "change",
+            {
+              bubbles: true
+            }
+          )
+        );
+
+        cb.dispatchEvent(
+          new Event(
+            "input",
+            {
+              bubbles: true
+            }
+          )
+        );
+
+      });
+
+    // ======================
+    // RADIO BUTTONS
+    // ======================
+
+    document
+      .querySelectorAll(
+        "input[type='radio']"
+      )
+      .forEach(r => {
+
+        r.checked = false;
+
+        r.dispatchEvent(
+          new Event(
+            "change",
+            {
+              bubbles: true
+            }
+          )
+        );
+
+      });
+
+    // ======================
+    // TEXT INPUTS
+    // ======================
+
+    document
+      .querySelectorAll(
+        "input[type='text'], input[type='number'], textarea"
+      )
+      .forEach(input => {
+
+        input.value = "";
+
+      });
+
+    // ======================
+    // GLOBAL RESET
+    // ======================
+
+    window.followupAnswers = {};
+
+    window.currentUserSymptoms = {};
+
+    window.confidenceBoosts = {};
+
+    window.latestFollowupAnswer = null;
+
+    window.selectedSymptoms = [];
+
+    // ======================
+    // CLEAR RESULT UI
+    // ======================
+
+    const resultBox =
+      document.getElementById(
+        "diagnosisResults"
+      );
+
+    if (resultBox) {
+
+      resultBox.innerHTML = `
+        <div class="diag-empty">
+          All selections cleared
+        </div>
+      `;
+    }
+
+    // ======================
+    // REDIAGNOSIS EVENT
+    // ======================
+
+    document.dispatchEvent(
+
+      new CustomEvent(
+        "followupUpdated",
+        {
+          detail: {}
+        }
+      )
+
+    );
+
+    console.log(
+      "All selections cleared"
+    );
+
+  };
+
 }
 
   // ==========================
@@ -1541,17 +1681,6 @@ Object.values(symptomMap)
   });
 
 // ==================
-// DEBUG
-// ==================
-
-console.log(
-
-  "Updated Symptoms:",
-
-  window.currentUserSymptoms
-);
-
-// ==================
 // REDIAGNOSIS EVENT
 // ==================
 
@@ -1578,6 +1707,206 @@ document.dispatchEvent(
   
   
 }
+
+
+// ==============================
+// AUTO RENDER HELPER
+// SUPPORTS:
+// 1. String
+// 2. Bilingual {en,bn}
+// 3. {name}
+// 4. {title}
+// ==============================
+
+function renderAutoSections(
+  disease = {}
+) {
+
+  return Object.entries(
+    AUTO_RENDER_FIELDS
+  )
+
+  .map(
+    ([field, config]) => {
+
+      const data =
+        disease[field];
+
+      if (
+        !Array.isArray(data) ||
+        !data.length
+      ) {
+
+        return "";
+      }
+
+      return `
+
+<div class="
+  diag-section
+">
+
+  <div class="
+    diag-label
+  ">
+
+    ${config.title}
+
+  </div>
+
+  <div class="
+    diag-tags
+  ">
+
+    ${data.map(item => {
+
+      // ======================
+      // STRING
+      // ======================
+
+      if (
+        typeof item ===
+        "string"
+      ) {
+
+        return `
+
+<span
+  class="
+    ${config.className || ""}
+  "
+>
+
+  ${formatText(item)}
+
+</span>
+
+`;
+      }
+
+      // ======================
+      // BILINGUAL
+      // ======================
+
+      if (typeof item === "object") {
+
+  const en =
+    item.en ||
+    item.label?.en ||
+    item.name?.en ||
+    item.title?.en ||
+    "";
+
+  const bn =
+    item.bn ||
+    item.label?.bn ||
+    item.name?.bn ||
+    item.title?.bn ||
+    "";
+
+  if (en || bn) {
+
+    return `
+
+<span
+  class="
+    ${config.className || ""}
+  "
+>
+
+  <div>
+    ${en}
+  </div>
+
+  ${
+    bn
+      ? `<small>${bn}</small>`
+      : ""
+  }
+
+</span>
+
+`;
+  }
+}
+
+      // ======================
+      // NAME
+      // ======================
+
+      if (
+        item.name
+      ) {
+
+        return `
+
+<span
+  class="
+    ${config.className || ""}
+  "
+>
+
+  ${item.name}
+
+</span>
+
+`;
+      }
+
+      // ======================
+      // TITLE
+      // ======================
+
+      if (
+        item.title
+      ) {
+
+        return `
+
+<span
+  class="
+    ${config.className || ""}
+  "
+>
+
+  ${item.title}
+
+</span>
+
+`;
+      }
+
+      // ======================
+      // FALLBACK
+      // ======================
+
+      return `
+
+<span
+  class="
+    ${config.className || ""}
+  "
+>
+
+  Unknown
+
+</span>
+
+`;
+
+    }).join("")}
+
+  </div>
+
+</div>
+
+`;
+    }
+  )
+
+  .join("");
+}
+
 
 // ==============================
 // FORMAT TEXT
@@ -1640,11 +1969,14 @@ function generateFinalReport(
   // FLATTEN MEDICINES
   // ======================
 
-  const allMedicines =
+  const allMedicines = [
 
-    Object.values(
-      top.medicines || {}
-    ).flat();
+  ...Object.values(
+    top.medicines || {}
+  ).flat(),
+
+  ...(top.intelligentMedicines || [])
+];
 
   const reportHTML = `
 
