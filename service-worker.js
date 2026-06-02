@@ -30,7 +30,7 @@ const ASSETS = [
    "./js/shared/comboExplainHelper.js",
   "./js/shared/diseaseHelper.js",
    "./js/shared/search-utils.js",
-   "./js/shared/strenghtHelper.js",
+   "./js/shared/strenghthHelper.js",
    "./js/shared/utils.js",
    
   // ================= DASHBOARD =================
@@ -38,8 +38,7 @@ const ASSETS = [
 
   // ================= CHECKUP =================
 
-  "./js/checkup/checkUpUiRender.js",
-  "./js/checkup/dropdownRender.js",
+  
   "./js/checkup/symptomAdapter.js",
   "./js/checkup/checkup.js",
 
