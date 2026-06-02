@@ -1,4 +1,13 @@
 // ==============================
+// COMPOSITION RENDERER
+// ==============================
+
+import {
+  renderCompositionCard
+} from "./compositionCardRenderer.js";
+
+
+// ==============================
 // BASE NAME EXTRACTOR
 // ==============================
 
@@ -8,19 +17,97 @@ function getBaseComposition(
 
   return String(name)
 
+    .toLowerCase()
+
     .replace(
-      /\b\d+(\.\d+)?\s*(mg|mcg|g|ml)\b/gi,
+      /\b\d+(\.\d+)?\s*(mg|mcg|g|gm|ml)\b/gi,
       ""
     )
 
     .replace(
-      /\b(chewable|sr|cr|er|xr|ds)\b/gi,
+      /\b(tablet|capsule|syrup|drop|drops|injection|chewable|sr|cr|er|xr|ds)\b/gi,
       ""
     )
+
+    .replace(/[()[\]-]/g, " ")
 
     .replace(/\s+/g, " ")
 
     .trim();
+
+}
+
+
+// ==============================
+// CAPITALIZE
+// ==============================
+
+function capitalizeWords(
+  text = ""
+) {
+
+  return text
+
+    .split(" ")
+
+    .map(
+      word =>
+
+        word.charAt(0)
+          .toUpperCase()
+
+        +
+
+        word.slice(1)
+    )
+
+    .join(" ");
+
+}
+
+
+// ==============================
+// RENDER EMPTY
+// ==============================
+
+export function renderEmpty(
+
+  container,
+
+  text = "No data found."
+
+) {
+
+  container.innerHTML = `
+
+    <div class="composition-empty">
+
+      ${text}
+
+    </div>
+
+  `;
+
+}
+
+
+// ==============================
+// RENDER LOADING
+// ==============================
+
+export function renderLoading(
+  container
+) {
+
+  container.innerHTML = `
+
+    <div class="composition-loading">
+
+      Loading...
+
+    </div>
+
+  `;
 
 }
 
@@ -67,14 +154,27 @@ export function renderCompositionList(
 
   });
 
-
   container.innerHTML =
 
     Object.entries(groups)
 
       .map(
 
-        ([base, items], index) => `
+        ([base, items], index) => {
+
+          // Single item
+          if (
+            items.length === 1
+          ) {
+
+            return renderCompositionCard(
+              items[0]
+            );
+
+          }
+
+          // Grouped items
+          return `
 
 <div class="composition-group">
 
@@ -87,7 +187,7 @@ export function renderCompositionList(
 
       <div class="group-title">
 
-        ${base}
+        ${capitalizeWords(base)}
 
       </div>
 
@@ -133,7 +233,9 @@ export function renderCompositionList(
 
 </div>
 
-`
+          `;
+
+        }
 
       )
 
@@ -190,5 +292,38 @@ export function renderCompositionList(
       };
 
     });
+
+}
+
+
+// ==============================
+// APPEND COMPOSITION LIST
+// ==============================
+
+export function appendCompositionList(
+
+  container,
+
+  list = []
+
+) {
+
+  if (!list.length) {
+    return;
+  }
+
+  container.innerHTML +=
+
+    list
+
+      .map(item =>
+
+        renderCompositionCard(
+          item
+        )
+
+      )
+
+      .join("");
 
 }
