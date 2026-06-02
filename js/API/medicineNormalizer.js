@@ -232,15 +232,46 @@ function parseMedicineMeta(
     .trim();
 
 
-  result.ingredients =
+  // ==========================
+// NORMALIZED INGREDIENTS
+// ==========================
 
-    ingredientText
+result.ingredients =
+
+  ingredientText
 
     .split(/\/|\+/)
 
-      .map(x => x.trim())
+    .map(x =>
 
-      .filter(Boolean);
+      x
+
+        // remove strengths
+        .replace(
+          /\b\d+(\.\d+)?\s*(mg|mcg|g|gm|ml|iu)\b/gi,
+          ""
+        )
+
+        // remove dosage forms
+        .replace(
+          /\b(tablet|capsule|syrup|suspension|solution|cream|ointment|gel|drops|spray|powder|lotion)\b/gi,
+          ""
+        )
+
+        // remove release types
+        .replace(
+          /\b(sr|cr|er|xr|dr|ir)\b/gi,
+          ""
+        )
+
+        // normalize spaces
+        .replace(/\s+/g, " ")
+
+        .trim()
+
+    )
+
+    .filter(Boolean);
 
 
   return result;
@@ -388,11 +419,22 @@ export function normalizeRxNormMedicine(
 
     composition:
 
-      meta.ingredients?.length
+  meta.ingredients?.length
 
-        ? meta.ingredients
+    ? [...new Set(meta.ingredients)]
 
-        : [cleanName],
+    : [
+
+        cleanName
+
+          .replace(
+            /\b\d+(\.\d+)?\s*(mg|mcg|g|gm|ml|iu)\b/gi,
+            ""
+          )
+
+          .trim()
+
+      ],
 
 
     // ==========================
