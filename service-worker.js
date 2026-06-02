@@ -30,7 +30,7 @@ const ASSETS = [
    "./js/shared/comboExplainHelper.js",
   "./js/shared/diseaseHelper.js",
    "./js/shared/search-utils.js",
-   "./js/shared/strenghthHelper.js",
+   "./js/shared/strengthHelper.js",
    "./js/shared/utils.js",
    
   // ================= DASHBOARD =================
