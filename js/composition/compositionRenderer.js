@@ -1,55 +1,26 @@
 // ==============================
-// COMPOSITION RENDERER
+// BASE NAME EXTRACTOR
 // ==============================
 
-
-import {
-  renderCompositionCard
-} from "./compositionCardRenderer.js";
-
-
-// ==============================
-// RENDER EMPTY
-// ==============================
-
-export function renderEmpty(
-
-  container,
-
-  text = "No data found."
-
+function getBaseComposition(
+  name = ""
 ) {
 
-  container.innerHTML = `
+  return String(name)
 
-    <div class="composition-empty">
+    .replace(
+      /\b\d+(\.\d+)?\s*(mg|mcg|g|ml)\b/gi,
+      ""
+    )
 
-      ${text}
+    .replace(
+      /\b(chewable|sr|cr|er|xr|ds)\b/gi,
+      ""
+    )
 
-    </div>
+    .replace(/\s+/g, " ")
 
-  `;
-
-}
-
-
-// ==============================
-// RENDER LOADING
-// ==============================
-
-export function renderLoading(
-  container
-) {
-
-  container.innerHTML = `
-
-    <div class="composition-loading">
-
-      Loading...
-
-    </div>
-
-  `;
+    .trim();
 
 }
 
@@ -66,7 +37,6 @@ export function renderCompositionList(
 
 ) {
 
-  // Empty
   if (!list.length) {
 
     renderEmpty(
@@ -77,11 +47,77 @@ export function renderCompositionList(
 
   }
 
+  const groups = {};
 
-  // Render
+  list.forEach(item => {
+
+    const base =
+
+      getBaseComposition(
+        item
+      );
+
+    if (!groups[base]) {
+
+      groups[base] = [];
+
+    }
+
+    groups[base].push(item);
+
+  });
+
+
   container.innerHTML =
 
-    list
+    Object.entries(groups)
+
+      .map(
+
+        ([base, items], index) => `
+
+<div class="composition-group">
+
+  <div
+    class="composition-group-header"
+    data-group="${index}"
+  >
+
+    <div>
+
+      <div class="group-title">
+
+        ${base}
+
+      </div>
+
+      <div class="group-count">
+
+        ${items.length}
+        strengths
+
+      </div>
+
+    </div>
+
+    <div
+      class="group-arrow"
+      id="arrow-${index}"
+    >
+
+      ▼
+
+    </div>
+
+  </div>
+
+  <div
+    class="composition-group-body"
+    id="group-${index}"
+    style="display:none;"
+  >
+
+    ${items
 
       .map(item =>
 
@@ -91,40 +127,68 @@ export function renderCompositionList(
 
       )
 
-      .join("");
+      .join("")}
 
-}
+  </div>
 
+</div>
 
-// ==============================
-// APPEND COMPOSITION LIST
-// ==============================
-
-export function appendCompositionList(
-
-  container,
-
-  list = []
-
-) {
-
-  if (!list.length) {
-    return;
-  }
-
-
-  container.innerHTML +=
-
-    list
-
-      .map(item =>
-
-        renderCompositionCard(
-          item
-        )
+`
 
       )
 
       .join("");
+
+
+  container
+
+    .querySelectorAll(
+      ".composition-group-header"
+    )
+
+    .forEach(header => {
+
+      header.onclick = () => {
+
+        const id =
+
+          header.dataset.group;
+
+        const body =
+
+          document.getElementById(
+            `group-${id}`
+          );
+
+        const arrow =
+
+          document.getElementById(
+            `arrow-${id}`
+          );
+
+        const isOpen =
+
+          body.style.display ===
+          "block";
+
+        body.style.display =
+
+          isOpen
+
+            ? "none"
+
+            : "block";
+
+        arrow.textContent =
+
+          isOpen
+
+            ? "▼"
+
+            : "▲";
+
+      };
+
+    });
 
 }
