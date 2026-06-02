@@ -2,7 +2,8 @@ const PAGES = [
   { name: "Theory", icon: "📚", link: "theory.html" },
   { name: "Medicine", icon: "💊", link: "medicine.html" },
   { name: "Daignosis", icon: "🩺", link: "checkUp.html" },
-   { name: "Harrison", icon: "🩺", link: "harrison.html" }
+   { name: "Harrison", icon: "🩺", link: "harrison.html" },
+    { name: "Composition", icon: "🩺", link: "learn-composition.html" }
 ];
 
 function renderMenu(){
