@@ -1048,3 +1048,35 @@ body.overlay-open *{
   font-size:14px;
 
 }
+.composition-group{
+  margin-bottom:16px;
+}
+
+.composition-group-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px;
+  border-radius:18px;
+  background:#fff;
+  cursor:pointer;
+}
+
+.group-title{
+  font-size:22px;
+  font-weight:700;
+}
+
+.group-count{
+  margin-top:4px;
+  opacity:.7;
+}
+
+.group-arrow{
+  font-size:22px;
+  font-weight:bold;
+}
+
+.composition-group-body{
+  margin-top:10px;
+}
