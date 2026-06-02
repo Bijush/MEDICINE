@@ -1,4 +1,4 @@
-const CACHE = "pharma-cache-v1.0";
+const CACHE = "pharma-cache-v1.1";
 
 const ASSETS = [
 
@@ -97,8 +97,8 @@ const ASSETS = [
   "./service-worker.js",
 
   // ================= ICONS =================
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./icons/icon_192.png",
+  "./icons/icon_512.png"
 
 ];
 
