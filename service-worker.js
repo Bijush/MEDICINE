@@ -1,4 +1,4 @@
-const CACHE = "pharma-cache-v9";
+const CACHE = "pharma-cache-v1.0";
 
 const ASSETS = [
 
