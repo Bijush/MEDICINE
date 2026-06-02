@@ -14,7 +14,7 @@ import {
 
 import {
   renderInsightsUI
-} from "./compositionUiEngine.js";
+} from "./compositionUIEngine.js";
 
 import {
   initCompositionTabs
