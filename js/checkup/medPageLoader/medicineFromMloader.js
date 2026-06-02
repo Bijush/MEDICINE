@@ -60,7 +60,47 @@ export function medicineFromMloader(
           diseaseMatched
         ) {
 
-          totalScore += 400;
+          totalScore += 2000;
+
+        } else if (
+          diseaseKey
+        ) {
+
+          totalScore -= 500;
+
+        }
+
+        // =====================
+        // GROUP MATCH
+        // =====================
+
+        if (
+          diseaseKey &&
+          m.group
+        ) {
+
+          const groupKey =
+            normalizeKey(
+              typeof m.group ===
+                "string"
+
+                ? m.group
+
+                : (
+                    m.group?.en ||
+                    m.group?.bn ||
+                    ""
+                  )
+            );
+
+          if (
+            groupKey ===
+            diseaseKey
+          ) {
+
+            totalScore += 3000;
+
+          }
 
         }
 
@@ -81,7 +121,7 @@ export function medicineFromMloader(
         }
 
         // =====================
-        // SYMPTOMS
+        // SYMPTOM MATCH
         // =====================
 
         symptomKeys.forEach(
@@ -95,7 +135,7 @@ export function medicineFromMloader(
 
               matchedSymptoms++;
 
-              totalScore += 50;
+              totalScore += 25;
 
             }
 
@@ -174,20 +214,6 @@ export function medicineFromMloader(
         }
 
         // =====================
-        // PENALTY
-        // =====================
-
-        if (
-          symptomKeys.length >=
-            3 &&
-          matchedSymptoms === 0
-        ) {
-
-          totalScore -= 300;
-
-        }
-
-        // =====================
         // PERFECT MATCH BONUS
         // =====================
 
@@ -199,6 +225,20 @@ export function medicineFromMloader(
         ) {
 
           totalScore += 300;
+
+        }
+
+        // =====================
+        // NO MATCH PENALTY
+        // =====================
+
+        if (
+          symptomKeys.length >=
+            3 &&
+          matchedSymptoms === 0
+        ) {
+
+          totalScore -= 300;
 
         }
 
@@ -223,6 +263,36 @@ export function medicineFromMloader(
         ) {
 
           totalScore += 5;
+
+        }
+
+        // =====================
+        // FIRST/SECOND LINE BONUS
+        // =====================
+
+        switch (
+          m.line
+        ) {
+
+          case "first_line":
+
+            totalScore += 500;
+            break;
+
+          case "second_line":
+
+            totalScore += 250;
+            break;
+
+          case "third_line":
+
+            totalScore += 100;
+            break;
+
+          case "fourth_line":
+
+            totalScore += 50;
+            break;
 
         }
 
@@ -252,11 +322,27 @@ export function medicineFromMloader(
 
       })
 
-      .filter(
-        m =>
-          m._matchScore >
-          0
-      )
+      .filter(m => {
+
+        if (
+          diseaseKey &&
+          m?._diseaseSet
+            ?.size
+        ) {
+
+          return (
+            m._diseaseSet.has(
+              diseaseKey
+            )
+          );
+
+        }
+
+        return (
+          m._matchScore > 0
+        );
+
+      })
 
       .sort(
         (a, b) => {
@@ -273,9 +359,21 @@ export function medicineFromMloader(
 
           }
 
-          return (
-            b._matchedSymptoms -
+          if (
+            b._matchedSymptoms !==
             a._matchedSymptoms
+          ) {
+
+            return (
+              b._matchedSymptoms -
+              a._matchedSymptoms
+            );
+
+          }
+
+          return (
+            b._coverage -
+            a._coverage
           );
 
         }
