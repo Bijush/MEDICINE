@@ -36,10 +36,8 @@ const ASSETS = [
   // ================= DASHBOARD =================
   "./js/dashboard/dashboard.js",
 
-  // ================= CHECKUP =================
-
+  // ================= CHECKUP ================
   
-  "./js/checkup/symptomAdapter.js",
   "./js/checkup/checkup.js",
 
   // ================= THEORY =================
