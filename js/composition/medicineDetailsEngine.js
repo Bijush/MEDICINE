@@ -1,3 +1,8 @@
+import {
+  initCompositionTabs
+}
+from "./compositionTabs.js";
+
 export function openMedicineDetails(
   medicine = {},
   container
@@ -155,6 +160,8 @@ document
       container.innerHTML =
         window.lastCompositionHTML ||
         "";
+
+      initCompositionTabs();
 
     }
 
