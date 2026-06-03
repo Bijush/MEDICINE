@@ -224,8 +224,45 @@ function emptyMessage(
   `;
 
 }
+// medicines list 
+function renderMedicineList(
+  medicines = []
+){
 
+  if(!medicines.length){
 
+    return emptyMessage(
+      "No medicines found."
+    );
+
+  }
+
+  return medicines.map((med,index) => `
+
+    <div
+  class="composition-medicine-card"
+  data-index="${index}"
+>
+
+      <div class="medicine-name">
+
+        ${med.name || "Unknown"}
+
+      </div>
+
+      <div class="medicine-meta">
+
+        ${med.strength || ""}
+
+        ${med.dosageForm || ""}
+
+      </div>
+
+    </div>
+
+  `).join("");
+
+}
 // ==============================
 // RENDER INSIGHTS UI
 // ==============================
@@ -236,7 +273,8 @@ export function renderInsightsUI({
 
   insights = {},
 
-  learning = {}
+  learning = {},
+  medicines = []
 
 }) {
 
@@ -255,6 +293,12 @@ export function renderInsightsUI({
         >
           Overview
         </button>
+ <button
+    class="composition-tab"
+    data-tab="medicines"
+  >
+    Medicines (${medicines.length})
+  </button>
 
         <button
           class="composition-tab"
@@ -459,7 +503,22 @@ ${section(
 
       </div>
 
+<div
+  class="composition-tab-content"
+  data-content="medicines"
+>
 
+  ${section(
+
+    `Medicines (${medicines.length})`,
+
+    renderMedicineList(
+      medicines
+    )
+
+  )}
+
+</div>
       <!-- BRANDS -->
 
       <div

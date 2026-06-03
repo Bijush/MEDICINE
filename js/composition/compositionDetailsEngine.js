@@ -20,7 +20,10 @@ import {
   initCompositionTabs
 } from "./compositionTabs.js";
 
-
+import {
+  openMedicineDetails
+}
+from "./medicineDetailsEngine.js";
 // ==============================
 // CACHE
 // ==============================
@@ -28,7 +31,8 @@ import {
 const detailsCache =
   new Map();
 
-
+let currentMedicines = [];
+window.lastCompositionHTML = "";
 // ==============================
 // FORMAT NAME
 // ==============================
@@ -391,7 +395,35 @@ export function initCompositionDetails(
 
       }
 
+const medicineCard =
 
+  event.target.closest(
+    ".composition-medicine-card"
+  );
+
+if(medicineCard){
+
+  const index =
+
+    Number(
+      medicineCard.dataset.index
+    );
+
+  const medicine =
+
+    currentMedicines[index];
+
+  if(medicine){
+
+    openMedicineDetails(
+      medicine,
+      container
+    );
+
+  }
+
+  return;
+}
       // ======================
       // CARD
       // ======================
@@ -533,7 +565,9 @@ async function openCompositionDetails(
       getMedicinesByComposition(
         compositionName
       );
-
+      
+currentMedicines =
+  medicines;
 
     // ========================
     // INSIGHTS
@@ -598,7 +632,8 @@ async function openCompositionDetails(
 
         insights,
 
-        learning
+        learning,
+        medicines
 
       })}
 
@@ -625,7 +660,8 @@ async function openCompositionDetails(
     container.innerHTML =
       html;
 
-
+window.lastCompositionHTML =
+  html;
     // ========================
     // REMOVE BLUR AGAIN
     // ========================
@@ -657,3 +693,4 @@ async function openCompositionDetails(
   });
 
 }
+
