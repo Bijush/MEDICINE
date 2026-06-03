@@ -1,4 +1,4 @@
-const CACHE = "pharma-cache-v1.5";
+const CACHE = "pharma-cache-v1.6";
 
 const ASSETS = [
 
@@ -11,7 +11,7 @@ const ASSETS = [
   "./medicine.html",
   "./checkUp.html",
   "./harrison.html",
-
+"./learn-composition.html"
   // ================= CSS =================
   "./css/style.css",
   "./css/dashboard.css",
@@ -20,6 +20,7 @@ const ASSETS = [
   "./css/checkup.css",
    "./css/harrison.css",
     "./css/module.css",
+    "./composition.css"
 
   // ================= SHARED JS =================
   "./js/shared/sidebar.js",
@@ -49,7 +50,25 @@ const ASSETS = [
      // ================= HARRISON =================
      "./js/HARRISON/loader.js",
      "./js/HARRISON/fieldConfig.js",
-     
+    
+     // composition
+     "./js/composition/compositionApp.js",
+      "./js/composition/compositionCardRenderer.js",
+      "./js/composition/compositionDataLoader.js",
+       "./js/composition/compositionApp.js",
+       "./js/composition/compositionDetailsEngine.js",
+       "./js/composition/compositionEngine.js", 
+       "./js/composition/compositionLoader.js",
+       "./js/composition/compositionRenderer.js",
+     "./js/composition/compositionSearch.js",
+      "./js/composition/compositionTabs.js",
+      "./js/composition/compositionUIEngine.js",
+      "./js/composition/googleSearchLink.js",
+      "./js/composition/googleSearchOverlay.js",
+      "./js/composition/medicineDetailsEngine.js",
+      "./js/composition/translateText.js",
+       
+       
      // ================= firebase =================
      "./js/firebase/auth.js",
      "./js/firebase/firebase.js",
