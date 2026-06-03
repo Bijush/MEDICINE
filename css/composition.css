@@ -1080,3 +1080,25 @@ body.overlay-open *{
 .composition-group-body{
   margin-top:10px;
 }
+.composition-medicine-card{
+  padding:12px;
+  margin-bottom:10px;
+  border-radius:12px;
+  background:#f5f5f5;
+}
+
+.medicine-name{
+  font-weight:700;
+  font-size:15px;
+}
+
+.medicine-meta{
+  margin-top:4px;
+  font-size:13px;
+  opacity:.7;
+}
+.composition-tabs{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+}
