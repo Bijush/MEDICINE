@@ -3,10 +3,31 @@ import {
 }
 from "./compositionTabs.js";
 
+import {
+  initBackButton
+}
+from "./compositionDetailsEngine.js";
+
+import {
+  getCompositionHistory
+}
+from "./compositionDataLoader.js";
+
+import {
+  restorePosition
+}
+from "./navigationEngine.js";
+
+
 export function openMedicineDetails(
   medicine = {},
   container
 ){
+
+  console.log(
+    "Medicine Object:",
+    medicine
+  );
 
   const brandNames =
 
@@ -26,11 +47,29 @@ export function openMedicineDetails(
 
   const brandHtml =
 
-    Array.isArray(brandNames)
+    Array.isArray(
+      brandNames
+    )
 
       ? brandNames.join(", ")
 
-      : brandNames;
+      : String(
+          brandNames || ""
+        );
+
+  const history =
+
+    getCompositionHistory(
+
+      medicine.composition?.[0] ||
+
+      medicine.generic ||
+
+      medicine.genericName ||
+
+      medicine.name
+
+    );
 
   container.innerHTML = `
 
@@ -45,7 +84,10 @@ export function openMedicineDetails(
 
       <h2>
 
-        💊 ${medicine.name || "Unknown"}
+        💊 ${
+          medicine.name ||
+          "Unknown"
+        }
 
       </h2>
 
@@ -55,7 +97,9 @@ export function openMedicineDetails(
 
         ${
           medicine.generic ||
+
           medicine.genericName ||
+
           "Unknown"
         }
 
@@ -67,7 +111,9 @@ export function openMedicineDetails(
 
         ${
           brandHtml ||
+
           medicine.name ||
+
           "Unknown"
         }
 
@@ -79,7 +125,9 @@ export function openMedicineDetails(
 
         ${
           medicine.strength ||
+
           medicine.dose ||
+
           "Unknown"
         }
 
@@ -91,7 +139,9 @@ export function openMedicineDetails(
 
         ${
           medicine.dosageForm ||
+
           medicine.form ||
+
           "Unknown"
         }
 
@@ -103,6 +153,7 @@ export function openMedicineDetails(
 
         ${
           medicine.route ||
+
           "Unknown"
         }
 
@@ -114,7 +165,9 @@ export function openMedicineDetails(
 
         ${
           medicine.class ||
+
           medicine.drugClass ||
+
           "Unknown"
         }
 
@@ -126,8 +179,13 @@ export function openMedicineDetails(
 
         ${
           medicine.manufacturer ||
+
+          medicine.manufacturerName ||
+
           medicine.labeler ||
+
           medicine.company ||
+
           "Unknown"
         }
 
@@ -139,31 +197,189 @@ export function openMedicineDetails(
 
         ${
           medicine.category ||
+
           "Unknown"
         }
 
       </p>
 
+      <hr>
+
+      <h3>
+
+        📖 Medical History
+
+      </h3>
+
+      <p>
+
+        <b>Invented Year:</b>
+
+        ${
+          history?.inventedYear ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>First Medical Use:</b>
+
+        ${
+          history?.firstMedicalUse ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>Country:</b>
+
+        ${
+          history?.country ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>Discovered By:</b>
+
+        ${
+          history?.discoveredBy ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>Chemical Formula:</b>
+
+        ${
+          history?.chemicalFormula ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>Medicine Class:</b>
+
+        ${
+          history?.medicineClass?.en ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>Mechanism:</b>
+
+        ${
+          history?.mechanism?.en ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      <p>
+
+        <b>How It Works:</b>
+
+        ${
+          history?.howItWorks?.en ||
+
+          "Unknown"
+        }
+
+      </p>
+
+      ${
+        history?.medicineClass?.bn
+
+          ?
+
+          `
+
+          <p>
+
+            <b>বাংলা Class:</b>
+
+            ${history.medicineClass.bn}
+
+          </p>
+
+          `
+
+          : ""
+
+      }
+
+      ${
+        history?.howItWorks?.bn
+
+          ?
+
+          `
+
+          <div
+            class="medicine-history-bn"
+          >
+
+            <b>বাংলা ব্যাখ্যা:</b>
+
+            <br><br>
+
+            ${history.howItWorks.bn}
+
+          </div>
+
+          `
+
+          : ""
+
+      }
+
     </div>
 
   `;
-document
-  .querySelector(
-    "#medicineBackBtn"
-  )
-  ?.addEventListener(
 
-    "click",
+  container
+    .querySelector(
+      "#medicineBackBtn"
+    )
+    ?.addEventListener(
 
-    () => {
+      "click",
 
-      container.innerHTML =
-        window.lastCompositionHTML ||
-        "";
+      () => {
 
-      initCompositionTabs();
+        container.innerHTML =
 
-    }
+          window.lastCompositionHTML ||
 
-  );
+          "";
+
+        initCompositionTabs();
+
+        initBackButton();
+        restorePosition();
+
+      }
+
+    );
+
 }

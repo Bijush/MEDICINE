@@ -274,11 +274,67 @@ export function generateCompositionInsights({
       medicine
     );
 
+  // ==========================
+  // REAL DATA FIRST
+  // ==========================
+
   diseases.push(
-    ...(aiInfo.uses || [])
+
+    ...(medicine.diseases || [])
+
   );
 
-  if(aiInfo.category){
+  symptoms.push(
+
+    ...(medicine.symptoms || [])
+
+  );
+
+  brands.push(
+
+    ...(medicine.brands || [])
+
+  );
+
+  // ==========================
+  // AI FALLBACK
+  // ==========================
+
+  if(
+
+    !medicine.diseases?.length
+
+  ){
+
+    diseases.push(
+
+      ...(aiInfo.uses || [])
+
+    );
+
+  }
+
+  // ==========================
+  // CATEGORY
+  // ==========================
+
+  if(
+
+    medicine.category
+
+  ){
+
+    categories.push(
+      medicine.category
+    );
+
+  }
+
+  else if(
+
+    aiInfo.category
+
+  ){
 
     categories.push(
       aiInfo.category
@@ -286,7 +342,27 @@ export function generateCompositionInsights({
 
   }
 
-  if(aiInfo.class){
+  // ==========================
+  // CLASS
+  // ==========================
+
+  if(
+
+    medicine.class
+
+  ){
+
+    classes.push(
+      medicine.class
+    );
+
+  }
+
+  else if(
+
+    aiInfo.class
+
+  ){
 
     classes.push(
       aiInfo.class
@@ -294,7 +370,15 @@ export function generateCompositionInsights({
 
   }
 
-  if(aiInfo.mechanism){
+  // ==========================
+  // MECHANISM
+  // ==========================
+
+  if(
+
+    aiInfo.mechanism
+
+  ){
 
     mechanisms.push(
       aiInfo.mechanism
@@ -302,8 +386,14 @@ export function generateCompositionInsights({
 
   }
 
+  // ==========================
+  // WARNINGS
+  // ==========================
+
   sideEffects.push(
+
     ...(aiInfo.warnings || [])
+
   );
 
 });

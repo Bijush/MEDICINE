@@ -24,6 +24,13 @@ import {
   openMedicineDetails
 }
 from "./medicineDetailsEngine.js";
+
+import {
+  savePosition,
+  restorePosition
+}
+from "./navigationEngine.js";
+
 // ==============================
 // CACHE
 // ==============================
@@ -32,7 +39,11 @@ const detailsCache =
   new Map();
 
 let currentMedicines = [];
+window.mainCompositionListHTML = "";
 window.lastCompositionHTML = "";
+window.lastCompositionName = "";
+window.lastCompositionContainer = null;
+
 // ==============================
 // FORMAT NAME
 // ==============================
@@ -121,7 +132,7 @@ function renderLoading(
 // BACK BUTTON
 // ==============================
 
-function initBackButton() {
+export function initBackButton() {
 
   document
 
@@ -133,7 +144,20 @@ function initBackButton() {
 
       "click",
 
-      () => history.back()
+      () => {
+
+        if(
+  window.mainCompositionListHTML
+){
+
+  window.lastCompositionContainer
+    .innerHTML =
+      window.mainCompositionListHTML;
+      restorePosition();
+
+}
+
+      }
 
     );
 
@@ -447,7 +471,7 @@ if(medicineCard){
       const compositionName =
 
         card.dataset.name;
-
+        savePosition();
 
       if (!compositionName) {
         return;
@@ -535,7 +559,8 @@ async function openCompositionDetails(
         compositionName
       );
 
-
+window.lastCompositionContainer =
+  container;
     initCompositionTabs();
 
     initBackButton();
@@ -548,7 +573,9 @@ async function openCompositionDetails(
   // ==========================
   // LOADING
   // ==========================
-
+window.mainCompositionListHTML =
+  container.innerHTML;
+  
   renderLoading(
     container
   );
@@ -662,6 +689,11 @@ currentMedicines =
 
 window.lastCompositionHTML =
   html;
+  window.lastCompositionName =
+  compositionName;
+
+window.lastCompositionContainer =
+  container;
     // ========================
     // REMOVE BLUR AGAIN
     // ========================
