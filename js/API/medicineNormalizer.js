@@ -271,13 +271,53 @@ result.ingredients =
 
     )
 
-    .filter(Boolean);
+    .filter(Boolean)
+
+.map(
+  normalizeIngredient
+);
 
 
   return result;
 
 }
 
+
+// ==============================
+// INGREDIENT ALIAS
+// ==============================
+
+function normalizeIngredient(
+  name = ""
+){
+
+  let clean =
+
+    String(name)
+      .trim()
+      .toLowerCase();
+
+  // India synonym
+
+  if(
+    clean.includes(
+      "acetaminophen"
+    )
+  ){
+    return "paracetamol";
+  }
+
+  // Take first word only
+
+  clean =
+
+    clean
+      .split(/\s+/)[0]
+      .trim();
+
+  return clean;
+
+}
 
 // ==============================
 // DETECT ANTIBIOTIC

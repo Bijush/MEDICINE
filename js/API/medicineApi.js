@@ -134,6 +134,10 @@ async function safeFetchJson(
 
 }
 
+// openFDA
+
+
+
 
 // ==============================
 // EXTRACT MEDICINES
@@ -221,7 +225,19 @@ function extractMedicines(
           item
         );
 
+const ingredientName =
 
+  med.composition?.[0]
+
+  ||
+
+  med.generic
+
+  ||
+
+  med.name;
+  
+  
       if(!med?.name){
         return;
       }
@@ -229,17 +245,30 @@ function extractMedicines(
 
       const key =
 
-        med.name
-          .toLowerCase();
+  ingredientName
+    .toLowerCase();
 
 
       if(seen.has(key)){
-        return;
-      }
+  return;
+}
 
-      seen.add(key);
+seen.add(key);
 
-      medicines.push(med);
+// force generic composition
+med.name =
+  ingredientName;
+
+med.generic =
+  ingredientName;
+
+med.composition = [
+  ingredientName
+];
+
+medicines.push(
+  med
+);
 
     });
 
@@ -263,17 +292,17 @@ async function fetchQueryMedicines(
 
     `${RXNAV_BASE}/drugs.json?name=${encodeURIComponent(query)}`;
 
-
   const data =
     await safeFetchJson(url);
 
+  const medicines =
+    extractMedicines(data);
 
-  return extractMedicines(
-    data
-  );
+  
+
+  return medicines;
 
 }
-
 
 // ==============================
 // SEARCH MEDICINES
