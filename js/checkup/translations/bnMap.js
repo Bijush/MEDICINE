@@ -31,7 +31,8 @@ export const BN_MAP = {
   mild_fever: "হালকা জ্বর",
   moderate_fever: "মাঝারি জ্বর",
   mild_to_moderate_fever: "হালকা থেকে মাঝারি জ্বর",
-
+facial: "মুখমণ্ডলীয়",
+forehead: "কপাল",
   sudden_fever: "হঠাৎ জ্বর",
   prolonged_fever: "দীর্ঘস্থায়ী জ্বর",
   persistent_fever: "স্থায়ী জ্বর",
@@ -92,6 +93,7 @@ export const BN_MAP = {
   ache: "ব্যথা",
   swelling: "ফোলা",
   itching: "চুলকানি",
+  itchy: "চুলকানিযুক্ত",
 
   rash: "র‍্যাশ",
   skin_rash: "ত্বকে র‍্যাশ",
@@ -266,7 +268,7 @@ export const BN_MAP = {
   blocked_nose: "নাক বন্ধ",
   nasal_congestion: "নাক বন্ধ ভাব",
   severe_nasal_block: "পুরো নাক বন্ধ",
-
+nasal_blockage: "নাক বন্ধ হওয়া",
   sneezing: "হাঁচি",
   frequent_sneezing: "ঘন ঘন হাঁচি",
 
@@ -389,9 +391,12 @@ export const BN_MAP = {
   knee: "হাঁটু",
 
   eye: "চোখ",
+  eyes: "চোখ",
   blurred_vision: "ঝাপসা দেখা",
   eye_pain: "চোখ ব্যথা",
-
+watery: "পানির মতো",
+morning: "সকালে",
+nighttime: "রাতে",
   ear: "কান",
   ear_pain: "কান ব্যথা",
   hearing_loss: "শ্রবণ শক্তি কমে যাওয়া",
@@ -445,6 +450,7 @@ export const BN_MAP = {
 
   poor_sanitation: "অপরিষ্কার পরিবেশ",
   poor_nutrition: "অপুষ্টি",
+  post_nasal_drip: "(নাক থেকে গলার পেছনে শ্লেষ্মা বা তরল পড়া)",
 
   smoking: "ধূমপান",
   hiv_positive: "HIV পজিটিভ",
