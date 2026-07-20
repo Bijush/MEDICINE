@@ -13,48 +13,49 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.age_rules
     )
+
   ) {
 
-    disease.age_rules
-      .forEach(rule => {
+    disease.age_rules.forEach(
+
+      rule => {
 
         if (
 
-          rule.min_age !==
-          undefined &&
+          rule.min_age !== undefined &&
 
-          typeof userData.age ===
-          "number" &&
+          typeof userData.age === "number" &&
 
-          userData.age >=
-          rule.min_age
+          userData.age >= rule.min_age
 
         ) {
 
-          score +=
-            rule.bonus || 0;
+          score += rule.bonus || 0;
+
         }
 
         if (
 
-          rule.max_age !==
-          undefined &&
+          rule.max_age !== undefined &&
 
-          typeof userData.age ===
-          "number" &&
+          typeof userData.age === "number" &&
 
-          userData.age <=
-          rule.max_age
+          userData.age <= rule.max_age
 
         ) {
 
-          score +=
-            rule.bonus || 0;
+          score += rule.bonus || 0;
+
         }
-      });
+
+      }
+
+    );
+
   }
 
   // ==========================
@@ -62,64 +63,65 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.duration_rules
     )
+
   ) {
 
-    disease.duration_rules
-      .forEach(rule => {
+    disease.duration_rules.forEach(
+
+      rule => {
 
         if (
 
-          rule.min_days !==
-          undefined &&
+          rule.min_days !== undefined &&
 
-          typeof userData.duration ===
-          "number" &&
+          typeof userData.duration === "number" &&
 
-          userData.duration >=
-          rule.min_days
+          userData.duration >= rule.min_days
 
         ) {
 
           if (rule.bonus) {
 
-            score +=
-              rule.bonus;
+            score += rule.bonus;
+
           }
 
           if (rule.penalty) {
 
-            score -=
-              Math.abs(
-                rule.penalty
-              );
+            score -= Math.abs(
+              rule.penalty
+            );
+
           }
+
         }
 
         if (
 
-          rule.max_days !==
-          undefined &&
+          rule.max_days !== undefined &&
 
-          typeof userData.duration ===
-          "number" &&
+          typeof userData.duration === "number" &&
 
-          userData.duration <=
-          rule.max_days
+          userData.duration <= rule.max_days
 
         ) {
 
-          score +=
-            rule.bonus || 0;
+          score += rule.bonus || 0;
 
-          score -=
-            Math.abs(
-              rule.penalty || 0
-            );
+          score -= Math.abs(
+            rule.penalty || 0
+          );
+
         }
-      });
+
+      }
+
+    );
+
   }
 
   // ==========================
@@ -127,39 +129,44 @@ export function applyRules({
   // ==========================
 
   if (
+
     disease.typical_duration
+
   ) {
 
     const duration =
       userData.duration;
 
     if (
-      typeof duration ===
-      "number"
+
+      typeof duration === "number"
+
     ) {
 
       if (
 
         duration <
-        disease.typical_duration
-          .min_days
+        disease.typical_duration.min_days
 
       ) {
 
         score -= 10;
+
       }
 
       if (
 
         duration >
-        disease.typical_duration
-          .max_days
+        disease.typical_duration.max_days
 
       ) {
 
         score -= 15;
+
       }
+
     }
+
   }
 
   // ==========================
@@ -167,27 +174,27 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.required_symptoms
     )
+
   ) {
 
     const requiredMatched =
 
-      disease.required_symptoms
-      .filter(symptom =>
+      disease.required_symptoms.filter(
 
-        getMatch(
-          symptom,
-          {},
-          userData,
-          matchCache
-        ).matched
+        symptom =>
+
+          getMatch(
+            symptom,
+            {},
+            userData,
+            matchCache
+          ).matched
+
       );
-
-    // ======================
-    // NO REQUIRED MATCH
-    // ======================
 
     if (
 
@@ -196,11 +203,8 @@ export function applyRules({
     ) {
 
       score *= 0.3;
-    }
 
-    // ======================
-    // PARTIAL MATCH
-    // ======================
+    }
 
     else if (
 
@@ -210,16 +214,15 @@ export function applyRules({
     ) {
 
       score *= 0.7;
-    }
 
-    // ======================
-    // FULL MATCH
-    // ======================
+    }
 
     else {
 
       score += 12;
+
     }
+
   }
 
   // ==========================
@@ -227,32 +230,78 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.required_negative_symptoms
     )
+
   ) {
 
-    disease
-      .required_negative_symptoms
+    let negativeMatchCount = 0;
 
-      .forEach(symptom => {
+    disease.required_negative_symptoms
 
-        const matched =
+      .forEach(
 
-          getMatch(
-            symptom,
-            {},
-            userData,
-            matchCache
-          ).matched;
+        symptom => {
 
-        if (
-          matched
-        ) {
+          const matched =
 
-          score -= 40;
+            getMatch(
+
+              symptom,
+              {},
+              userData,
+              matchCache
+
+            ).matched;
+
+          if (
+
+            matched
+
+          ) {
+
+            negativeMatchCount++;
+
+          }
+
         }
-      });
+
+      );
+
+    // stronger suppression
+
+    if (
+
+      negativeMatchCount >= 3
+
+    ) {
+
+      score *= 0.2;
+
+    }
+
+    else if (
+
+      negativeMatchCount >= 2
+
+    ) {
+
+      score *= 0.4;
+
+    }
+
+    else if (
+
+      negativeMatchCount >= 1
+
+    ) {
+
+      score *= 0.7;
+
+    }
+
   }
 
   // ==========================
@@ -260,13 +309,16 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.bonus_rules
     )
+
   ) {
 
-    disease.bonus_rules
-      .forEach(rule => {
+    disease.bonus_rules.forEach(
+
+      rule => {
 
         const symptoms =
 
@@ -283,6 +335,7 @@ export function applyRules({
           rule.match === "any"
 
             ? symptoms.some(
+
                 symptom =>
 
                   getMatch(
@@ -291,9 +344,11 @@ export function applyRules({
                     userData,
                     matchCache
                   ).matched
+
               )
 
             : symptoms.every(
+
                 symptom =>
 
                   getMatch(
@@ -302,18 +357,25 @@ export function applyRules({
                     userData,
                     matchCache
                   ).matched
+
               );
 
         if (
+
           matched
+
         ) {
 
-          score +=
-            Math.abs(
-              rule.bonus || 0
-            );
+          score += Math.abs(
+            rule.bonus || 0
+          );
+
         }
-      });
+
+      }
+
+    );
+
   }
 
   // ==========================
@@ -321,13 +383,16 @@ export function applyRules({
   // ==========================
 
   if (
+
     Array.isArray(
       disease.exclusion_rules
     )
+
   ) {
 
-    disease.exclusion_rules
-      .forEach(rule => {
+    disease.exclusion_rules.forEach(
+
+      rule => {
 
         const symptoms =
 
@@ -344,6 +409,7 @@ export function applyRules({
           rule.match === "all"
 
             ? symptoms.every(
+
                 symptom =>
 
                   getMatch(
@@ -352,9 +418,11 @@ export function applyRules({
                     userData,
                     matchCache
                   ).matched
+
               )
 
             : symptoms.some(
+
                 symptom =>
 
                   getMatch(
@@ -363,33 +431,46 @@ export function applyRules({
                     userData,
                     matchCache
                   ).matched
+
               );
 
         if (
+
           matched
+
         ) {
 
-          score -=
-            Math.abs(
-              rule.penalty || 0
-            );
+          score -= Math.abs(
+            rule.penalty || 0
+          );
+
         }
-      });
+
+      }
+
+    );
+
   }
-
+  
   // ==========================
-  // SYMPTOM CLUSTERS
-  // ==========================
+// SYMPTOM CLUSTERS
+// ==========================
 
-  if (
+if (
+
+  disease.symptom_clusters
+
+) {
+
+  Object.values(
+
     disease.symptom_clusters
-  ) {
 
-    Object.values(
-      disease.symptom_clusters
-    )
+  )
 
-    .forEach(cluster => {
+  .forEach(
+
+    cluster => {
 
       const symptoms =
 
@@ -397,208 +478,349 @@ export function applyRules({
 
       const matchedCount =
 
-        symptoms.filter(symptom =>
+        symptoms.filter(
 
-          getMatch(
-            symptom,
-            {},
-            userData,
-            matchCache
-          ).matched
+          symptom =>
+
+            getMatch(
+
+              symptom,
+
+              {},
+
+              userData,
+
+              matchCache
+
+            ).matched
+
         ).length;
 
       if (
 
         matchedCount >=
+
         (
+
           cluster.minimum_match || 2
+
         )
 
       ) {
 
         score +=
+
           cluster.bonus || 0;
-      }
-    });
-  }
 
-  // ==========================
-  // PROGRESSION RULES
-  // ==========================
+      }
+
+    }
+
+  );
+
+}
+
+// ==========================
+// ORGAN SYSTEM BONUS
+// ==========================
+
+if (
+
+  disease.organ_system &&
+
+  userData.organ_system &&
+
+  disease.organ_system ===
+
+  userData.organ_system
+
+) {
+
+  score += 8;
+
+}
+
+// ==========================
+// SEASONAL RULES
+// ==========================
+
+if (
+
+  disease.seasonal_patterns &&
+
+  userData.season
+
+) {
 
   if (
-    disease.progression
-  ) {
 
-    Object.entries(
-      disease.progression
+    disease.seasonal_patterns.includes(
+
+      userData.season
+
     )
 
-    .forEach(
+  ) {
 
-      ([key, rule]) => {
+    score += 6;
 
-        const matched =
-
-          getMatch(
-            key,
-            rule,
-            userData,
-            matchCache
-          ).matched;
-
-        if (
-
-          matched &&
-
-          rule.present === true
-
-        ) {
-
-          score +=
-            Math.abs(
-              rule.weight || 0
-            );
-        }
-
-        if (
-
-          matched &&
-
-          rule.present === false
-
-        ) {
-
-          score -=
-            Math.abs(
-              rule.weight || 0
-            );
-        }
-      }
-    );
   }
 
-  // ==========================
-  // EPIDEMIOLOGY
-  // ==========================
+}
+// ==========================
+// GENDER BONUS
+// ==========================
+
+if (
+
+  disease.gender &&
+
+  disease.gender !== "all" &&
+
+  userData.gender === disease.gender
+
+) {
+
+  score += 5;
+
+}
+// ==========================
+// AGE BONUS
+// ==========================
+
+if (
+
+  disease.min_age != null &&
+
+  disease.max_age != null &&
+
+  userData.age != null
+
+) {
 
   if (
+
+    userData.age >= disease.min_age &&
+
+    userData.age <= disease.max_age
+
+  ) {
+
+    score += 5;
+
+  }
+
+}
+
+// ==========================
+// PATHOGNOMONIC BONUS
+// ==========================
+
+if (
+
+  disease.pathognomonic_symptoms
+
+) {
+
+  const pathognomonicMatched =
+
+    disease.pathognomonic_symptoms.some(
+
+      symptom =>
+
+        getMatch(
+
+          symptom,
+
+          {},
+
+          userData,
+
+          matchCache
+
+        ).matched
+
+    );
+
+  if (
+
+    pathognomonicMatched
+
+  ) {
+
+    score += 20;
+
+  }
+
+}
+
+// ==========================
+// GOLD SYMPTOM BONUS
+// ==========================
+
+if (
+
+  disease.gold_symptoms
+
+) {
+
+  const goldMatched =
+
+    disease.gold_symptoms.filter(
+
+      symptom =>
+
+        getMatch(
+
+          symptom,
+
+          {},
+
+          userData,
+
+          matchCache
+
+        ).matched
+
+    ).length;
+
+  if (
+
+    goldMatched >= 3
+
+  ) {
+
+    score += 15;
+
+  }
+
+  else if (
+
+    goldMatched >= 2
+
+  ) {
+
+    score += 8;
+
+  }
+
+  else if (
+
+    goldMatched >= 1
+
+  ) {
+
+    score += 4;
+
+  }
+
+}
+
+// ==========================
+// EPIDEMIOLOGY BONUS
+// ==========================
+
+if (
+
+  disease.epidemiology
+
+) {
+
+  Object.entries(
+
     disease.epidemiology
-  ) {
 
-    Object.entries(
-      disease.epidemiology
-    )
+  )
 
-    .forEach(
+  .forEach(
 
-      ([key, rule]) => {
+    ([key, rule]) => {
 
-        const matched =
+      const matched =
 
-          getMatch(
-            key,
-            rule,
-            userData,
-            matchCache
-          ).matched;
+        getMatch(
 
-        if (
+          key,
 
-          matched &&
+          rule,
 
-          rule.present === true
+          userData,
 
-        ) {
+          matchCache
 
-          score +=
-            Math.abs(
-              rule.weight || 0
-            );
-        }
+        ).matched;
 
-        if (
+      if (
 
-          matched &&
+        matched &&
 
-          rule.present === false
+        rule.present === true
 
-        ) {
+      ) {
 
-          score -=
-            Math.abs(
-              rule.weight || 0
-            );
-        }
+        score +=
+
+          Math.abs(
+
+            rule.weight || 0
+
+          );
+
       }
-    );
-  }
 
-  // ==========================
-  // RECOVERY SIGNS
-  // ==========================
+      else if (
 
-  if (
-    disease.recovery_signs
-  ) {
+        matched &&
 
-    Object.entries(
-      disease.recovery_signs
-    )
+        rule.present === false
 
-    .forEach(
+      ) {
 
-      ([key, rule]) => {
+        score -=
 
-        const matched =
+          Math.abs(
 
-          getMatch(
-            key,
-            rule,
-            userData,
-            matchCache
-          ).matched;
+            rule.weight || 0
 
-        if (
-          matched
-        ) {
+          );
 
-          score +=
-            Math.abs(
-              rule.weight || 0
-            );
-        }
       }
-    );
-  }
 
+    }
+
+  );
+
+}
   // ==========================
   // TRIAGE BONUS
   // ==========================
 
   if (
+
     disease.triage
+
   ) {
 
     if (
 
-      disease.triage.level ===
-      "red"
+      disease.triage.level === "red"
 
     ) {
 
       score += 15;
+
     }
 
     else if (
 
-      disease.triage.level ===
-      "yellow"
+      disease.triage.level === "yellow"
 
     ) {
 
       score += 8;
+
     }
+
   }
 
   // ==========================
@@ -606,13 +828,17 @@ export function applyRules({
   // ==========================
 
   score = Math.max(
+
     0,
+
     Number(
       score.toFixed(2)
     )
+
   );
 
   return score;
+
 }
 
 export function detectContradictions({
@@ -1015,7 +1241,27 @@ export function detectContradictions({
         // ======================
         // WEAK CLUSTER
         // ======================
+if (
 
+  matchedCount > 0 &&
+
+  matchedCount <
+
+  (cluster.minimum_match || 2)
+
+) {
+
+  addContradiction(
+
+    `Weak cluster: ${clusterName}`,
+
+    "soft",
+
+    1
+
+  );
+
+}
       
       }
     );
@@ -1138,7 +1384,193 @@ export function detectContradictions({
       2
     );
   }
+  
+  // ==========================
+// REQUIRED NEGATIVE SYMPTOMS
+// ==========================
 
+if (
+
+  Array.isArray(
+
+    disease.required_negative_symptoms
+
+  )
+
+) {
+
+  disease.required_negative_symptoms
+
+  .forEach(
+
+    symptom => {
+
+      const matched =
+
+        getMatch(
+
+          symptom,
+
+          {},
+
+          userData,
+
+          matchCache
+
+        ).matched;
+
+      if (
+
+        matched
+
+      ) {
+
+        addContradiction(
+
+          `Negative symptom present: ${symptom}`,
+
+          "hard",
+
+          3
+
+        );
+
+      }
+
+    }
+
+  );
+
+}
+
+// ==========================
+// PATHOGNOMONIC PROTECTION
+// ==========================
+
+if (
+
+  disease.pathognomonic_symptoms
+
+) {
+
+  const pathognomonicMatched =
+
+    disease.pathognomonic_symptoms.some(
+
+      symptom =>
+
+        matchedSymptoms.includes(
+
+          symptom
+
+        )
+
+    );
+
+  if (
+
+    pathognomonicMatched
+
+  ) {
+
+    hardContradictions =
+
+      Math.max(
+
+        0,
+
+        hardContradictions - 2
+
+      );
+
+  }
+
+}
+
+
+// ==========================
+// GOLD SYMPTOM PROTECTION
+// ==========================
+
+if (
+
+  disease.gold_symptoms
+
+) {
+
+  const goldMatched =
+
+    disease.gold_symptoms.filter(
+
+      symptom =>
+
+        matchedSymptoms.includes(
+
+          symptom
+
+        )
+
+    ).length;
+
+  if (
+
+    goldMatched >= 2
+
+  ) {
+
+    softContradictions =
+
+      Math.max(
+
+        0,
+
+        softContradictions - 2
+
+      );
+
+  }
+
+}
+// ==========================
+// REQUIRED SYMPTOM PROTECTION
+// ==========================
+
+if (
+
+  Array.isArray(
+    disease.required_symptoms
+  )
+
+) {
+
+  const requiredMatched =
+
+    disease.required_symptoms.filter(
+
+      symptom =>
+
+        matchedSymptoms.includes(
+          symptom
+        )
+
+    ).length;
+
+  if (
+
+    requiredMatched >= 2
+
+  ) {
+
+    hardContradictions =
+
+      Math.max(
+        0,
+        hardContradictions - 2
+      );
+
+  }
+
+}
   // ==========================
   // TOTAL
   // ==========================
@@ -1245,6 +1677,7 @@ export function detectContradictions({
 
     score *= 0.65;
   }
+
 
   // ==========================
   // FINAL LIMIT
@@ -1510,7 +1943,31 @@ export function detectEmergency({
 
     score += 5;
   }
+// ==========================
+// MULTIPLE RED FLAG ESCALATION
+// ==========================
 
+if (
+
+  uniqueRedFlags.length >= 3
+
+) {
+
+  emergencyDetected = true;
+
+  score += 15;
+
+}
+
+if (
+
+  uniqueRedFlags.length >= 5
+
+) {
+
+  score += 20;
+
+}
   // ==========================
   // DISEASE EMERGENCY BONUS
   // ==========================
@@ -1624,6 +2081,52 @@ export function detectEmergency({
 
     emergencyDetected = false;
   }
+  
+  // ==========================
+// PATHOGNOMONIC EMERGENCY
+// ==========================
+
+if (
+
+  disease.pathognomonic_symptoms
+
+) {
+
+  const specificMatched =
+
+    disease.pathognomonic_symptoms.some(
+
+      symptom =>
+
+        getMatch(
+
+          symptom,
+
+          {},
+
+          userData,
+
+          matchCache
+
+        ).matched
+
+    );
+
+  if (
+
+    specificMatched &&
+
+    disease.emergency
+
+  ) {
+
+    emergencyDetected = true;
+
+    score += 15;
+
+  }
+
+}
 
   // ==========================
   // FINAL LIMIT

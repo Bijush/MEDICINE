@@ -92,20 +92,24 @@ export function applyScore({
 
       contradictionCount++;
 
-      // softer penalty
       score -=
         weight *
         0.8 *
         safeMultiplier;
 
       continue;
+
     }
 
     // ======================
     // POSITIVE MATCH
     // ======================
 
-    if (userMatched) {
+    if (
+
+      userMatched
+
+    ) {
 
       matchedCount++;
 
@@ -118,21 +122,33 @@ export function applyScore({
       ) {
 
         weight *= 0.72;
+
       }
 
       else {
 
         uniqueCount++;
 
-        if (weight >= 10) {
+        if (
+
+          weight >= 10
+
+        ) {
 
           weight *= 1.35;
+
         }
 
-        else if (weight >= 6) {
+        else if (
+
+          weight >= 6
+
+        ) {
 
           weight *= 1.18;
+
         }
+
       }
 
       let finalScore =
@@ -142,6 +158,7 @@ export function applyScore({
         safeMultiplier;
 
       // cluster-like boost
+
       if (
 
         matchedCount >= 4 &&
@@ -151,14 +168,19 @@ export function applyScore({
       ) {
 
         finalScore *= 1.08;
+
       }
 
       // supportive sections
+
       if (
+
         safeMultiplier >= 1.5
+
       ) {
 
         finalScore *= 1.12;
+
       }
 
       score += finalScore;
@@ -167,6 +189,7 @@ export function applyScore({
         matchedArray,
         key
       );
+
     }
 
     // ======================
@@ -185,12 +208,13 @@ export function applyScore({
 
       contradictionCount++;
 
-      // softer contradiction
       score -=
         weight *
         0.12 *
         safeMultiplier;
+
     }
+
   }
 
   // ======================
@@ -206,6 +230,10 @@ export function applyScore({
       1
     );
 
+  // ======================
+  // LOW SPECIFICITY PENALTY
+  // ======================
+
   if (
 
     matchedCount >= 4 &&
@@ -215,7 +243,12 @@ export function applyScore({
   ) {
 
     score *= 0.86;
+
   }
+
+  // ======================
+  // HIGH SPECIFICITY BONUS
+  // ======================
 
   if (
 
@@ -226,6 +259,7 @@ export function applyScore({
   ) {
 
     score *= 1.12;
+
   }
 
   // ======================
@@ -233,17 +267,23 @@ export function applyScore({
   // ======================
 
   if (
+
     contradictionCount >= 5
+
   ) {
 
     score *= 0.72;
+
   }
 
   else if (
+
     contradictionCount >= 3
+
   ) {
 
     score *= 0.86;
+
   }
 
   // ======================
@@ -251,27 +291,37 @@ export function applyScore({
   // ======================
 
   if (
+
     matchedCount <= 1
+
   ) {
 
     score *= 0.55;
+
   }
 
   else if (
+
     matchedCount <= 2
+
   ) {
 
     score *= 0.8;
+
   }
 
   score = Math.max(
+
     0,
+
     Number(
       score.toFixed(2)
     )
+
   );
 
   return score;
+
 }
 
 // ========================================
@@ -330,6 +380,24 @@ export function applyBonuses({
     );
 
   // ======================
+  // GOLD SYMPTOMS
+  // ======================
+
+  const goldSymptoms =
+
+    disease.gold_symptoms || [];
+
+  const goldMatchedCount =
+
+    goldSymptoms.filter(
+      symptom =>
+
+        matchedSymptoms.includes(
+          symptom
+        )
+    ).length;
+
+  // ======================
   // MINIMUM PROTECTION
   // ======================
 
@@ -342,6 +410,7 @@ export function applyBonuses({
   ) {
 
     score *= 0.82;
+
   }
 
   // ======================
@@ -349,24 +418,33 @@ export function applyBonuses({
   // ======================
 
   if (
+
     matchedSymptoms.length >= 7
+
   ) {
 
-    score += 14;
+    score += 18;
+
   }
 
   else if (
+
     matchedSymptoms.length >= 5
+
   ) {
 
-    score += 9;
+    score += 12;
+
   }
 
   else if (
+
     matchedSymptoms.length >= 3
+
   ) {
 
-    score += 5;
+    score += 7;
+
   }
 
   // ======================
@@ -374,17 +452,23 @@ export function applyBonuses({
   // ======================
 
   if (
+
     uniqueCount >= 5
+
   ) {
 
-    score += 10;
+    score += 12;
+
   }
 
   else if (
+
     uniqueCount >= 3
+
   ) {
 
-    score += 6;
+    score += 7;
+
   }
 
   // ======================
@@ -392,37 +476,47 @@ export function applyBonuses({
   // ======================
 
   if (
+
     matchedTests.length >= 2
+
   ) {
 
-    score += 12;
+    score += 8;
+
   }
 
   else if (
+
     matchedTests.length >= 1
+
   ) {
 
-    score += 6;
+    score += 4;
+
   }
 
   // ======================
   // RED FLAG BONUS
   // ======================
 
-  // reduced because too overpowered
-
   if (
+
     matchedRedFlags.length >= 2
+
   ) {
 
-    score += 5;
+    score += 6;
+
   }
 
   else if (
+
     matchedRedFlags.length >= 1
+
   ) {
 
-    score += 2;
+    score += 3;
+
   }
 
   // ======================
@@ -440,21 +534,30 @@ export function applyBonuses({
 
   ]
 
-  .filter(x => x > 0)
+  .filter(
+    x => x > 0
+  )
+
   .length;
 
   if (
+
     categoryMatches >= 5
+
   ) {
 
     score += 10;
+
   }
 
   else if (
+
     categoryMatches >= 3
+
   ) {
 
     score += 5;
+
   }
 
   // ======================
@@ -471,6 +574,7 @@ export function applyBonuses({
   ) {
 
     score *= 0.88;
+
   }
 
   // ======================
@@ -478,10 +582,61 @@ export function applyBonuses({
   // ======================
 
   if (
+
     specificityRatio < 0.18
+
   ) {
 
     score *= 0.84;
+
+  }
+
+  // ======================
+  // PREVALENCE BONUS
+  // ======================
+
+  if (
+
+    disease.prevalence ===
+    "common"
+
+  ) {
+
+    score += 5;
+
+  }
+
+  else if (
+
+    disease.prevalence ===
+    "moderate"
+
+  ) {
+
+    score += 2;
+
+  }
+
+  else if (
+
+    disease.prevalence ===
+    "uncommon"
+
+  ) {
+
+    score -= 2;
+
+  }
+
+  else if (
+
+    disease.prevalence ===
+    "rare"
+
+  ) {
+
+    score -= 5;
+
   }
 
   // ======================
@@ -489,15 +644,83 @@ export function applyBonuses({
   // ======================
 
   if (
+
     totalMatches >= 3
+
   ) {
 
     score += Math.min(
+
       (
         disease.priority || 0
       ) * 0.4,
+
       10
+
     );
+
+  }
+
+  // ======================
+  // GOLD SYMPTOM BONUS
+  // ======================
+
+  if (
+
+    goldMatchedCount >= 3
+
+  ) {
+
+    score += 18;
+
+  }
+
+  else if (
+
+    goldMatchedCount >= 2
+
+  ) {
+
+    score += 10;
+
+  }
+
+  else if (
+
+    goldMatchedCount >= 1
+
+  ) {
+
+    score += 5;
+
+  }
+
+  // ======================
+  // PATHOGNOMONIC BONUS
+  // ======================
+
+  const pathognomonicSymptoms =
+
+    disease.pathognomonic_symptoms || [];
+
+  const pathognomonicMatched =
+
+    pathognomonicSymptoms.some(
+      symptom =>
+
+        matchedSymptoms.includes(
+          symptom
+        )
+    );
+
+  if (
+
+    pathognomonicMatched
+
+  ) {
+
+    score += 25;
+
   }
 
   // ======================
@@ -513,15 +736,39 @@ export function applyBonuses({
   ) {
 
     score += 8;
+
+  }
+
+  // ======================
+  // VERY SPECIFIC PATTERN
+  // ======================
+
+  if (
+
+    specificityRatio >= 0.75 &&
+
+    uniqueCount >= 4
+
+  ) {
+
+    score += 10;
+
   }
 
   score = Math.max(
+
     0,
-    Math.round(score)
+
+    Math.round(
+      score
+    )
+
   );
 
   return score;
+
 }
+
 
 export function applyFollowupBoosts({
 
@@ -538,50 +785,199 @@ export function applyFollowupBoosts({
   ) {
 
     return score;
+
   }
 
+  // ======================
+  // FOLLOWUP BOOSTS
+  // ======================
+
   Object.keys(
+
     disease.followup_boosts
+
   )
 
-  .forEach(symptom => {
+  .forEach(
 
-    const matchedFollowup =
+    symptom => {
 
-      Object.keys(userData)
+      const matchedFollowup =
 
-      .some(key =>
+        Object.keys(
+          userData
+        )
 
-        userData[key] === true &&
+        .some(
 
-        (
+          key =>
 
-          key === symptom ||
+            userData[key] === true &&
 
-          key.startsWith(
-            `${symptom}_`
+            (
+
+              key === symptom ||
+
+              key.startsWith(
+                `${symptom}_`
+              )
+
+            )
+
+        );
+
+      if (
+
+        matchedFollowup
+
+      ) {
+
+        score +=
+
+          disease
+            .followup_boosts[
+              symptom
+            ];
+
+      }
+
+    }
+
+  );
+
+  // ======================
+  // GOLD FOLLOWUPS
+  // ======================
+
+  if (
+
+    Array.isArray(
+      disease.gold_symptoms
+    )
+
+  ) {
+
+    const goldMatchedCount =
+
+      disease.gold_symptoms.filter(
+
+        symptom =>
+
+          Object.keys(
+            userData
           )
 
-        )
+          .some(
+
+            key =>
+
+              userData[key] === true &&
+
+              (
+
+                key === symptom ||
+
+                key.startsWith(
+                  `${symptom}_`
+                )
+
+              )
+
+          )
+
+      ).length;
+
+    if (
+
+      goldMatchedCount >= 3
+
+    ) {
+
+      score += 20;
+
+    }
+
+    else if (
+
+      goldMatchedCount >= 2
+
+    ) {
+
+      score += 12;
+
+    }
+
+    else if (
+
+      goldMatchedCount >= 1
+
+    ) {
+
+      score += 6;
+
+    }
+
+  }
+
+  // ======================
+  // PATHOGNOMONIC FOLLOWUPS
+  // ======================
+
+  if (
+
+    Array.isArray(
+      disease.pathognomonic_symptoms
+    )
+
+  ) {
+
+    const pathognomonicMatched =
+
+      disease.pathognomonic_symptoms.some(
+
+        symptom =>
+
+          Object.keys(
+            userData
+          )
+
+          .some(
+
+            key =>
+
+              userData[key] === true &&
+
+              (
+
+                key === symptom ||
+
+                key.startsWith(
+                  `${symptom}_`
+                )
+
+              )
+
+          )
+
       );
 
     if (
 
-      matchedFollowup
+      pathognomonicMatched
 
     ) {
 
-      score +=
+      score += 25;
 
-        disease
-          .followup_boosts[
-            symptom
-          ];
     }
-  });
+
+  }
 
   return score;
+
 }
+
+
 
 export function calculateConfidence({
 
@@ -602,7 +998,9 @@ export function calculateConfidence({
   // SAFE SCORE
   // ==========================
 
-  score = Number(score || 0);
+  score = Number(
+    score || 0
+  );
 
   // ==========================
   // MATCH BONUS
@@ -610,35 +1008,44 @@ export function calculateConfidence({
 
   score +=
 
-    matchedSymptoms.length * 4 +
+    matchedSymptoms.length * 5 +
 
-    matchedTests.length * 8 +
+    matchedTests.length * 4 +
 
-    matchedRedFlags.length * 10;
+    matchedRedFlags.length * 8;
 
   // ==========================
   // TOTAL MATCH BONUS
   // ==========================
 
   if (
-    totalMatches >= 6
+
+    totalMatches >= 10
+
   ) {
 
-    score += 10;
+    score += 12;
+
   }
 
   else if (
+
+    totalMatches >= 7
+
+  ) {
+
+    score += 8;
+
+  }
+
+  else if (
+
     totalMatches >= 4
+
   ) {
 
-    score += 6;
-  }
+    score += 5;
 
-  else if (
-    totalMatches >= 2
-  ) {
-
-    score += 3;
   }
 
   // ==========================
@@ -650,32 +1057,51 @@ export function calculateConfidence({
     [
 
       disease.symptoms,
+
       disease.tests,
+
       disease.red_flags,
+
       disease.physical_exam,
+
       disease.complications
 
     ]
 
     .reduce(
 
-      (total, section) => {
+      (
+        total,
+        section
+      ) => {
 
-        if (!section)
+        if (
+          !section
+        ) {
+
           return total;
+
+        }
 
         return (
 
           total +
 
-          Object.values(section)
+          Object.values(
+            section
+          )
 
           .reduce(
 
-            (sum, item) => {
+            (
+              sum,
+              item
+            ) => {
 
               if (
+
                 item.present === true
+
               ) {
 
                 return (
@@ -683,12 +1109,19 @@ export function calculateConfidence({
                   sum +
 
                   Math.min(
+
                     Math.abs(
+
                       item.weight || 0
+
                     ),
+
                     10
+
                   )
+
                 );
+
               }
 
               return sum;
@@ -696,11 +1129,15 @@ export function calculateConfidence({
             },
 
             0
+
           )
+
         );
+
       },
 
       0
+
     );
 
   // ==========================
@@ -708,19 +1145,27 @@ export function calculateConfidence({
   // ==========================
 
   if (
+
     maxPossibleScore > 0
+
   ) {
 
     score =
 
       (
+
         score /
 
         (
+
           maxPossibleScore +
+
           20
+
         )
+
       ) * 100;
+
   }
 
   // ==========================
@@ -728,11 +1173,19 @@ export function calculateConfidence({
   // ==========================
 
   score = Math.max(
+
     1,
+
     Math.min(
-      Math.round(score),
+
+      Math.round(
+        score
+      ),
+
       100
+
     )
+
   );
 
   // ==========================
@@ -748,6 +1201,7 @@ export function calculateConfidence({
   ) {
 
     score = 15;
+
   }
 
   // ==========================
@@ -756,11 +1210,22 @@ export function calculateConfidence({
 
   if (
 
+    matchedSymptoms.length >= 7
+
+  ) {
+
+    score += 15;
+
+  }
+
+  else if (
+
     matchedSymptoms.length >= 5
 
   ) {
 
     score += 10;
+
   }
 
   else if (
@@ -770,6 +1235,7 @@ export function calculateConfidence({
   ) {
 
     score += 5;
+
   }
 
   // ==========================
@@ -777,10 +1243,106 @@ export function calculateConfidence({
   // ==========================
 
   if (
+
+    matchedTests.length >= 2
+
+  ) {
+
+    score += 8;
+
+  }
+
+  else if (
+
     matchedTests.length >= 1
+
+  ) {
+
+    score += 4;
+
+  }
+
+  // ==========================
+  // PATHOGNOMONIC BONUS
+  // ==========================
+
+  const pathognomonicMatched =
+
+    (
+
+      disease
+        .pathognomonic_symptoms || []
+
+    )
+
+    .some(
+
+      symptom =>
+
+        matchedSymptoms.includes(
+          symptom
+        )
+
+    );
+
+  if (
+
+    pathognomonicMatched
+
+  ) {
+
+    score += 20;
+
+  }
+
+  // ==========================
+  // GOLD SYMPTOMS BONUS
+  // ==========================
+
+  const goldSymptoms =
+
+    disease.gold_symptoms || [];
+
+  const goldMatchedCount =
+
+    goldSymptoms.filter(
+
+      symptom =>
+
+        matchedSymptoms.includes(
+          symptom
+        )
+
+    ).length;
+
+  if (
+
+    goldMatchedCount >= 3
+
+  ) {
+
+    score += 18;
+
+  }
+
+  else if (
+
+    goldMatchedCount >= 2
+
   ) {
 
     score += 10;
+
+  }
+
+  else if (
+
+    goldMatchedCount >= 1
+
+  ) {
+
+    score += 5;
+
   }
 
   // ==========================
@@ -788,10 +1350,37 @@ export function calculateConfidence({
   // ==========================
 
   if (
-    matchedRedFlags.length >= 1
+
+    matchedRedFlags.length >= 2
+
   ) {
 
-    score += 8;
+    score += 10;
+
+  }
+
+  else if (
+
+    matchedRedFlags.length >= 1
+
+  ) {
+
+    score += 5;
+
+  }
+
+  // ==========================
+  // ORGAN SYSTEM BONUS
+  // ==========================
+
+  if (
+
+    disease.organ_system
+
+  ) {
+
+    score += 3;
+
   }
 
   // ==========================
@@ -799,11 +1388,19 @@ export function calculateConfidence({
   // ==========================
 
   score = Math.max(
+
     1,
+
     Math.min(
-      Math.round(score),
+
+      Math.round(
+        score
+      ),
+
       100
+
     )
+
   );
 
   // ==========================
@@ -813,8 +1410,11 @@ export function calculateConfidence({
   const confidenceLabel =
 
     CONFIDENCE_RULES.find(
+
       rule =>
+
         score >= rule.min
+
     )?.label ||
 
     "Weak Match";
@@ -822,9 +1422,11 @@ export function calculateConfidence({
   return {
 
     score,
+
     confidenceLabel
 
   };
+
 }
 
 export function calculateTotalMatches({
@@ -859,8 +1461,151 @@ export function calculateTotalMatches({
   ]);
 
   // ==========================
-  // TOTAL
+  // WEIGHTED TOTAL
   // ==========================
 
-  return uniqueMatches.size;
+  let total =
+
+    // Symptoms are most important
+    (matchedSymptoms.length * 4) +
+
+    // Red flags are highly important
+    (matchedRedFlags.length * 3) +
+
+    // Physical findings
+    (matchedPhysicalExam.length * 2.5) +
+
+    // Complications
+    (matchedComplications.length * 2) +
+
+    // Risk factors
+    (matchedRiskFactors.length * 1.5) +
+
+    // Tests are supportive, not dominant
+    (matchedTests.length * 1);
+
+  // ==========================
+  // MULTI-SYSTEM BONUS
+  // ==========================
+
+  const categoryCount = [
+
+    matchedSymptoms.length,
+
+    matchedTests.length,
+
+    matchedRedFlags.length,
+
+    matchedRiskFactors.length,
+
+    matchedComplications.length,
+
+    matchedPhysicalExam.length
+
+  ]
+
+  .filter(
+
+    count => count > 0
+
+  )
+
+  .length;
+
+  if (
+
+    categoryCount >= 5
+
+  ) {
+
+    total += 10;
+
+  }
+
+  else if (
+
+    categoryCount >= 4
+
+  ) {
+
+    total += 7;
+
+  }
+
+  else if (
+
+    categoryCount >= 3
+
+  ) {
+
+    total += 4;
+
+  }
+
+  // ==========================
+  // UNIQUE FINDINGS BONUS
+  // ==========================
+
+  total +=
+
+    Math.min(
+
+      uniqueMatches.size,
+
+      12
+
+    );
+
+  // ==========================
+  // STRONG SYMPTOM PATTERN BONUS
+  // ==========================
+
+  if (
+
+    matchedSymptoms.length >= 7
+
+  ) {
+
+    total += 10;
+
+  }
+
+  else if (
+
+    matchedSymptoms.length >= 5
+
+  ) {
+
+    total += 6;
+
+  }
+
+  else if (
+
+    matchedSymptoms.length >= 3
+
+  ) {
+
+    total += 3;
+
+  }
+
+  // ==========================
+  // ROUND
+  // ==========================
+
+  total =
+
+    Math.round(
+
+      total
+
+    );
+
+  // ==========================
+  // RETURN
+  // ==========================
+
+  return total;
+
 }

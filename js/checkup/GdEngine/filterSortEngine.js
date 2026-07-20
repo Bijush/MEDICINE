@@ -1,3 +1,10 @@
+
+import {
+  applyDifferentialCompetition
+}
+from "./differentialCompetition.js";
+
+
 export function filterAndSortResults(
   results = []
 ) {
@@ -319,6 +326,17 @@ export function filterAndSortResults(
     }
   );
 
+
+
+// ==========================
+// DIFFERENTIAL COMPETITION
+// ==========================
+
+filteredResults =
+  applyDifferentialCompetition(
+    filteredResults
+  );
+  
   // ==========================
   // REMOVE DUPLICATES
   // ==========================
