@@ -1,4 +1,3 @@
-
 import {
   CURRENT_LANG
 }
@@ -23,6 +22,7 @@ export function updateSelectedSymptoms(
   container,
 
   counter
+
 ) {
 
   // ==========================
@@ -38,13 +38,13 @@ export function updateSelectedSymptoms(
   // ==========================
   // EXTRA INPUTS
   // ==========================
-  
-    const patientName =
 
-  document.getElementById(
-    "patientName"
-  )?.value;
-  
+  const patientName =
+
+    document.getElementById(
+      "patientName"
+    )?.value;
+
   const age =
 
     document.getElementById(
@@ -69,9 +69,9 @@ export function updateSelectedSymptoms(
 
   let totalCount =
     selected.length;
-    
-    if (patientName)
-  totalCount++;
+
+  if (patientName)
+    totalCount++;
 
   if (age)
     totalCount++;
@@ -87,7 +87,6 @@ export function updateSelectedSymptoms(
   // ==========================
 
   counter.innerHTML =
-
     `Selected: ${totalCount}`;
 
   // ==========================
@@ -96,23 +95,23 @@ export function updateSelectedSymptoms(
 
   if (
 
-  !selected.length &&
+    !selected.length &&
 
-  !patientName &&
+    !patientName &&
 
-  !age &&
+    !age &&
 
-  !gender &&
+    !gender &&
 
-  !duration
+    !duration
 
-) {
+  ) {
 
-  container.innerHTML =
-    "";
+    container.innerHTML =
+      "";
 
-  return;
-}
+    return;
+  }
 
   // ==========================
   // SYMPTOM CHIPS
@@ -125,46 +124,54 @@ export function updateSelectedSymptoms(
     .map(
       item => `
 
-      <div class="
-        selected-chip
-      ">
+<div
+  class="
+    selected-chip
+  "
+  data-symptom="
+    ${item.value}
+  "
+>
 
-        ✔
+  ✔
 
-        ${t(item.value, "en")}
+  ${t(item.value, "en")}
 
-        (
+  (
 
-        ${t(item.value, "bn")}
+  ${t(item.value, "bn")}
 
-        )
+  )
 
-      </div>
-      `
+</div>
+
+`
     )
 
     .join("");
 
+  // ==========================
+  // NAME CHIP
+  // ==========================
 
-// ==========================
-// NAME CHIP
-// ==========================
+  if (patientName) {
 
-if (patientName) {
+    html += `
 
-  html += `
+<div
+  class="
+    selected-chip
+    medical-chip
+  "
+>
 
-    <div class="
-      selected-chip
-      medical-chip
-    ">
+  🧑 Patient:
+  ${patientName}
 
-      🧑 Patient:
-      ${patientName}
+</div>
 
-    </div>
-  `;
-}
+`;
+  }
 
   // ==========================
   // AGE CHIP
@@ -174,16 +181,19 @@ if (patientName) {
 
     html += `
 
-      <div class="
-        selected-chip
-        medical-chip
-      ">
+<div
+  class="
+    selected-chip
+    medical-chip
+  "
+>
 
-        🎂 Age:
-        ${age}
+  🎂 Age:
+  ${age}
 
-      </div>
-    `;
+</div>
+
+`;
   }
 
   // ==========================
@@ -194,16 +204,19 @@ if (patientName) {
 
     html += `
 
-      <div class="
-        selected-chip
-        medical-chip
-      ">
+<div
+  class="
+    selected-chip
+    medical-chip
+  "
+>
 
-        👤 Gender:
-        ${formatText(gender)}
+  👤 Gender:
+  ${formatText(gender)}
 
-      </div>
-    `;
+</div>
+
+`;
   }
 
   // ==========================
@@ -214,16 +227,19 @@ if (patientName) {
 
     html += `
 
-      <div class="
-        selected-chip
-        medical-chip
-      ">
+<div
+  class="
+    selected-chip
+    medical-chip
+  "
+>
 
-        ⏳ Duration:
-        ${duration} days
+  ⏳ Duration:
+  ${duration} days
 
-      </div>
-    `;
+</div>
+
+`;
   }
 
   // ==========================
@@ -232,4 +248,186 @@ if (patientName) {
 
   container.innerHTML =
     html;
+
+  // ==========================
+  // CLICK TO ORIGINAL ITEM
+  // ==========================
+
+  container
+    .querySelectorAll(
+      ".selected-chip[data-symptom]"
+    )
+
+    .forEach(
+      chip => {
+
+        chip.onclick = () => {
+
+          const symptom =
+            chip.dataset.symptom;
+
+          // ====================
+// FIND ORIGINAL ITEM
+// ====================
+
+let symptomItem = null;
+
+document
+
+  .querySelectorAll(
+    ".symptom-item"
+  )
+
+  .forEach(item => {
+
+    const value =
+
+      item.dataset.symptom
+        ?.trim()
+        .toLowerCase();
+
+    if (
+
+      value ===
+
+      symptom
+        .trim()
+        .toLowerCase()
+
+    ) {
+
+      symptomItem = item;
+
+    }
+
+  });
+
+console.log(
+  "Clicked:",
+  symptom
+);
+
+console.log(
+  "Found item:",
+  symptomItem
+);
+
+if (!symptomItem) {
+
+  // ====================
+  // FALLBACK
+  // FIND CHECKBOX
+  // ====================
+
+  const checkbox =
+
+    document.querySelector(
+
+      `.symptom-ui input[type="checkbox"][value="${symptom}"]`
+
+    );
+
+  if (checkbox) {
+
+    symptomItem =
+
+      checkbox.closest(
+        ".symptom-item"
+      );
+
+  }
+
+}
+
+if (!symptomItem) {
+
+  console.warn(
+    "Unable to find symptom:",
+    symptom
+  );
+
+  return;
+
+}
+
+          if (!symptomItem)
+            return;
+
+          // ====================
+          // OPEN CATEGORY
+          // ====================
+
+          const category =
+
+            symptomItem.closest(
+              ".symptom-category"
+            );
+
+          if (category) {
+
+            document
+
+              .querySelectorAll(
+                ".symptom-category"
+              )
+
+              .forEach(
+                c => {
+
+                  if (
+                    c !== category
+                  ) {
+
+                    c.classList.remove(
+                      "open"
+                    );
+
+                  }
+
+                }
+              );
+
+            category.classList.add(
+              "open"
+            );
+          }
+
+          // ====================
+          // SCROLL
+          // ====================
+
+          symptomItem.scrollIntoView({
+
+            behavior:
+              "smooth",
+
+            block:
+              "center"
+
+          });
+
+          // ====================
+          // HIGHLIGHT
+          // ====================
+
+          symptomItem.classList.add(
+            "selected-jump"
+          );
+
+          setTimeout(
+            () => {
+
+              symptomItem.classList.remove(
+                "selected-jump"
+              );
+
+            },
+            2000
+          );
+
+        };
+
+      }
+    );
+
 }

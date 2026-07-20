@@ -1,4 +1,3 @@
-
 import {
   ALL_DISEASES
 }
@@ -13,8 +12,6 @@ import {
   t
 }
 from "../translations/translate.js";
-
-
 
 // ==============================
 // EXACT BLOCKED WORDS
@@ -131,9 +128,15 @@ ALL_DISEASES.forEach(
     .forEach(symptom => {
 
       VALID_SYMPTOMS.add(
+
         symptom
+          .toLowerCase()
+          .trim()
+
       );
+
     });
+
   }
 );
 
@@ -161,10 +164,15 @@ export function isUserFriendlySymptom(
     return false;
   }
 
+  // ==========================
+  // NORMALIZE
+  // ==========================
+
   const lower =
+
     symptom
-    .toLowerCase()
-    .trim();
+      .toLowerCase()
+      .trim();
 
   // ==========================
   // LENGTH
@@ -187,8 +195,12 @@ export function isUserFriendlySymptom(
       lower
     );
 
-  if (!validFormat)
+  if (
+    !validFormat
+  ) {
+
     return false;
+  }
 
   // ==========================
   // EXACT BLOCK
@@ -219,16 +231,21 @@ export function isUserFriendlySymptom(
         )
     );
 
-  if (partialBlocked)
+  if (
+    partialBlocked
+  ) {
+
     return false;
+  }
 
   // ==========================
   // DATASET EXISTS
   // ==========================
 
   return VALID_SYMPTOMS.has(
-    symptom
+    lower
   );
+
 }
 
 // ==============================
@@ -251,11 +268,13 @@ export function generateSectionItems(
           sectionKey
         ] || {}
 
-      ).forEach(item => {
+      )
+
+      .forEach(item => {
 
         // ====================
-        // FILTER ONLY
-        // NORMAL SYMPTOMS
+        // FILTER ONLY NORMAL
+        // SYMPTOMS
         // ====================
 
         if (
@@ -277,8 +296,12 @@ export function generateSectionItems(
           }
         }
 
-        itemSet.add(item);
+        itemSet.add(
+          item
+        );
+
       });
+
     }
   );
 
@@ -290,8 +313,12 @@ export function generateSectionItems(
 
     (a, b) =>
 
-      a.localeCompare(b)
+      a.localeCompare(
+        b
+      )
+
   );
+
 }
 
 // ==============================
@@ -307,7 +334,8 @@ export function renderSymptomLabel(
   // ==========================
 
   if (
-    CURRENT_LANG === "bn"
+    CURRENT_LANG ===
+    "bn"
   ) {
 
     return `
@@ -327,7 +355,11 @@ export function renderSymptomLabel(
   // ENGLISH ONLY
   // ==========================
 
-  return t(symptom, "en");
+  return t(
+    symptom,
+    "en"
+  );
+
 }
 
 // ==============================
@@ -346,10 +378,13 @@ export function formatText(
     )
 
     .replace(
+
       /\b\w/g,
-      l => l.toUpperCase()
+
+      letter =>
+
+        letter.toUpperCase()
+
     );
+
 }
-
-
-

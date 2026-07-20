@@ -27,7 +27,9 @@ export function buildCategoryMap(
   // ==========================
 
   if (
-    !Array.isArray(symptoms)
+    !Array.isArray(
+      symptoms
+    )
   ) {
 
     console.warn(
@@ -35,6 +37,7 @@ export function buildCategoryMap(
     );
 
     return {};
+
   }
 
   // ==========================
@@ -57,75 +60,125 @@ export function buildCategoryMap(
   // PROCESS SYMPTOMS
   // ==========================
 
-  symptoms.forEach(symptom => {
+  symptoms.forEach(
+    symptom => {
 
-    // ======================
-    // INVALID
-    // ======================
+      // ======================
+      // INVALID
+      // ======================
 
-    if (
+      if (
 
-      !symptom ||
+        !symptom ||
 
-      typeof symptom !==
-      "string"
+        typeof symptom !==
+        "string"
 
-    ) {
+      ) {
 
-      return;
-    }
+        return;
 
-    // ======================
-    // CATEGORY DETECTION
-    // ======================
+      }
 
-    const category =
+      // ======================
+      // NORMALIZE
+      // ======================
 
-      detectCategory(
-        symptom,
-        autoMap
-      ) || "Other";
+      const normalized =
 
-    // ======================
-    // CREATE CATEGORY
-    // ======================
+        symptom
+        .toLowerCase()
+        .trim();
 
-    grouped[
-      category
-    ] ??= [];
+      // ======================
+      // CATEGORY DETECTION
+      // ======================
 
-    // ======================
-    // AVOID DUPLICATES
-    // ======================
+      const category = (
+  detectCategory(
+    normalized,
+    autoMap
+  ) || "Other"
+).toUpperCase();
 
-    if (
-
-      !grouped[
-        category
-      ].includes(symptom)
-
-    ) {
+      // ======================
+      // CREATE CATEGORY
+      // ======================
 
       grouped[
         category
-      ].push(symptom);
+      ] ??= [];
+
+      // ======================
+      // AVOID DUPLICATES
+      // ======================
+
+      if (
+
+        !grouped[
+          category
+        ]
+
+        .includes(
+          normalized
+        )
+
+      ) {
+
+        grouped[
+          category
+        ]
+
+        .push(
+          normalized
+        );
+
+      }
+
     }
-  });
+  );
 
   // ==========================
   // SORT ITEMS
   // ==========================
 
-  Object.values(grouped)
+  Object.values(
+    grouped
+  )
 
-  .forEach(items => {
+  .forEach(
+    items => {
 
-    items.sort(
-      (a, b) =>
+      items.sort(
 
-        a.localeCompare(b)
+        (a, b) =>
+
+          a.localeCompare(
+            b
+          )
+
+      );
+
+    }
+  );
+
+  // ==========================
+  // REMOVE EMPTY CATEGORIES
+  // ==========================
+
+  const nonEmptyCategories =
+
+    Object.entries(
+      grouped
+    )
+
+    .filter(
+
+      ([, items]) =>
+
+        items.length > 0
+
     );
-  });
 
   // ==========================
   // SORT CATEGORY NAMES
@@ -135,14 +188,18 @@ export function buildCategoryMap(
 
     Object.fromEntries(
 
-      Object.entries(grouped)
+      nonEmptyCategories
 
       .sort(
 
         ([a], [b]) =>
 
-          a.localeCompare(b)
+          a.localeCompare(
+            b
+          )
+
       )
+
     );
 
   // ==========================
@@ -150,4 +207,5 @@ export function buildCategoryMap(
   // ==========================
 
   return sortedGrouped;
+
 }

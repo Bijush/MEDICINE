@@ -11,65 +11,92 @@ const AUTO_CATEGORY_MAP = {};
 // BUILD CATEGORY MAP
 // ==============================
 
-ALL_DISEASES.forEach(disease => {
+ALL_DISEASES.forEach(
+  disease => {
 
-  // ==========================
-  // DEFAULT DISEASE CATEGORY
-  // ==========================
+    // ==========================
+    // DEFAULT DISEASE CATEGORY
+    // ==========================
 
-  const diseaseCategory =
+    const diseaseCategory =
 
-    disease.category ||
-    "Other";
-
-  // ==========================
-  // LOOP SYMPTOMS
-  // ==========================
-
-  Object.entries(
-
-    disease.symptoms || {}
-
-  )
-
-  .forEach(([symptom, data]) => {
-
-    // ========================
-    // NORMALIZE
-    // ========================
-
-    const normalizedSymptom =
-
-      symptom
-      .toLowerCase()
-      .trim();
-
-    // ========================
-    // PRIORITY
-    // symptom.category
-    // disease.category
-    // Other
-    // ========================
-
-    const finalCategory =
-
-      data?.category ||
-
-      diseaseCategory ||
-
+      disease.category ||
       "Other";
 
-    // ========================
-    // DIRECT OVERRIDE
-    // ========================
+    // ==========================
+    // LOOP SYMPTOMS
+    // ==========================
 
-    AUTO_CATEGORY_MAP[
-      normalizedSymptom
-    ] = finalCategory;
+    Object.entries(
 
-  });
+      disease.symptoms || {}
 
-});
+    )
+
+    .forEach(
+
+      ([symptom, data]) => {
+
+        // ========================
+        // ONLY POSITIVE SYMPTOMS
+        // ========================
+
+        if (
+          data?.present !== true
+        ) {
+
+          return;
+        }
+
+        // ========================
+        // NORMALIZE
+        // ========================
+
+        const normalizedSymptom =
+
+          symptom
+          .toLowerCase()
+          .trim();
+
+        // ========================
+        // CATEGORY
+        // ========================
+
+        const finalCategory =
+
+          data?.category ||
+
+          diseaseCategory ||
+
+          "Other";
+
+        // ========================
+        // CREATE SET
+        // ========================
+
+        AUTO_CATEGORY_MAP[
+          normalizedSymptom
+        ] ??= new Set();
+
+        // ========================
+        // STORE CATEGORY
+        // ========================
+
+        AUTO_CATEGORY_MAP[
+          normalizedSymptom
+        ]
+
+        .add(
+          finalCategory
+        );
+
+      }
+
+    );
+
+  }
+
+);
 
 // ==============================
 // DETECT CATEGORY
@@ -84,12 +111,16 @@ export function detectCategory(
   // ==========================
 
   if (
+
     !symptom ||
+
     typeof symptom !==
     "string"
+
   ) {
 
     return "Other";
+
   }
 
   // ==========================
@@ -106,7 +137,7 @@ export function detectCategory(
   // LOOKUP
   // ==========================
 
-  const category =
+  const categories =
 
     AUTO_CATEGORY_MAP[
       normalized
@@ -116,16 +147,25 @@ export function detectCategory(
   // NOT FOUND
   // ==========================
 
-  if (!category) {
+  if (
+
+    !categories ||
+
+    categories.size === 0
+
+  ) {
 
     return "Other";
+
   }
 
   // ==========================
-  // RETURN
+  // RETURN LAST CATEGORY
   // ==========================
 
-  return category;
+  return Array.from(
+    categories
+  ).at(-1);
 
 }
 
