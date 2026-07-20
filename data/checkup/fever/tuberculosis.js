@@ -146,7 +146,7 @@ export const TUBERCULOSIS = [
       },
 
       fatigue: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 35,
         followup: {
@@ -160,7 +160,7 @@ export const TUBERCULOSIS = [
       },
 
       weakness: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 30,
         followup: {
@@ -174,7 +174,7 @@ export const TUBERCULOSIS = [
       },
 
       weight_loss: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 50,
         followup: {
@@ -188,7 +188,7 @@ export const TUBERCULOSIS = [
       },
 
       loss_of_appetite: {
-        category: "gastrointestinal",
+        category: "constitutional",
         present: true,
         weight: 25,
         followup: {

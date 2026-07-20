@@ -60,7 +60,7 @@ export const TYPHOID = [
       },
 
       weakness: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 20,
         followup: {
@@ -88,7 +88,7 @@ export const TYPHOID = [
       },
 
       abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 30,
         aliases: ["stomach_pain"],
@@ -117,7 +117,7 @@ export const TYPHOID = [
       },
 
       diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 20,
         followup: {
@@ -131,7 +131,7 @@ export const TYPHOID = [
       },
 
       loss_of_appetite: {
-        category: "gastrointestinal",
+        category: "constitutional",
         present: true,
         weight: 25,
         followup: {
@@ -159,7 +159,7 @@ export const TYPHOID = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 15,
         followup: {
