@@ -150,7 +150,7 @@ export const GERD = [
       },
 
       upper_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 18,
         followup: {
@@ -536,72 +536,177 @@ medicines: {
   ]
 
 },
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
+homeopathic_medicines: [
 
   {
-    en: "Acid suppression therapy",
-    bn: "অ্যাসিড কমানোর চিকিৎসা"
+    name: "Nux Vomica 30",
+    line: "homeopathic",
+
+    condition: {
+      en: "Acidity after spicy food, overeating, tea or coffee",
+      bn: "মশলাযুক্ত খাবার, অতিরিক্ত খাওয়া, চা বা কফির পরে অম্বল হলে"
+    },
+
+    frequency: {
+      en: "2-3 times daily as advised by physician",
+      bn: "চিকিৎসকের পরামর্শ অনুযায়ী দিনে ২-৩ বার"
+    },
+
+    purpose: {
+      en: "Relieves acidity and indigestion",
+      bn: "অম্বল ও বদহজম কমাতে সাহায্য করে"
+    }
   },
 
   {
-    en: "Dietary modification",
-    bn: "খাদ্যাভ্যাস পরিবর্তন"
+    name: "Robinia Pseudoacacia 30",
+    line: "homeopathic",
+
+    condition: {
+      en: "Severe acidity with sour belching and heartburn",
+      bn: "তীব্র অম্লতা, টক ঢেকুর ও বুক জ্বালাপোড়া থাকলে"
+    },
+
+    frequency: {
+      en: "2-3 times daily as advised by physician",
+      bn: "চিকিৎসকের পরামর্শ অনুযায়ী দিনে ২-৩ বার"
+    },
+
+    purpose: {
+      en: "Controls acid reflux and heartburn",
+      bn: "এসিড রিফ্লাক্স ও বুক জ্বালাপোড়া কমাতে সাহায্য করে"
+    }
   },
 
   {
-    en: "Anti-reflux lifestyle management",
-    bn: "এসিড রিফ্লাক্স নিয়ন্ত্রণে জীবনযাত্রার পরিবর্তন"
+    name: "Carbo Vegetabilis 30",
+    line: "homeopathic",
+
+    condition: {
+      en: "Gas, bloating and fullness after meals",
+      bn: "খাবারের পর গ্যাস, পেট ফাঁপা ও অস্বস্তি হলে"
+    },
+
+    frequency: {
+      en: "2 times daily as advised by physician",
+      bn: "চিকিৎসকের পরামর্শ অনুযায়ী দিনে ২ বার"
+    },
+
+    purpose: {
+      en: "Relieves bloating and gas",
+      bn: "গ্যাস ও পেট ফাঁপা কমাতে সাহায্য করে"
+    }
   },
 
   {
-    en: "Surgical evaluation if required",
-    bn: "প্রয়োজন হলে অস্ত্রোপচারের মূল্যায়ন"
+    name: "Lycopodium 30",
+    line: "homeopathic",
+
+    condition: {
+      en: "Bloating and fullness after eating small amounts",
+      bn: "অল্প খেলেই পেট ভরে যাওয়া ও পেট ফাঁপা হলে"
+    },
+
+    frequency: {
+      en: "1-2 times daily as advised by physician",
+      bn: "চিকিৎসকের পরামর্শ অনুযায়ী দিনে ১-২ বার"
+    },
+
+    purpose: {
+      en: "Improves digestion and reduces bloating",
+      bn: "হজমে সাহায্য করে এবং পেট ফাঁপা কমায়"
+    }
   }
 
 ],
+ayurvedic_medicines: {
+  first_line: [
+    {
+      line: "first_line",
+      name: "Avipattikar Churna",
+      type: "Ayurvedic",
+      dosage: "3–5 g",
+      frequency: "Twice daily after meals",
+      purpose: { en: "Helps reduce acidity, heartburn and acid reflux", bn: "অ্যাসিডিটি, বুক জ্বালাপোড়া ও এসিড রিফ্লাক্স কমাতে সাহায্য করে" },
+      images: [
+        "./images/avipattikar.jpeg",
+        "./images/avipattikar1.jpeg"
+        ] // এখানে ছবির লিংক দিন
+    },
+    {
+      line: "first_line",
+      name: "Kamdudha Ras",
+      type: "Ayurvedic",
+      dosage: "1–2 tablets",
+      frequency: "Twice daily after meals",
+      purpose: { en: "Provides relief from burning sensation and hyperacidity", bn: "বুক জ্বালাপোড়া ও অতিরিক্ত অ্যাসিডিটি কমাতে সাহায্য করে" },
+      images: [
+        "./images/Kamdudha.jpeg",
+        "./images/Kamdudha1.jpeg",
+        "./images/Kamdudha2.jpeg",
+        ] 
+    }
+  ],
+  second_line: [
+    {
+      line: "second_line",
+      name: "Sutshekhar Ras",
+      type: "Ayurvedic",
+      dosage: "1 tablet",
+      frequency: "Twice daily",
+      purpose: { en: "Supports chronic acidity, nausea and indigestion", bn: "দীর্ঘস্থায়ী অম্বল, বমি বমি ভাব ও বদহজমে সহায়ক" },
+      images: [
+        "./images/Sutshekhar.png",
+        "./images/Sutshekhar1.png"
+        ] 
+    },
+    {
+      line: "second_line",
+      name: "Praval Panchamrit Ras",
+      type: "Ayurvedic",
+      dosage: "1 tablet",
+      frequency: "Twice daily",
+      purpose: { en: "Helps neutralize excess stomach acid", bn: "পাকস্থলীর অতিরিক্ত অ্যাসিড কমাতে সাহায্য করে" },
+      images: [
+        "./images/Panchamrit.jpeg",
+        "./images/Panchamrit1.png"
+        ] 
+    }
+  ],
+  third_line: [
+    {
+      line: "third_line",
+      name: "Shankh Bhasma",
+      type: "Ayurvedic",
+      dosage: "250–500 mg",
+      frequency: "Twice daily",
+      purpose: { en: "Supports relief from GERD and acid reflux symptoms", bn: "জিইআরডি ও এসিড রিফ্লাক্সের উপসর্গ কমাতে সহায়ক" },
+      images: []
+    },
+    {
+      line: "third_line",
+      name: "Yashtimadhu Churna",
+      type: "Ayurvedic",
+      dosage: "3 g",
+      frequency: "Twice daily",
+      purpose: { en: "Soothes the esophagus and supports healing", bn: "খাদ্যনালীকে শান্ত রাখতে ও নিরাময়ে সহায়তা করে" },
+      images: []
+    }
+  ],
+  fourth_line: [
+    {
+      line: "fourth_line",
+      name: "Amlapittantak Lauha",
+      type: "Ayurvedic",
+      dosage: "1 tablet",
+      frequency: "Twice daily",
+      purpose: { en: "Supportive management for chronic GERD", bn: "দীর্ঘদিনের জিইআরডি নিয়ন্ত্রণে সহায়ক" },
+      warning: { en: "Use only under the supervision of an Ayurvedic physician", bn: "শুধুমাত্র অভিজ্ঞ আয়ুর্বেদিক চিকিৎসকের পরামর্শে ব্যবহার করুন" },
+      images: []
+    }
+  ]
+}
 
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Avoid spicy foods",
-    bn: "ঝাল খাবার এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Avoid late-night meals",
-    bn: "রাতে দেরি করে খাবার খাবেন না"
-  },
-
-  {
-    en: "Maintain a healthy weight",
-    bn: "স্বাস্থ্যকর ওজন বজায় রাখুন"
-  },
-
-  {
-    en: "Stop smoking",
-    bn: "ধূমপান বন্ধ করুন"
-  },
-
-  {
-    en: "Avoid alcohol",
-    bn: "মদ্যপান এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Sleep with the head elevated",
-    bn: "মাথা কিছুটা উঁচু করে ঘুমান"
-  }
-
-],
 
   }
 ];

@@ -7,13 +7,9 @@
 export const CROHNS_DISEASE = [
   {
     id: "CD001",
-    disease: "Crohn's Disease",
+    disease: "Crohn_Disease",
     medical_name: "Crohn's Disease",
-    aliases: [
-      "crohns",
-      "crohn_disease",
-      "crohn_disease_ibd"
-    ],
+    
     category: "stomach",
     tags: [
       "ibd",
@@ -22,6 +18,7 @@ export const CROHNS_DISEASE = [
       "intestinal"
     ],
     prevalence: "uncommon",
+    prior_probability: 0.03,
     severity: "severe",
     priority: 85,
     contagious: false,
@@ -52,13 +49,9 @@ export const CROHNS_DISEASE = [
     // ==========================
     symptoms: {
       chronic_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 50,
-        aliases: [
-          "long_term_diarrhea",
-          "persistent_diarrhea"
-        ],
         followup: {
           question: "Has diarrhea continued for weeks?",
           options: ["Yes", "No"],
@@ -70,7 +63,7 @@ export const CROHNS_DISEASE = [
       },
 
       abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 40,
         followup: {
@@ -146,7 +139,7 @@ export const CROHNS_DISEASE = [
       },
 
       appetite_loss: {
-        category: "constitutional",
+        category: "Food",
         present: true,
         weight: 25,
         aliases: [
@@ -163,7 +156,7 @@ export const CROHNS_DISEASE = [
       },
 
       blood_in_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 40,
         aliases: [
@@ -195,7 +188,7 @@ export const CROHNS_DISEASE = [
       },
 
       anal_pain: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 18,
         followup: {
@@ -230,7 +223,7 @@ export const CROHNS_DISEASE = [
       },
 
       watery_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 25
       },
@@ -411,6 +404,14 @@ export const CROHNS_DISEASE = [
       "severe_bleeding",
       "severe_dehydration"
     ],
+    
+    mutually_exclusive_with: [
+
+  "Appendicitis",
+
+  "Constipation"
+
+],
 
     // ==========================
     // MEDICINES
@@ -545,95 +546,6 @@ export const CROHNS_DISEASE = [
 
   ]
 
-},
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
-
-  {
-    en: "Colonoscopy monitoring",
-    bn: "কোলোনোস্কোপি পর্যবেক্ষণ"
-  },
-
-  {
-    en: "Biologic and immune-modulating therapy",
-    bn: "বায়োলজিক ও ইমিউন-মডুলেটিং চিকিৎসা"
-  },
-
-  {
-    en: "Surgery for complications if needed",
-    bn: "জটিলতা হলে প্রয়োজনে অস্ত্রোপচার"
-  }
-
-],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Stop smoking completely",
-    bn: "ধূমপান সম্পূর্ণভাবে বন্ধ করুন"
-  },
-
-  {
-    en: "Maintain adequate hydration",
-    bn: "পর্যাপ্ত পানি পান করুন"
-  },
-
-  {
-    en: "Prevent nutritional deficiencies",
-    bn: "পুষ্টিহীনতা প্রতিরোধ করুন"
-  },
-
-  {
-    en: "Avoid trigger foods",
-    bn: "উপসর্গ বাড়ায় এমন খাবার এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Regular follow-up with a gastroenterologist",
-    bn: "নিয়মিত গ্যাস্ট্রোএন্টেরোলজিস্টের ফলো-আপ করুন"
-  }
-
-],
-
-// ==========================
-// DOCTOR CONSULTATION
-// ==========================
-
-doctor_consultation: [
-
-  {
-    en: "Severe abdominal pain or bowel obstruction symptoms",
-    bn: "তীব্র পেটব্যথা বা অন্ত্র বন্ধ হওয়ার লক্ষণ"
-  },
-
-  {
-    en: "Heavy blood in stool",
-    bn: "পায়খানার সাথে প্রচুর রক্ত যাওয়া"
-  },
-
-  {
-    en: "High fever, chills, or rapid heartbeat",
-    bn: "উচ্চ জ্বর, কাঁপুনি বা দ্রুত হৃদস্পন্দন"
-  },
-
-  {
-    en: "Unexplained weight loss",
-    bn: "কারণ ছাড়াই ওজন কমে যাওয়া"
-  },
-
-  {
-    en: "Painful swelling or drainage around the anus",
-    bn: "মলদ্বারের চারপাশে ব্যথাযুক্ত ফোলা বা পুঁজ বের হওয়া"
-  }
-
-]
+}
   }
 ];

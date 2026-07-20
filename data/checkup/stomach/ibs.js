@@ -1,8 +1,4 @@
-// ==============================
-// IRRITABLE BOWEL SYNDROME DATASET
-// ADVANCED UNIVERSAL VERSION
-// STRUCTURALLY ALIGNED & BUG-FREE
-// ==============================
+
 
 export const IBS = [
   {
@@ -52,243 +48,271 @@ export const IBS = [
     // SYMPTOMS
     // ==========================
     symptoms: {
-      abdominal_pain: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 40,
-        aliases: [
-          "stomach_pain"
-        ],
-        followup: {
-          question: "Does abdominal pain improve after passing stool?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "pain_relieved_after_stool"
-          },
-          priority: 15
-        }
-      },
 
-      abdominal_cramp: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 30,
-        followup: {
-          question: "Do abdominal cramps occur repeatedly?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "recurrent_abdominal_cramps"
-          },
-          priority: 10
-        }
+  abdominal_pain: {
+    category: "STOMACH PAIN",
+    present: true,
+    weight: 40,
+    aliases: [
+      "stomach_pain"
+    ],
+    followup: {
+      question: "Does abdominal pain improve after passing stool?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "pain_relieved_after_stool"
       },
+      priority: 15
+    }
+  },
 
-      bloating: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 25,
-        aliases: [
-          "gas_problem",
-          "flatulence",
-          "excessive_gas",
-          "gas",
-          "gassy",
-          "abdominal_fullness"
-        ],
-        followup: {
-          question: "Do you experience excessive gas daily?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "chronic_gas_problem"
-          },
-          priority: 6
-        }
+  abdominal_cramp: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 30,
+    followup: {
+      question: "Do abdominal cramps occur repeatedly?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "recurrent_abdominal_cramps"
       },
+      priority: 10
+    }
+  },
 
-      constipation: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 30,
-        followup: {
-          question: "Do you often struggle to pass stool?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "severe_constipation"
-          },
-          priority: 8
-        }
+  bloating: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 25,
+    aliases: [
+      "abdominal_fullness",
+      "abdominal_distension",
+      "bloated_feeling",
+      "gassy"
+    ],
+    followup: {
+      question: "Do you feel your abdomen becomes swollen or bloated?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "significant_bloating"
       },
-
-      diarrhea: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 30,
-        followup: {
-          question: "Is diarrhea frequent?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "frequent_diarrhea"
-          },
-          priority: 8
-        }
-      },
-morning_diarrhea: {
-  category: "gastrointestinal",
-  present: true,
-  weight: 35,
+      priority: 6
+    }
+  },
+  
+  nocturnal_diarrhea: {
+  category: "DASTO",
+  present: false,
+  weight: -50,
   aliases: [
-    "early_morning_diarrhea",
-    "morning_loose_stool"
+    "night_diarrhea",
+    "diarrhea_at_night"
   ],
   followup: {
-    question: "Does diarrhea occur mainly in the morning after waking up?",
+    question: {
+      en: "Do you wake up from sleep because of diarrhea?",
+      bn: "ডায়রিয়ার কারণে কি ঘুম থেকে জেগে উঠতে হয়?"
+    },
     options: ["Yes", "No"],
     symptomMap: {
-      "Yes": "morning_diarrhea"
+      "Yes": "nocturnal_diarrhea"
     },
-    priority: 12
+    priority: 15
   }
 },
-      alternating_constipation_diarrhea: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 50,
-        aliases: [
-          "mixed_bowel_pattern"
-        ],
-        followup: {
-          question: "Do constipation and diarrhea alternate frequently?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "mixed_bowel_pattern"
-          },
-          priority: 18
-        }
-      },
 
-      excessive_gas: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 25,
-        aliases: [
-          "gas_problem",
-          "flatulence"
-        ],
-        followup: {
-          question: "Do you experience excessive gas daily?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "chronic_gas_problem"
-          },
-          priority: 6
-        }
+  constipation: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 30,
+    followup: {
+      question: "Do you often struggle to pass stool?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "severe_constipation"
       },
+      priority: 8
+    }
+  },
 
-      mucus_in_stool: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 25,
-        followup: {
-          question: "Is mucus visible in stool frequently?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "frequent_mucus_stool"
-          },
-          priority: 9
-        }
+  diarrhea: {
+    category: "DASTO",
+    present: true,
+    weight: 30,
+    followup: {
+      question: "Is diarrhea frequent?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "frequent_diarrhea"
       },
+      priority: 8
+    }
+  },
 
-      relief_after_passing_stool: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 45,
-        aliases: [
-          "pain_relief_after_stool"
-        ],
-        followup: {
-          question: "Does pain reduce after bowel movement?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "stool_relief_pattern"
-          },
-          priority: 16
-        }
+  morning_diarrhea: {
+    category: "DASTO",
+    present: true,
+    weight: 35,
+    aliases: [
+      "early_morning_diarrhea",
+      "morning_loose_stool"
+    ],
+    followup: {
+      question: "Does diarrhea occur mainly in the morning after waking up?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "morning_diarrhea"
       },
+      priority: 12
+    }
+  },
 
-      incomplete_bowel_feeling: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 25,
-        aliases: [
-          "incomplete_bowel_emptying"
-        ],
-        followup: {
-          question: "Do you feel stool is not fully passed?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "incomplete_bowel_emptying"
-          },
-          priority: 8
-        }
+  alternating_constipation_diarrhea: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 50,
+    aliases: [
+      "mixed_bowel_pattern"
+    ],
+    followup: {
+      question: "Do constipation and diarrhea alternate frequently?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "mixed_bowel_pattern"
       },
+      priority: 18
+    }
+  },
 
-      symptoms_after_food: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 25,
-        followup: {
-          question: "Do symptoms worsen after eating?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "food_triggered_ibs"
-          },
-          priority: 10
-        }
+  excessive_gas: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 25,
+    aliases: [
+      "gas_problem",
+      "flatulence",
+      "passing_gas",
+      "excessive_flatulence"
+    ],
+    followup: {
+      question: "Do you experience excessive gas daily?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "chronic_gas_problem"
       },
+      priority: 6
+    }
+  },
 
-      stress_triggered_symptoms: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 30,
-        followup: {
-          question: "Do symptoms worsen during stress or anxiety?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "stress_related_ibs"
-          },
-          priority: 12
-        }
+  mucus_in_stool: {
+    category: "STOOL",
+    present: true,
+    weight: 25,
+    followup: {
+      question: "Is mucus visible in stool frequently?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "frequent_mucus_stool"
       },
+      priority: 9
+    }
+  },
 
-      // ======================
-      // ANCHORED EXCLUSIONS
-      // ======================
-      black_stool: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -50
+  relief_after_passing_stool: {
+    category: "STOOL",
+    present: true,
+    weight: 45,
+    aliases: [
+      "pain_relief_after_stool"
+    ],
+    followup: {
+      question: "Does pain reduce after bowel movement?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "stool_relief_pattern"
       },
-      vomiting_blood: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -60
+      priority: 16
+    }
+  },
+
+  incomplete_bowel_feeling: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 25,
+    aliases: [
+      "incomplete_bowel_emptying"
+    ],
+    followup: {
+      question: "Do you feel stool is not fully passed?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "incomplete_bowel_emptying"
       },
-      high_fever: {
-        category: "fever",
-        present: false,
-        weight: -35
+      priority: 8
+    }
+  },
+
+  symptoms_after_food: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 25,
+    followup: {
+      question: "Do symptoms worsen after eating?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "food_triggered_ibs"
       },
-      blood_in_stool: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -35
+      priority: 10
+    }
+  },
+
+  stress_triggered_symptoms: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 30,
+    followup: {
+      question: "Do symptoms worsen during stress or anxiety?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "stress_related_ibs"
       },
-      severe_weight_loss: {
-        category: "constitutional",
-        present: false,
-        weight: -45
-      }
-    },
+      priority: 12
+    }
+  },
+
+  // EXCLUSIONS
+
+  black_stool: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -50
+  },
+
+  vomiting_blood: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -60
+  },
+
+  high_fever: {
+    category: "fever",
+    present: false,
+    weight: -35
+  },
+
+  blood_in_stool: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -35
+  },
+
+  severe_weight_loss: {
+    category: "constitutional",
+    present: false,
+    weight: -45
+  }
+
+},
 
     // ==========================
     // PHYSICAL EXAM
@@ -326,7 +350,12 @@ morning_diarrhea: {
       persistent_vomiting: { present: true, weight: 30 },
       anemia: { present: true, weight: 40 },
       black_stool: { present: true, weight: 70 },
-      fever: { present: true, weight: 25 }
+      fever: { present: true, weight: 25 },
+      nocturnal_diarrhea: {
+  present: true,
+  weight: 50
+}
+      
     },
 
     // ==========================
@@ -346,7 +375,7 @@ morning_diarrhea: {
       {
         symptoms: ["bloating", "excessive_gas"],
         match: "all",
-        bonus: 30
+        bonus: 15
       },
       {
   symptoms: [
@@ -360,7 +389,16 @@ morning_diarrhea: {
         symptoms: ["stress_triggered_symptoms", "abdominal_cramp"],
         match: "all",
         bonus: 35
-      }
+      },
+      {
+  symptoms: [
+    "abdominal_pain",
+    "bloating",
+    "stress_triggered_symptoms"
+  ],
+  match: "all",
+  bonus: 35
+}
     ],
 
     // ==========================
@@ -391,19 +429,26 @@ morning_diarrhea: {
         symptoms: ["black_stool"],
         match: "all",
         penalty: 60
-      }
+      },
+      {
+  symptoms: ["nocturnal_diarrhea"],
+  match: "all",
+  penalty: 50
+}
     ],
 
     // ==========================
     // FOLLOWUP BOOSTS
     // ==========================
     followup_boosts: {
-      bloating: 12,
-      abdominal_pain: 15,
-      relief_after_passing_stool: 20,
-      alternating_constipation_diarrhea: 22,
-      morning_diarrhea: 15,
-    },
+  bloating: 12,
+  abdominal_pain: 15,
+  relief_after_passing_stool: 20,
+  alternating_constipation_diarrhea: 22,
+  morning_diarrhea: 15,
+  abdominal_cramp: 12,
+  stress_triggered_symptoms: 15
+},
 
     // ==========================
     // DURATION RULES
@@ -441,7 +486,77 @@ morning_diarrhea: {
       "severe_weight_loss",
       "vomiting_blood"
     ],
+required_negative_symptoms: [
+  "blood_in_stool",
+  "black_stool",
+  "high_fever",
+  "vomiting_blood",
+  "severe_weight_loss",
+  "nocturnal_diarrhea"
+],
 
+required_symptoms: [
+  "abdominal_pain"
+],
+
+differential_diagnosis: [
+  "Constipation",
+  "Gastroenteritis",
+  "Inflammatory Bowel Disease",
+  "Colon Cancer",
+  "Lactose Intolerance",
+  "Celiac Disease",
+  "Microscopic Colitis",
+  "Giardiasis"
+],
+
+symptom_clusters: {
+
+  classic_ibs_cluster: {
+
+    symptoms: [
+      "abdominal_pain",
+      "relief_after_passing_stool",
+      "bloating"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 45
+  },
+
+  ibs_mixed_cluster: {
+
+    symptoms: [
+      "alternating_constipation_diarrhea",
+      "abdominal_cramp"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 50
+  },
+  ibs_d_cluster: {
+  symptoms: [
+    "diarrhea",
+    "morning_diarrhea",
+    "abdominal_pain"
+  ],
+  minimum_match: 2,
+  bonus: 40
+},
+
+ibs_c_cluster: {
+  symptoms: [
+    "constipation",
+    "incomplete_bowel_feeling",
+    "abdominal_pain"
+  ],
+  minimum_match: 2,
+  bonus: 40
+},
+
+},
 // ==========================
 // MEDICINES
 // ==========================
@@ -533,68 +648,164 @@ medicines: {
   ]
 
 },
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
+prescription_medicines: [
 
   {
-    en: "Low-FODMAP dietary modification",
-    bn: "লো-ফডম্যাপ খাদ্যাভ্যাস অনুসরণ"
+    name: "Mebeverine",
+
+    line: "prescription",
+
+    condition: {
+      en: "Abdominal cramps and pain",
+      bn: "পেটের খিঁচুনি ও ব্যথা হলে"
+    },
+
+    frequency: {
+      en: "Three times daily before meals",
+      bn: "খাবারের আগে দিনে ৩ বার"
+    },
+
+    purpose: {
+      en: "Relieves intestinal spasm",
+      bn: "অন্ত্রের খিঁচুনি কমায়"
+    }
   },
 
   {
-    en: "Stress management therapy",
-    bn: "মানসিক চাপ নিয়ন্ত্রণের চিকিৎসা"
+    name: "Dicyclomine",
+
+    line: "prescription",
+
+    condition: {
+      en: "Moderate to severe abdominal cramps",
+      bn: "মাঝারি থেকে তীব্র পেটের খিঁচুনিতে"
+    },
+
+    frequency: {
+      en: "As prescribed",
+      bn: "চিকিৎসকের নির্দেশ অনুযায়ী"
+    },
+
+    purpose: {
+      en: "Reduces bowel spasm and pain",
+      bn: "অন্ত্রের খিঁচুনি ও ব্যথা কমায়"
+    }
   },
 
   {
-    en: "Symptom-based medication therapy",
-    bn: "উপসর্গভিত্তিক ওষুধ চিকিৎসা"
+    name: "Loperamide",
+
+    line: "prescription",
+
+    condition: {
+      en: "IBS with frequent diarrhea",
+      bn: "বারবার পাতলা পায়খানা হলে"
+    },
+
+    frequency: {
+      en: "As needed",
+      bn: "প্রয়োজন অনুযায়ী"
+    },
+
+    purpose: {
+      en: "Controls diarrhea",
+      bn: "ডায়রিয়া নিয়ন্ত্রণ করে"
+    }
   },
 
   {
-    en: "Cognitive Behavioral Therapy (CBT)",
-    bn: "কগনিটিভ বিহেভিয়ারাল থেরাপি (CBT)"
+    name: "Rifaximin",
+
+    line: "prescription",
+
+    condition: {
+      en: "Selected IBS-D patients with bloating",
+      bn: "ফাঁপাভাবসহ নির্দিষ্ট IBS-D রোগীদের জন্য"
+    },
+
+    frequency: {
+      en: "As prescribed",
+      bn: "চিকিৎসকের নির্দেশ অনুযায়ী"
+    },
+
+    purpose: {
+      en: "May improve bloating and bowel symptoms",
+      bn: "পেট ফাঁপা ও অন্ত্রের উপসর্গ কমাতে সাহায্য করতে পারে"
+    }
   }
 
 ],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
+supportive_medicines: [
 
   {
-    en: "Manage stress effectively",
-    bn: "মানসিক চাপ নিয়ন্ত্রণ করুন"
+    name: "Probiotics",
+
+    line: "supportive",
+
+    purpose: {
+      en: "Supports healthy gut flora",
+      bn: "অন্ত্রের উপকারী জীবাণুর ভারসাম্য বজায় রাখতে সাহায্য করে"
+    },
+
+    condition: {
+      en: "Bloating and irregular bowel habit",
+      bn: "পেট ফাঁপা ও অনিয়মিত মলত্যাগে"
+    },
+
+    usageType: {
+      en: "Supportive therapy",
+      bn: "সহায়ক চিকিৎসা"
+    }
   },
 
   {
-    en: "Maintain a fiber-rich diet",
-    bn: "আঁশযুক্ত খাবার গ্রহণ করুন"
+    name: "Psyllium Husk (Isabgol)",
+
+    line: "supportive",
+
+    purpose: {
+      en: "Improves stool consistency",
+      bn: "মলের স্বাভাবিক গঠন বজায় রাখতে সাহায্য করে"
+    },
+
+    condition: {
+      en: "Constipation-predominant IBS",
+      bn: "কোষ্ঠকাঠিন্য-প্রধান আইবিএসে"
+    },
+
+    usageType: {
+      en: "Fiber supplement",
+      bn: "ফাইবার সাপ্লিমেন্ট"
+    }
   },
 
   {
-    en: "Eat meals regularly",
-    bn: "নিয়মিত সময়ে খাবার খান"
-  },
+    name: "Peppermint Oil Capsules",
 
-  {
-    en: "Avoid trigger foods",
-    bn: "উপসর্গ বাড়ায় এমন খাবার এড়িয়ে চলুন"
-  },
+    line: "supportive",
 
-  {
-    en: "Exercise regularly",
-    bn: "নিয়মিত ব্যায়াম করুন"
+    purpose: {
+      en: "May reduce abdominal pain and bloating",
+      bn: "পেটব্যথা ও ফাঁপাভাব কমাতে সাহায্য করতে পারে"
+    },
+
+    condition: {
+      en: "Mild IBS symptoms",
+      bn: "হালকা আইবিএস উপসর্গে"
+    },
+
+    usageType: {
+      en: "Supportive care",
+      bn: "সহায়ক যত্ন"
+    }
   }
 
 ],
-
-
+disease_meaning: [
+  {
+    en: "Irritable Bowel Syndrome (IBS) is a chronic functional bowel disorder causing abdominal pain, bloating, constipation, diarrhea, or alternating bowel habits without structural disease.",
+    bn: "আইবিএস (Irritable Bowel Syndrome) একটি দীর্ঘমেয়াদি কার্যগত অন্ত্রের সমস্যা যেখানে পেটব্যথা, পেট ফাঁপা, কোষ্ঠকাঠিন্য, ডায়রিয়া বা উভয়ের পরিবর্তনশীল উপসর্গ দেখা যায়, কিন্তু অন্ত্রে কোনো গঠনগত রোগ থাকে না।"
+  }
+]
   }
 ];

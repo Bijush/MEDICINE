@@ -53,7 +53,7 @@ export const INTESTINAL_OBSTRUCTION = [
     // ==========================
     symptoms: {
       severe_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 60,
         aliases: [
@@ -90,7 +90,7 @@ export const INTESTINAL_OBSTRUCTION = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 40,
         followup: {
@@ -104,7 +104,7 @@ export const INTESTINAL_OBSTRUCTION = [
       },
 
       inability_to_pass_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 55,
         aliases: [
@@ -166,7 +166,7 @@ export const INTESTINAL_OBSTRUCTION = [
       },
 
       colicky_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 45,
         aliases: [
@@ -197,7 +197,7 @@ export const INTESTINAL_OBSTRUCTION = [
       },
 
       vomiting_fecal_smell: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 60,
         aliases: [
@@ -392,36 +392,6 @@ export const INTESTINAL_OBSTRUCTION = [
       supportive: [
         { name: "Intravenous Analgesics / Antiemetics", type: "Symptom Management Support", dosage: "Titrated clinical limits", frequency: "As needed under observation", purpose: "Addresses severe cramping fields and controls gastric upward distress profiles with caution" }
       ]
-    },
-
-    // ==========================
-    // TREATMENTS
-    // ==========================
-    treatments: [
-      "Nasogastric Tube decompression",
-      "Emergency Surgical Intervention",
-      "Immediate Hospital Admission",
-      "Strict NPO (Nil Per Os) Protocol"
-    ],
-
-    // ==========================
-    // LIFESTYLE
-    // ==========================
-    lifestyle_changes: [
-      "Immediate hospital evaluation",
-      "Avoid self-medication",
-      "Early surgical consultation",
-      "Avoid delaying treatment"
-    ],
-
-    // ==========================
-    // DOCTOR CONSULTATION
-    // ==========================
-    doctor_consultation: [
-      "Inability to pass both gas and stool completely for an extended period, leading to a hard or swollen belly",
-      "Vomiting that appears unusually green or brown, or carries a distinct fecal odor",
-      "Sudden onset of severe, continuous abdominal pain that makes it painful even to touch or move",
-      "Experiencing cold sweats, high fever, or lightheadedness, indicating immediate systemic complication"
-    ]
+    }
   }
 ];

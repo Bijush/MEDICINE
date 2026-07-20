@@ -7,7 +7,7 @@
 export const FOOD_POISONING = [
   {
     id: "FP001",
-    disease: "Food Poisoning",
+    disease: "Food_Poisoning",
     medical_name: "Foodborne Illness",
     aliases: [
       "food_infection",
@@ -52,7 +52,7 @@ export const FOOD_POISONING = [
     // ==========================
     symptoms: {
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 40,
         aliases: [
@@ -69,7 +69,7 @@ export const FOOD_POISONING = [
       },
 
       diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 40,
         aliases: [
@@ -101,7 +101,7 @@ export const FOOD_POISONING = [
       },
 
       abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 30,
         followup: {
@@ -174,7 +174,7 @@ export const FOOD_POISONING = [
       },
 
       appetite_loss: {
-        category: "constitutional",
+        category: "FOOD",
         present: true,
         weight: 15,
         aliases: [
@@ -191,13 +191,13 @@ export const FOOD_POISONING = [
       },
 
       watery_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 35
       },
 
       relief_after_vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 12
       },
@@ -504,59 +504,6 @@ export const FOOD_POISONING = [
 
   ]
 
-},
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
-
-  {
-    en: "Oral and Intravenous Hydration Therapy",
-    bn: "মুখে খাওয়ার স্যালাইন (ORS) ও শিরার মাধ্যমে তরল প্রদান"
-  },
-
-  {
-    en: "Electrolyte Replacement Therapy",
-    bn: "ইলেক্ট্রোলাইট (সোডিয়াম, পটাশিয়াম ইত্যাদি) পূরণ করা"
-  },
-
-  {
-    en: "Monitoring of Vital Signs and Fluid Balance",
-    bn: "জীবনচিহ্ন ও শরীরের তরল ভারসাম্য পর্যবেক্ষণ"
-  }
-
-],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Avoid stale or spoiled foods",
-    bn: "বাসি বা নষ্ট খাবার এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Drink clean and safe water",
-    bn: "পরিষ্কার ও নিরাপদ পানি পান করুন"
-  },
-
-  {
-    en: "Maintain proper hand and food hygiene",
-    bn: "হাত ও খাবারের পরিচ্ছন্নতা বজায় রাখুন"
-  },
-
-  {
-    en: "Avoid food from unhygienic places",
-    bn: "অপরিষ্কার পরিবেশের খাবার এড়িয়ে চলুন"
-  }
-
-],
-
-
+}
   }
 ];

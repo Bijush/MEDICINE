@@ -85,7 +85,7 @@ export const GASTRIC_CANCER = [
       },
 
       upper_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 35,
         followup: {
@@ -113,7 +113,7 @@ export const GASTRIC_CANCER = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 22,
         followup: {
@@ -127,7 +127,7 @@ export const GASTRIC_CANCER = [
       },
 
       vomiting_blood: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 65,
         aliases: [
@@ -144,7 +144,7 @@ export const GASTRIC_CANCER = [
       },
 
       black_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 60,
         aliases: [
@@ -516,64 +516,7 @@ medicines: {
 
   ]
 
-},
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
-
-  {
-    en: "Gastrectomy surgery",
-    bn: "গ্যাস্ট্রেক্টমি অস্ত্রোপচার"
-  },
-
-  {
-    en: "Chemotherapy",
-    bn: "কেমোথেরাপি"
-  },
-
-  {
-    en: "Radiotherapy",
-    bn: "রেডিওথেরাপি"
-  },
-
-  {
-    en: "Targeted therapy",
-    bn: "টার্গেটেড থেরাপি"
-  }
-
-],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Consult an oncology specialist immediately",
-    bn: "দ্রুত অনকোলজি বিশেষজ্ঞের পরামর্শ নিন"
-  },
-
-  {
-    en: "Stop smoking and tobacco use",
-    bn: "ধূমপান ও তামাক সম্পূর্ণভাবে বন্ধ করুন"
-  },
-
-  {
-    en: "Avoid alcohol consumption",
-    bn: "মদ্যপান এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Maintain nutritional monitoring and healthy diet",
-    bn: "পুষ্টি পর্যবেক্ষণ ও স্বাস্থ্যকর খাদ্যাভ্যাস বজায় রাখুন"
-  }
-
-],
-
+}
 
   }
 ];

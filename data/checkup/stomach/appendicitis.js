@@ -9,11 +9,7 @@ export const APPENDICITIS = [
     id: "APP001",
     disease: "Appendicitis",
     medical_name: "Acute Appendicitis",
-    aliases: [
-      "acute appendicitis",
-      "appendix infection",
-      "appendix inflammation"
-    ],
+    
     category: "stomach",
     tags: [
       "appendix",
@@ -22,19 +18,30 @@ export const APPENDICITIS = [
       "emergency"
     ],
     prevalence: "common",
-    severity: "emergency",
+    prior_probability: 0.15,
+    severity: "severe",
     priority: 100,
     contagious: false,
     emergency: true,
-    minimum_match: 1,
+    minimum_match: 3,
 
     // ==========================
     // CAUSES
     // ==========================
     causes: {
-      appendix_blockage: { present: true, weight: 30 },
-      bacterial_infection: { present: true, weight: 25 }
-    },
+  appendix_blockage: { present: true, weight: 30 },
+  bacterial_infection: { present: true, weight: 25 },
+
+  fecalith_obstruction: {
+    present: true,
+    weight: 35
+  },
+
+  lymphoid_hyperplasia: {
+    present: true,
+    weight: 20
+  }
+},
 
     // ==========================
     // RISK FACTORS
@@ -49,14 +56,10 @@ export const APPENDICITIS = [
     // ==========================
     symptoms: {
       right_lower_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 55,
-        aliases: [
-          "right_side_stomach_pain",
-          "lower_right_pain",
-          "appendix_pain"
-        ],
+        
         followup: {
           question: "Is pain severe on the lower right side?",
           options: ["Yes", "No"],
@@ -68,7 +71,7 @@ export const APPENDICITIS = [
       },
 
       pain_starting_near_navel: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 35,
         followup: {
@@ -82,7 +85,7 @@ export const APPENDICITIS = [
       },
 
       pain_moving_to_right_side: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 60,
         followup: {
@@ -96,7 +99,7 @@ export const APPENDICITIS = [
       },
 
       rebound_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 45,
         followup: {
@@ -139,7 +142,7 @@ export const APPENDICITIS = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 20,
         followup: {
@@ -202,7 +205,7 @@ export const APPENDICITIS = [
       },
 
       pain_walking: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 30,
         followup: {
@@ -216,7 +219,7 @@ export const APPENDICITIS = [
       },
 
       pain_on_coughing: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 30,
         followup: {
@@ -228,6 +231,17 @@ export const APPENDICITIS = [
           priority: 8
         }
       },
+      fatigue: {
+  category: "constitutional",
+  present: true,
+  weight: 10
+},
+
+weakness: {
+  category: "constitutional",
+  present: true,
+  weight: 10
+},
 
       // ======================
       // ANCHORED EXCLUSIONS
@@ -268,40 +282,310 @@ export const APPENDICITIS = [
     // PHYSICAL EXAM
     // ==========================
     physical_exam: {
-      mcburney_point_tenderness: { present: true, weight: 65 },
-      rebound_tenderness: { present: true, weight: 55 },
-      guarding: { present: true, weight: 40 },
-      rigid_abdomen: { present: true, weight: 55 }
-    },
 
+  mcburney_point_tenderness: {
+    present: true,
+    weight: 70
+  },
+
+  rebound_tenderness: {
+    present: true,
+    weight: 60
+  },
+
+  guarding: {
+    present: true,
+    weight: 45
+  },
+
+  rigid_abdomen: {
+    present: true,
+    weight: 70
+  },
+
+  rovsing_sign_positive: {
+    present: true,
+    weight: 55
+  },
+
+  psoas_sign_positive: {
+    present: true,
+    weight: 50
+  },
+
+  obturator_sign_positive: {
+    present: true,
+    weight: 45
+  },
+
+  right_lower_quadrant_tenderness: {
+    present: true,
+    weight: 65
+  },
+
+  localized_abdominal_tenderness: {
+    present: true,
+    weight: 40
+  },
+
+  pain_on_percussion: {
+    present: true,
+    weight: 45
+  },
+
+  abdominal_distension: {
+    present: true,
+    weight: 20
+  }
+
+},
+
+triage: {
+
+  level: "red"
+
+},
+
+organ_system: "gastrointestinal",
     // ==========================
     // TESTS
     // ==========================
     tests: {
-      wbc_high: { present: true, weight: 30 },
-      crp_high: { present: true, weight: 20 },
-      ultrasound_appendix_swollen: { present: true, weight: 65 },
-      ct_appendicitis_positive: { present: true, weight: 85 }
-    },
+  wbc_high: { present: true, weight: 30 },
+  crp_high: { present: true, weight: 20 },
+
+  ultrasound_appendix_swollen: {
+    present: true,
+    weight: 65
+  },
+
+  ct_appendicitis_positive: {
+    present: true,
+    weight: 90
+  },
+
+  appendix_diameter_gt_6mm: {
+    present: true,
+    weight: 75
+  },
+
+  fecalith_seen_on_ct: {
+    present: true,
+    weight: 60
+  },
+
+  free_fluid_rlq: {
+    present: true,
+    weight: 45
+  },
+
+  normal_ct_scan: {
+    present: false,
+    weight: -80
+  }
+},
 
     // ==========================
     // COMPLICATIONS
     // ==========================
     complications: {
-      appendix_rupture: { present: true, weight: 85 },
-      abscess_formation: { present: true, weight: 60 },
-      sepsis: { present: true, weight: 90 }
-    },
+  appendix_rupture: { present: true, weight: 95 },
+  abscess_formation: { present: true, weight: 70 },
+  sepsis: { present: true, weight: 100 },
+
+  generalized_peritonitis: {
+    present: true,
+    weight: 100
+  }
+},
 
     // ==========================
     // RED FLAGS
     // ==========================
     red_flags: {
-      severe_abdominal_pain: { present: true, weight: 65 },
-      high_fever: { present: true, weight: 45 },
-      shock: { present: true, weight: 90 },
-      unconsciousness: { present: true, weight: 100 }
-    },
+  severe_abdominal_pain: {
+    present: true,
+    weight: 80
+  },
+
+  rigid_abdomen: {
+    present: true,
+    weight: 95
+  },
+
+  high_fever: {
+    present: true,
+    weight: 70
+  },
+
+  persistent_vomiting: {
+    present: true,
+    weight: 75
+  },
+
+  shock: {
+    present: true,
+    weight: 100
+  },
+
+  unconsciousness: {
+    present: true,
+    weight: 100
+  }
+},
+    
+    // ==========================
+// REQUIRED SYMPTOMS
+// ==========================
+
+required_symptoms:[
+"right_lower_abdominal_pain",
+"pain_moving_to_right_side"
+],
+
+required_negative_symptoms: [
+  "relief_after_passing_stool",
+  "watery_diarrhea"
+],
+
+gold_symptoms: [
+  "right_lower_abdominal_pain",
+  "pain_moving_to_right_side",
+  "rebound_pain",
+  "pain_walking"
+],
+
+pathognomonic_symptoms: [
+  "pain_moving_to_right_side",
+  "mcburney_point_tenderness"
+],
+
+// ==========================
+// mutually_exclusive_with
+// ==========================
+
+mutually_exclusive_with:[
+
+"Constipation",
+
+"Crohn's Disease",
+
+"Gastroenteritis",
+
+"Kidney Stone",
+
+"Urinary Tract Infection"
+
+],
+likelihood_ratio_positive: 12,
+
+likelihood_ratio_negative: 0.15,
+// ==========================
+// SYMPTOM CLUSTERS
+// ==========================
+
+symptom_clusters: {
+
+  classic_appendicitis_cluster: {
+
+    symptoms: [
+      "right_lower_abdominal_pain",
+      "pain_moving_to_right_side",
+      "nausea",
+      "appetite_loss"
+    ],
+
+    minimum_match: 3,
+
+    bonus: 80
+  },
+
+  peritoneal_irritation_cluster: {
+
+    symptoms: [
+      "rebound_pain",
+      "pain_walking",
+      "pain_on_coughing"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 70
+  },
+
+  severe_appendicitis_cluster: {
+
+    symptoms: [
+      "high_fever",
+      "persistent_vomiting",
+      "rigid_abdomen"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 60
+  }
+
+},
+
+// ==========================
+// PROGRESSION
+// ==========================
+
+progression: {
+
+  worsening_after_24_hours: {
+    present: true,
+    weight: 40
+  },
+
+  migrating_abdominal_pain: {
+    present: true,
+    weight: 55
+  },
+
+  persistent_vomiting: {
+    present: true,
+    weight: 35
+  },
+
+  increasing_tenderness: {
+    present: true,
+    weight: 45
+  }
+
+},
+
+// ==========================
+// EPIDEMIOLOGY
+// ==========================
+
+epidemiology: {
+
+  age_10_to_30: {
+    present: true,
+    weight: 20
+  },
+
+  family_history: {
+    present: true,
+    weight: 15
+  },
+
+  low_fiber_diet: {
+    present: true,
+    weight: 15
+  }
+
+},
+
+typical_duration: {
+
+  min_days: 1,
+
+  max_days: 5
+
+},
 
     // ==========================
     // BONUS RULES
@@ -383,7 +667,15 @@ export const APPENDICITIS = [
     // ==========================
     // AGE RULES
     // ==========================
-    age_rules: [],
+    age_rules: [
+
+{
+  min_age:10,
+  max_age:30,
+  bonus:20
+}
+
+],
 
     // ==========================
     // DURATION RULES
@@ -540,101 +832,160 @@ export const APPENDICITIS = [
 
 },
 
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
+    prescription_medicines: [
 
   {
-    en: "Appendectomy (surgical removal of the appendix)",
-    bn: "অ্যাপেন্ডিক্স অপসারণের অস্ত্রোপচার (অ্যাপেন্ডেক্টমি)"
+    name: "Ceftriaxone",
+
+    line: "prescription",
+
+    condition: {
+      en: "Before surgery or during hospitalization",
+      bn: "হাসপাতালে ভর্তি অবস্থায় বা অস্ত্রোপচারের আগে"
+    },
+
+    frequency: {
+      en: "Every 12-24 hours",
+      bn: "প্রতি ১২-২৪ ঘণ্টা"
+    },
+
+    purpose: {
+      en: "Antibiotic used for appendicitis-related infection",
+      bn: "অ্যাপেন্ডিসাইটিসজনিত সংক্রমণের জন্য অ্যান্টিবায়োটিক"
+    }
   },
 
   {
-    en: "Intravenous fluid therapy",
-    bn: "শিরার মাধ্যমে তরল (আইভি ফ্লুইড) প্রদান"
+    name: "Metronidazole",
+
+    line: "prescription",
+
+    condition: {
+      en: "Along with Ceftriaxone for abdominal infection",
+      bn: "পেটের সংক্রমণে Ceftriaxone-এর সাথে"
+    },
+
+    frequency: {
+      en: "Every 8 hours",
+      bn: "প্রতি ৮ ঘণ্টা"
+    },
+
+    purpose: {
+      en: "Covers anaerobic bacterial infection",
+      bn: "অ্যানারোবিক ব্যাকটেরিয়াল সংক্রমণ নিয়ন্ত্রণে"
+    }
   },
 
   {
-    en: "Antibiotic treatment and monitoring",
-    bn: "অ্যান্টিবায়োটিক চিকিৎসা ও নিবিড় পর্যবেক্ষণ"
+    name: "Piperacillin + Tazobactam",
+
+    line: "prescription",
+
+    condition: {
+      en: "Severe or complicated appendicitis",
+      bn: "তীব্র বা জটিল অ্যাপেন্ডিসাইটিসে"
+    },
+
+    frequency: {
+      en: "Every 6-8 hours",
+      bn: "প্রতি ৬-৮ ঘণ্টা"
+    },
+
+    purpose: {
+      en: "Broad-spectrum antibiotic for severe infection",
+      bn: "তীব্র সংক্রমণের জন্য ব্রড-স্পেকট্রাম অ্যান্টিবায়োটিক"
+    }
+  },
+
+  {
+    name: "Meropenem",
+
+    line: "prescription",
+
+    condition: {
+      en: "Perforation, abscess, or sepsis",
+      bn: "অ্যাপেন্ডিক্স ফেটে গেলে, অ্যাবসেস বা সেপসিস হলে"
+    },
+
+    frequency: {
+      en: "Every 8 hours",
+      bn: "প্রতি ৮ ঘণ্টা"
+    },
+
+    purpose: {
+      en: "Advanced antibiotic for life-threatening infection",
+      bn: "জীবন-ঝুঁকিপূর্ণ সংক্রমণের জন্য উন্নত অ্যান্টিবায়োটিক"
+    }
+  },
+
+  {
+    name: "Ondansetron",
+
+    line: "prescription",
+
+    condition: {
+      en: "When nausea or vomiting is present",
+      bn: "বমি বমি ভাব বা বমি হলে"
+    },
+
+    frequency: {
+      en: "Every 8-12 hours as prescribed",
+      bn: "চিকিৎসকের নির্দেশ অনুযায়ী প্রতি ৮-১২ ঘণ্টা"
+    },
+
+    purpose: {
+      en: "Relieves nausea and vomiting",
+      bn: "বমি বমি ভাব ও বমি কমাতে"
+    }
   }
 
 ],
 
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
+    supportive_medicines: [
 
   {
-    en: "Seek emergency medical care immediately",
-    bn: "দ্রুত জরুরি চিকিৎসা গ্রহণ করুন"
+    name: "Paracetamol",
+
+    line: "supportive",
+
+    purpose: {
+      en: "Pain and fever control",
+      bn: "ব্যথা ও জ্বর নিয়ন্ত্রণ"
+    },
+
+    condition: {
+      en: "When pain or fever is present",
+      bn: "ব্যথা বা জ্বর থাকলে"
+    },
+
+    usageType: {
+      en: "Supportive care",
+      bn: "সহায়ক চিকিৎসা"
+    }
   },
 
   {
-    en: "Avoid food and drinks until evaluated",
-    bn: "ডাক্তারের মূল্যায়ন না হওয়া পর্যন্ত খাবার ও পানীয় এড়িয়ে চলুন"
-  },
+    name: "IV Fluids",
 
-  {
-    en: "Do not use laxatives or heating pads",
-    bn: "জোলাপ বা গরম সেঁক ব্যবহার করবেন না"
-  },
+    line: "supportive",
 
-  {
-    en: "Avoid self-treatment and home remedies",
-    bn: "নিজে চিকিৎসা বা ঘরোয়া প্রতিকার ব্যবহার করবেন না"
-  },
+    purpose: {
+      en: "Hydration and stabilization",
+      bn: "শরীরের তরল ও স্থিতিশীলতা বজায় রাখা"
+    },
 
-  {
-    en: "Follow post-surgery recovery instructions",
-    bn: "অস্ত্রোপচারের পর চিকিৎসকের নির্দেশনা মেনে চলুন"
+    condition: {
+      en: "Dehydration, vomiting, or pre-surgical support",
+      bn: "পানিশূন্যতা, বমি বা অস্ত্রোপচারের পূর্ব প্রস্তুতিতে"
+    },
+
+    usageType: {
+      en: "Hospital supportive care",
+      bn: "হাসপাতালভিত্তিক সহায়ক চিকিৎসা"
+    }
   }
 
-],
-
-// ==========================
-// DOCTOR CONSULTATION
-// ==========================
-
-doctor_consultation: [
-
-  {
-    en: "Severe pain in the lower right abdomen",
-    bn: "পেটের ডান নিচের অংশে তীব্র ব্যথা"
-  },
-
-  {
-    en: "Rigid abdomen or severe tenderness",
-    bn: "পেট শক্ত হয়ে যাওয়া বা তীব্র স্পর্শকাতরতা"
-  },
-
-  {
-    en: "Persistent vomiting or inability to drink fluids",
-    bn: "ক্রমাগত বমি বা তরল গ্রহণে অক্ষমতা"
-  },
-
-  {
-    en: "High fever with worsening abdominal pain",
-    bn: "উচ্চ জ্বরের সাথে বাড়তে থাকা পেটব্যথা"
-  },
-
-  {
-    en: "Dizziness, rapid heartbeat, or fainting",
-    bn: "মাথা ঘোরা, দ্রুত হৃদস্পন্দন বা অজ্ঞান হওয়া"
-  }
-
-],
-
-disease_meaning:[ 
-  {
-  en: "Inflammation of the appendix causing severe abdominal pain and requiring urgent medical treatment.",
-  bn: "অ্যাপেন্ডিক্সে প্রদাহ বা সংক্রমণ, যা সাধারণত পেটের ডান নিচের অংশে তীব্র ব্যথা সৃষ্টি করে এবং দ্রুত চিকিৎসা বা অস্ত্রোপচার প্রয়োজন হতে পারে।"
-}
-],
+]
 
   }
 ];

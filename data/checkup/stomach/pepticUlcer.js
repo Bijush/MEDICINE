@@ -53,7 +53,7 @@ export const PEPTIC_ULCER = [
     // ==========================
     symptoms: {
       abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 40,
         aliases: [
@@ -74,7 +74,7 @@ export const PEPTIC_ULCER = [
       },
 
       pain_after_food: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 30,
         aliases: [
@@ -137,7 +137,7 @@ export const PEPTIC_ULCER = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 18,
         aliases: [
@@ -154,7 +154,7 @@ export const PEPTIC_ULCER = [
       },
 
       appetite_loss: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 18,
         aliases: [
@@ -171,7 +171,7 @@ export const PEPTIC_ULCER = [
       },
 
       weight_loss: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 22,
         aliases: [
@@ -207,7 +207,7 @@ export const PEPTIC_ULCER = [
       },
 
       black_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 45,
         aliases: [
@@ -225,7 +225,7 @@ export const PEPTIC_ULCER = [
       },
 
       vomiting_blood: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 50,
         aliases: [
@@ -255,7 +255,7 @@ export const PEPTIC_ULCER = [
         weight: -20
       },
       watery_diarrhea: {
-        category: "gastrointestinal",
+        category: "gastrointestin",
         present: false,
         weight: -25
       }
@@ -407,37 +407,6 @@ export const PEPTIC_ULCER = [
         { name: "Clarithromycin", type: "Macrolide Antibiotic", dosage: "500mg", frequency: "Twice daily for 14 days", purpose: "Inhibits bacterial protein synthesis to eradicate target colonizations" },
         { name: "Metronidazole", type: "Nitroimidazole Antibiotic", dosage: "400mg - 500mg", frequency: "Three times daily", purpose: "Alternative or adjunctive antimicrobial agent to overcome resistant strains" }
       ]
-    },
-
-    // ==========================
-    // TREATMENTS
-    // ==========================
-    treatments: [
-      "H. pylori Eradication Therapy",
-      "Endoscopy Monitoring",
-      "Acid Suppression Therapy"
-    ],
-
-    // ==========================
-    // LIFESTYLE
-    // ==========================
-    lifestyle_changes: [
-      "Avoid painkillers",
-      "Stop smoking",
-      "Avoid alcohol",
-      "Avoid spicy food",
-      "Eat regular meals",
-      "Reduce stress"
-    ],
-
-    // ==========================
-    // DOCTOR CONSULTATION
-    // ==========================
-    doctor_consultation: [
-      "Vomiting material that looks like dark coffee grounds or bright red blood",
-      "Sudden, sharp, severe abdominal pain that doesn't go away or gets worse when moving",
-      "Fainting, feeling dizzy, cold sweats, or extreme weakness when standing up",
-      "Persistent dark tarry stools or unexplained difficulty swallowing food"
-    ]
+    }
   }
 ];

@@ -52,7 +52,7 @@ export const ULCERATIVE_COLITIS = [
     // ==========================
     symptoms: {
       bloody_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 60,
         aliases: [
@@ -70,7 +70,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 40,
         followup: {
@@ -98,7 +98,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       urgency_to_pass_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 35,
         aliases: [
@@ -115,7 +115,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       mucus_in_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 30,
         followup: {
@@ -129,7 +129,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       fatigue: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 25,
         followup: {
@@ -143,7 +143,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       weight_loss: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 30,
         followup: {
@@ -185,7 +185,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       appetite_loss: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 18,
         followup: {
@@ -199,7 +199,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       chronic_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 45,
         aliases: [
@@ -216,7 +216,7 @@ export const ULCERATIVE_COLITIS = [
       },
 
       nighttime_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 25,
         followup: {
@@ -397,37 +397,6 @@ export const ULCERATIVE_COLITIS = [
         { name: "Corticosteroids (Prednisone)", type: "Systemic Steroid", dosage: "Tapered tracking", frequency: "Short term burst guidance", purpose: "Rapidly handles acute flare-ups and intense inflammatory spikes" },
         { name: "Azathioprine", type: "Immunomodulator / Biologic Support", dosage: "As clinically prescribed", frequency: "Daily protocol", purpose: "Sustains long-term clinical remission patterns in severe instances" }
       ]
-    },
-
-    // ==========================
-    // TREATMENTS
-    // ==========================
-    treatments: [
-      "Colonoscopy Monitoring",
-      "Immunotherapy",
-      "Biologic Therapy",
-      "Surgery in severe cases"
-    ],
-
-    // ==========================
-    // LIFESTYLE
-    // ==========================
-    lifestyle_changes: [
-      "Avoid trigger foods",
-      "Hydration maintenance",
-      "Regular follow-up",
-      "Stress management",
-      "Balanced nutrition"
-    ],
-
-    // ==========================
-    // DOCTOR CONSULTATION
-    // ==========================
-    doctor_consultation: [
-      "Passing high volume or frequent bloody bowel movements",
-      "Unexplained spike in body temperature combined with extreme localized pain",
-      "Development of rigid or visibly swollen, hard abdominal profile",
-      "Dizziness or lightheadedness when changing positions indicating systematic blood loss"
-    ]
+    }
   }
 ];

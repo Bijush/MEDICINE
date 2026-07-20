@@ -22,11 +22,12 @@ export const CONSTIPATION = [
       "gas"
     ],
     prevalence: "very_common",
+     prior_probability: 0.35,
     severity: "mild",
     priority: 40,
     contagious: false,
     emergency: false,
-    minimum_match: 1,
+    minimum_match: 2,
 
     // ==========================
     // CAUSES
@@ -53,205 +54,226 @@ export const CONSTIPATION = [
     // SYMPTOMS
     // ==========================
     symptoms: {
-      hard_stool: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 45,
-        aliases: [
-          "dry_stool",
-          "hard_bowel"
-        ],
-        followup: {
-          question: "Is stool extremely hard and dry?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "hard_stool"
-          },
-          priority: 12
-        }
-      },
 
-      difficulty_passing_stool: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 50,
-        aliases: [
-          "trouble_passing_stool",
-          "painful_stool_passing"
-        ],
-        followup: {
-          question: "Do you struggle while passing stool?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "difficulty_passing_stool"
-          },
-          priority: 14
-        }
+  hard_stool: {
+    category: "STOOL",
+    present: true,
+    weight: 55,
+    aliases: [
+      "dry_stool",
+      "hard_bowel"
+    ],
+    followup: {
+      question: "Is stool extremely hard and dry?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "hard_stool"
       },
+      priority: 12
+    }
+  },
 
-      infrequent_bowel_movement: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 45,
-        aliases: [
-          "chronic_constipation"
-        ],
-        followup: {
-          question: "Do bowel movements occur less than 3 times a week?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "infrequent_bowel_movement"
-          },
-          priority: 12
-        }
+  difficulty_passing_stool: {
+    category: "STOOL",
+    present: true,
+    weight: 60,
+    aliases: [
+      "trouble_passing_stool",
+      "painful_stool_passing"
+    ],
+    followup: {
+      question: "Do you struggle while passing stool?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "difficulty_passing_stool"
       },
+      priority: 14
+    }
+  },
 
-      bloating: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 15,
-        aliases: [
-          "gas_problem",
-          "flatulence",
-          "frequent_gas",
-          "gas",
-          "gassy",
-          "excessive_gas"
-        ],
-        followup: {
-          question: "Do you experience excessive gas frequently?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "chronic_gas_problem"
-          },
-          priority: 4
-        }
+  infrequent_bowel_movement: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 45,
+    aliases: [
+      "chronic_constipation"
+    ],
+    followup: {
+      question: "Do bowel movements occur less than 3 times a week?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "infrequent_bowel_movement"
       },
+      priority: 12
+    }
+  },
 
-      abdominal_pain: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 18,
-        aliases: [
-          "abdominal_discomfort",
-          "persistent_abdominal_discomfort"
-        ],
-        followup: {
-          question: "Does abdominal discomfort persist daily?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "abdominal_pain"
-          },
-          priority: 5
-        }
+  excessive_gas: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 15,
+    aliases: [
+      "gas_problem",
+      "flatulence",
+      "frequent_gas",
+      "gas",
+      "gassy"
+    ],
+    followup: {
+      question: "Do you experience excessive gas frequently?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "excessive_gas"
       },
+      priority: 4
+    }
+  },
 
-      excessive_gas: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 15,
-        aliases: [
-          "gas_problem",
-          "flatulence",
-          "frequent_gas"
-        ],
-        followup: {
-          question: "Do you experience excessive gas frequently?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "excessive_gas"
-          },
-          priority: 4
-        }
-      },
+  bloating: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 15,
+    aliases: [
+      "abdominal_bloating",
+      "stomach_bloating"
+    ]
+  },
 
-      nausea: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 5,
-        followup: {
-          question: "Does nausea occur with severe constipation?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "constipation_related_nausea"
-          },
-          priority: 2
-        }
+  abdominal_pain: {
+    category: "STOMACH PAIN",
+    present: true,
+    weight: 18,
+    aliases: [
+      "abdominal_discomfort",
+      "persistent_abdominal_discomfort"
+    ],
+    followup: {
+      question: "Does abdominal discomfort persist daily?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "abdominal_pain"
       },
+      priority: 5
+    }
+  },
 
-      incomplete_bowel_feeling: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 35,
-        aliases: [
-          "feeling_incomplete_evacuations",
-          "incomplete_bowel_emptying"
-        ],
-        followup: {
-          question: "Do you feel stool is not fully passed?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "incomplete_bowel_feeling"
-          },
-          priority: 9
-        }
+  nausea: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 5,
+    followup: {
+      question: "Does nausea occur with severe constipation?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "constipation_related_nausea"
       },
+      priority: 2
+    }
+  },
 
-      straining_during_stool: {
-        category: "gastrointestinal",
-        present: true,
-        weight: 40,
-        aliases: [
-          "severe_straining"
-        ],
-        followup: {
-          question: "Do you need excessive straining during stool?",
-          options: ["Yes", "No"],
-          symptomMap: {
-            "Yes": "straining_during_stool"
-          },
-          priority: 10
-        }
+  incomplete_bowel_feeling: {
+    category: "gastrointestinal",
+    present: true,
+    weight: 35,
+    aliases: [
+      "feeling_incomplete_evacuations",
+      "incomplete_bowel_emptying"
+    ],
+    followup: {
+      question: "Do you feel stool is not fully passed?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "incomplete_bowel_feeling"
       },
+      priority: 9
+    }
+  },
 
-      relief_after_passing_stool: {
-        category: "gastrointestinal",
-        present: true,
-        aliases: [
-          "pain_relief_after_stool"
-        ],
-        weight: 15
+  straining_during_stool: {
+    category: "STOOL",
+    present: true,
+    weight: 40,
+    aliases: [
+      "severe_straining"
+    ],
+    followup: {
+      question: "Do you need excessive straining during stool?",
+      options: ["Yes", "No"],
+      symptomMap: {
+        "Yes": "straining_during_stool"
       },
+      priority: 10
+    }
+  },
 
-      // ======================
-      // ANCHORED EXCLUSIONS
-      // ======================
-      watery_diarrhea: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -40
-      },
-      high_fever: {
-        category: "fever",
-        present: false,
-        weight: -25
-      },
-      bloody_diarrhea: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -40
-      },
-      vomiting_blood: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -50
-      },
-      pain_moving_to_right_side: {
-        category: "gastrointestinal",
-        present: false,
-        weight: -35
-      }
-    },
+  relief_after_passing_stool: {
+    category: "STOOL",
+    present: true,
+    aliases: [
+      "pain_relief_after_stool"
+    ],
+    weight: 15
+  },
+
+  // ======================
+  // DIFFERENTIAL EXCLUSIONS
+  // ======================
+
+  watery_diarrhea: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -40
+  },
+
+  bloody_diarrhea: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -40
+  },
+
+  high_fever: {
+    category: "fever",
+    present: false,
+    weight: -25
+  },
+
+  vomiting_blood: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -50
+  },
+
+  severe_vomiting: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -45
+  },
+
+  pain_moving_to_right_side: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -35
+  },
+
+  rebound_tenderness: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -50
+  },
+
+  rigid_abdomen: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -50
+  },
+
+  alternating_diarrhea_constipation: {
+    category: "gastrointestinal",
+    present: false,
+    weight: -35
+  }
+
+},
 
     // ==========================
     // PHYSICAL EXAM
@@ -395,6 +417,100 @@ export const CONSTIPATION = [
       "blood_in_stool",
       "black_stool"
     ],
+    
+    required_symptoms: [
+  "hard_stool"
+
+],
+required_negative_symptoms: [
+  "watery_diarrhea",
+  "bloody_diarrhea"
+],
+differential_diagnosis: [
+  "Irritable Bowel Syndrome",
+  "Appendicitis",
+  "Intestinal Obstruction",
+  "Colon Cancer",
+  "Hypothyroidism",
+  "Gastroenteritis"
+],
+
+mutually_exclusive_with: [
+
+  "Appendicitis",
+
+  "Crohn's Disease"
+
+],
+
+
+symptom_clusters: {
+
+  classic_constipation_cluster: {
+
+    symptoms: [
+      "hard_stool",
+      "difficulty_passing_stool",
+      "straining_during_stool"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 40
+  },
+
+  chronic_constipation_cluster: {
+
+    symptoms: [
+      "infrequent_bowel_movement",
+      "incomplete_bowel_feeling",
+      "hard_stool"
+    ],
+
+    minimum_match: 2,
+
+    bonus: 35
+  }
+
+},
+
+progression: {
+
+  worsening_over_weeks: {
+    present: true,
+    weight: 20
+  },
+
+  increasing_straining: {
+    present: true,
+    weight: 20
+  },
+
+  persistent_hard_stool: {
+    present: true,
+    weight: 25
+  }
+
+},
+epidemiology: {
+
+  low_fiber_diet: {
+    present: true,
+    weight: 15
+  },
+
+  sedentary_lifestyle: {
+    present: true,
+    weight: 15
+  },
+
+  old_age: {
+    present: true,
+    weight: 10
+  }
+
+},
+
 
     // ==========================
     // MEDICINES
@@ -520,94 +636,140 @@ export const CONSTIPATION = [
   ]
 
 },
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
+prescription_medicines: [
 
   {
-    en: "Increase dietary fiber",
-    bn: "খাদ্যে আঁশের পরিমাণ বাড়ান"
+    name: "Lactulose",
+
+    line: "prescription",
+
+    condition: {
+      en: "When stool is hard and difficult to pass",
+      bn: "মল শক্ত ও বের করতে কষ্ট হলে"
+    },
+
+    frequency: {
+      en: "Once daily",
+      bn: "প্রতিদিন ১ বার"
+    },
+
+    purpose: {
+      en: "Softens stool and relieves constipation",
+      bn: "মল নরম করে এবং কোষ্ঠকাঠিন্য কমায়"
+    }
   },
 
   {
-    en: "Drink plenty of water",
-    bn: "পর্যাপ্ত পানি পান করুন"
+    name: "Polyethylene Glycol (PEG 3350)",
+
+    line: "prescription",
+
+    condition: {
+      en: "Moderate to severe constipation",
+      bn: "মাঝারি থেকে তীব্র কোষ্ঠকাঠিন্যে"
+    },
+
+    frequency: {
+      en: "Once daily",
+      bn: "প্রতিদিন ১ বার"
+    },
+
+    purpose: {
+      en: "Improves bowel movement by retaining water in stool",
+      bn: "মলে পানি ধরে রেখে মলত্যাগ সহজ করে"
+    }
   },
 
   {
-    en: "Bowel retraining exercises",
-    bn: "নিয়মিত মলত্যাগের অভ্যাস গড়ে তুলুন"
+    name: "Bisacodyl",
+
+    line: "prescription",
+
+    condition: {
+      en: "Short-term severe constipation",
+      bn: "স্বল্পমেয়াদী তীব্র কোষ্ঠকাঠিন্যে"
+    },
+
+    frequency: {
+      en: "At bedtime if needed",
+      bn: "প্রয়োজনে রাতে ঘুমানোর আগে"
+    },
+
+    purpose: {
+      en: "Stimulates bowel movement",
+      bn: "মলত্যাগ উদ্দীপিত করে"
+    }
   }
 
 ],
 
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
+supportive_medicines: [
 
   {
-    en: "Eat more fruits and vegetables",
-    bn: "বেশি ফল ও শাকসবজি খান"
+    name: "Isabgol (Psyllium Husk)",
+
+    line: "supportive",
+
+    purpose: {
+      en: "Improves stool bulk and bowel regularity",
+      bn: "মলের পরিমাণ বাড়িয়ে নিয়মিত মলত্যাগে সাহায্য করে"
+    },
+
+    condition: {
+      en: "For chronic constipation",
+      bn: "দীর্ঘদিনের কোষ্ঠকাঠিন্যে"
+    },
+
+    usageType: {
+      en: "Dietary fiber supplement",
+      bn: "খাদ্য আঁশ সম্পূরক"
+    }
   },
 
   {
-    en: "Stay well hydrated",
-    bn: "শরীরে পর্যাপ্ত পানি বজায় রাখুন"
+    name: "High-Fiber Diet",
+
+    line: "supportive",
+
+    purpose: {
+      en: "Supports long-term bowel health",
+      bn: "দীর্ঘমেয়াদে অন্ত্রের স্বাস্থ্য ভালো রাখে"
+    },
+
+    condition: {
+      en: "Daily preventive care",
+      bn: "প্রতিদিনের প্রতিরোধমূলক যত্ন"
+    },
+
+    usageType: {
+      en: "Lifestyle modification",
+      bn: "জীবনযাত্রার পরিবর্তন"
+    }
   },
 
   {
-    en: "Exercise regularly",
-    bn: "নিয়মিত ব্যায়াম করুন"
-  },
+    name: "Adequate Water Intake",
 
-  {
-    en: "Avoid processed foods",
-    bn: "প্রসেসড খাবার এড়িয়ে চলুন"
-  },
+    line: "supportive",
 
-  {
-    en: "Do not ignore the urge to pass stool",
-    bn: "পায়খানার চাপ এলে তা দমন করবেন না"
-  }
+    purpose: {
+      en: "Prevents dehydration and hard stool formation",
+      bn: "পানিশূন্যতা ও শক্ত মল হওয়া প্রতিরোধ করে"
+    },
 
-],
+    condition: {
+      en: "Throughout the day",
+      bn: "সারাদিন"
+    },
 
-// ==========================
-// DOCTOR CONSULTATION
-// ==========================
-
-doctor_consultation: [
-
-  {
-    en: "Severe abdominal pain or bloating",
-    bn: "তীব্র পেটব্যথা বা পেট ফোলা"
-  },
-
-  {
-    en: "Blood in stool",
-    bn: "পায়খানার সাথে রক্ত যাওয়া"
-  },
-
-  {
-    en: "Persistent vomiting",
-    bn: "ক্রমাগত বমি হওয়া"
-  },
-
-  {
-    en: "Unexplained weight loss",
-    bn: "কারণ ছাড়াই ওজন কমে যাওয়া"
-  },
-
-  {
-    en: "Black or tarry stool",
-    bn: "কালো বা টারের মতো পায়খানা"
+    usageType: {
+      en: "Supportive care",
+      bn: "সহায়ক যত্ন"
+    }
   }
 
 ]
+
+
   }
 ];

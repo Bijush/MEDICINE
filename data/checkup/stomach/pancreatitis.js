@@ -52,7 +52,7 @@ export const PANCREATITIS = [
     // ==========================
     symptoms: {
       severe_upper_abdominal_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 60,
         aliases: [
@@ -70,7 +70,7 @@ export const PANCREATITIS = [
       },
 
       pain_radiating_to_back: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 55,
         aliases: [
@@ -87,7 +87,7 @@ export const PANCREATITIS = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 30,
         followup: {
@@ -150,7 +150,7 @@ export const PANCREATITIS = [
       },
 
       loss_of_appetite: {
-        category: "general",
+        category: "constitutional",
         present: true,
         weight: 18,
         followup: {
@@ -164,7 +164,7 @@ export const PANCREATITIS = [
       },
 
       pain_after_food: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 35,
         aliases: [
@@ -195,7 +195,7 @@ export const PANCREATITIS = [
       },
 
       persistent_vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 40,
         followup: {
@@ -388,36 +388,6 @@ export const PANCREATITIS = [
         { name: "Ondansetron / Metoclopramide", type: "Antiemetic Agent", dosage: "4mg - 8mg IV", frequency: "Every 8 hours as needed", purpose: "Suppresses severe persistent vomiting and associated gastric hypersensitivity" },
         { name: "Broad-Spectrum IV Antibiotics", type: "Antimicrobial Prophylaxis", dosage: "Variable", frequency: "Clinically monitored cycles", purpose: "Reserved to treat confirmed pancreatic necrosis or matching infectious complications" }
       ]
-    },
-
-    // ==========================
-    // TREATMENTS
-    // ==========================
-    treatments: [
-      "Hospital Admission",
-      "Pancreatic Monitoring",
-      "ICU Support"
-    ],
-
-    // ==========================
-    // LIFESTYLE
-    // ==========================
-    lifestyle_changes: [
-      "Avoid alcohol",
-      "Low-fat diet",
-      "Hydration maintenance",
-      "Avoid smoking",
-      "Regular medical follow-up"
-    ],
-
-    // ==========================
-    // DOCTOR CONSULTATION
-    // ==========================
-    doctor_consultation: [
-      "Sudden onset of excruciating upper abdominal pain radiating straight into the back",
-      "Inability to keep liquids down accompanied by continuous or dry-heaving vomit cycles",
-      "Developing a rapid heart rate alongside signs of shallow breathing or systemic cold sweats",
-      "Noticing a yellowing color profile in skin tissue or eyes (jaundice) indicating structural bile complications"
-    ]
+    }
   }
 ];

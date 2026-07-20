@@ -54,7 +54,7 @@ export const HEMORRHOIDS = [
     // ==========================
     symptoms: {
       blood_in_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 45,
         aliases: [
@@ -73,7 +73,7 @@ export const HEMORRHOIDS = [
       },
 
       pain_during_stool: {
-        category: "gastrointestinal",
+        category: "STOOL",
         present: true,
         weight: 40,
         followup: {
@@ -131,7 +131,7 @@ export const HEMORRHOIDS = [
       },
 
       anal_pain: {
-        category: "gastrointestinal",
+        category: "PAIN",
         present: true,
         weight: 30
       },
@@ -450,69 +450,6 @@ medicines: {
 
   ]
 
-},
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
-
-  {
-    en: "Rubber band ligation",
-    bn: "রাবার ব্যান্ড লিগেশন"
-  },
-
-  {
-    en: "Infrared coagulation or laser therapy",
-    bn: "ইনফ্রারেড কোয়াগুলেশন বা লেজার থেরাপি"
-  },
-
-  {
-    en: "Hemorrhoid surgery if required",
-    bn: "প্রয়োজনে হেমোরয়েডের অস্ত্রোপচার"
-  },
-
-  {
-    en: "Warm sitz bath therapy",
-    bn: "গরম পানির সিটজ বাথ"
-  }
-
-],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Eat a high-fiber diet",
-    bn: "আঁশযুক্ত খাবার বেশি খান"
-  },
-
-  {
-    en: "Drink plenty of water",
-    bn: "পর্যাপ্ত পানি পান করুন"
-  },
-
-  {
-    en: "Avoid straining during bowel movements",
-    bn: "মলত্যাগের সময় অতিরিক্ত চাপ দেবেন না"
-  },
-
-  {
-    en: "Maintain regular bowel habits",
-    bn: "নিয়মিত মলত্যাগের অভ্যাস গড়ে তুলুন"
-  },
-
-  {
-    en: "Exercise regularly",
-    bn: "নিয়মিত ব্যায়াম করুন"
-  }
-
-],
-
-
+}
   }
 ];

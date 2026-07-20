@@ -52,7 +52,7 @@ export const GASTROENTERITIS = [
     // ==========================
     symptoms: {
       diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 40,
         aliases: [
@@ -70,7 +70,7 @@ export const GASTROENTERITIS = [
       },
 
       vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 30,
         aliases: [
@@ -115,7 +115,7 @@ export const GASTROENTERITIS = [
       },
 
       stomach_pain: {
-        category: "gastrointestinal",
+        category: "STOMACH PAIN",
         present: true,
         weight: 20,
         followup: {
@@ -185,7 +185,7 @@ export const GASTROENTERITIS = [
       },
 
       watery_diarrhea: {
-        category: "gastrointestinal",
+        category: "DASTO",
         present: true,
         weight: 45,
         followup: {
@@ -199,7 +199,7 @@ export const GASTROENTERITIS = [
       },
 
       relief_after_vomiting: {
-        category: "gastrointestinal",
+        category: "VOMIT",
         present: true,
         weight: 10
       },
@@ -495,59 +495,7 @@ medicines: {
 
   ]
 
-},
-
-// ==========================
-// TREATMENTS
-// ==========================
-
-treatments: [
-
-  {
-    en: "Oral hydration therapy",
-    bn: "মুখে তরল ও স্যালাইন গ্রহণ"
-  },
-
-  {
-    en: "Intravenous fluid and electrolyte replacement",
-    bn: "শিরার মাধ্যমে তরল ও ইলেক্ট্রোলাইট প্রদান"
-  },
-
-  {
-    en: "Clinical monitoring and observation",
-    bn: "চিকিৎসাগত পর্যবেক্ষণ ও মনিটরিং"
-  }
-
-],
-
-// ==========================
-// LIFESTYLE
-// ==========================
-
-lifestyle_changes: [
-
-  {
-    en: "Drink safe and clean water",
-    bn: "নিরাপদ ও বিশুদ্ধ পানি পান করুন"
-  },
-
-  {
-    en: "Maintain proper hygiene",
-    bn: "ব্যক্তিগত ও খাদ্য পরিচ্ছন্নতা বজায় রাখুন"
-  },
-
-  {
-    en: "Avoid outside or contaminated food",
-    bn: "বাইরের বা দূষিত খাবার এড়িয়ে চলুন"
-  },
-
-  {
-    en: "Increase oral fluid intake",
-    bn: "বেশি পরিমাণে তরল পান করুন"
-  }
-
-],
-
+}
 
   }
 ];
