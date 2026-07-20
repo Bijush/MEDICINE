@@ -1,19 +1,46 @@
 // ==============================
 // COPD DATASET
+// ADVANCED UNIVERSAL VERSION
 // ==============================
 
 export const COPD = [
 
   {
+
     id: "COPD001",
 
-    disease: "Chronic Obstructive Pulmonary Disease",
+    disease:
+      "Chronic Obstructive Pulmonary Disease",
 
     short_name: "COPD",
 
+    aliases: [
+
+      "chronic bronchitis",
+
+      "emphysema"
+    ],
+
     category: "respiratory",
 
+    tags: [
+
+      "smoking",
+
+      "lungs",
+
+      "breathing",
+
+      "copd"
+    ],
+
+    prevalence: "common",
+
     severity: "severe",
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -43,6 +70,37 @@ export const COPD = [
       }
     },
 
+    // ==========================
+    // RISK FACTORS
+    // ==========================
+
+    risk_factors: {
+
+      smoking: {
+        present: true,
+        weight: 35
+      },
+
+      passive_smoking: {
+        present: true,
+        weight: 20
+      },
+
+      occupational_dust_exposure: {
+        present: true,
+        weight: 20
+      },
+
+      asthma_history: {
+        present: true,
+        weight: 15
+      }
+    },
+
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
       chronic_cough: {
@@ -56,9 +114,20 @@ export const COPD = [
       },
 
       breathing_difficulty: {
-        present: true,
-        weight: 60
-      },
+
+  present: true,
+
+  weight: 60,
+
+  aliases: [
+
+    "shortness_of_breath",
+    "breathlessness",
+    "difficulty_breathing",
+    "chronic_shortness_of_breath"
+
+  ]
+},
 
       wheezing: {
         present: true,
@@ -88,8 +157,18 @@ export const COPD = [
       weight_loss: {
         present: true,
         weight: 25
+      },
+
+     
+      morning_cough: {
+        present: true,
+        weight: 35
       }
     },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -116,8 +195,17 @@ export const COPD = [
       prolonged_expiration: {
         present: true,
         weight: 45
+      },
+
+      accessory_muscle_use: {
+        present: true,
+        weight: 40
       }
     },
+
+    // ==========================
+    // TESTS
+    // ==========================
 
     tests: {
 
@@ -142,6 +230,10 @@ export const COPD = [
       }
     },
 
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
+
     complications: {
 
       respiratory_failure: {
@@ -164,6 +256,10 @@ export const COPD = [
         weight: 80
       }
     },
+
+    // ==========================
+    // RED FLAGS
+    // ==========================
 
     red_flags: {
 
@@ -193,23 +289,180 @@ export const COPD = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+
+        symptoms: [
+
+          "chronic_cough",
+
+          "sputum"
+        ],
+
+        match: "all",
+
+        bonus: 35
+      },
+
+      {
+
+        symptoms: [
+
+          "breathing_difficulty",
+
+          "exercise_intolerance"
+        ],
+
+        match: "all",
+
+        bonus: 30
+      },
+
+      {
+
+        symptoms: [
+
+          "barrel_chest"
+        ],
+
+        match: "all",
+
+        bonus: 25
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+
+        symptoms: [
+
+          "loss_of_smell"
+        ],
+
+        match: "all",
+
+        penalty: 20
+      },
+
+      {
+
+        symptoms: [
+
+          "sudden_fever"
+        ],
+
+        match: "all",
+
+        penalty: 15
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      chronic_cough: 15,
+
+      wheezing: 15,
+
+      exercise_intolerance: 20
+    },
+
+    // ==========================
+    // AGE RULES
+    // ==========================
+
+    age_rules: [
+
+      {
+
+        min_age: 45,
+
+        bonus: 15
+      }
+    ],
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+
+        min_days: 30,
+
+        bonus: 20
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY SYMPTOMS
+    // ==========================
+
+    emergency_symptoms: [
+
+      "spo2_below_90",
+
+      "cyanosis",
+
+      "unconsciousness",
+
+      "severe_breathlessness"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Salbutamol",
+
       "Tiotropium",
+
       "Budesonide",
+
       "Oxygen"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Nebulization",
+
       "Pulmonary Rehabilitation",
+
       "Oxygen Therapy"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Stop smoking immediately",
+
       "Avoid pollution",
+
       "Breathing exercise",
+
       "Vaccination"
     ]
   }

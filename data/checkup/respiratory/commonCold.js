@@ -1,17 +1,43 @@
 // ==============================
 // COMMON COLD DATASET
+// ADVANCED UNIVERSAL VERSION
 // ==============================
 
 export const COMMON_COLD = [
 
   {
+
     id: "CC001",
 
     disease: "Common Cold",
 
+    aliases: [
+
+      "cold",
+
+      "viral cold"
+    ],
+
     category: "respiratory",
 
+    tags: [
+
+      "cold",
+
+      "viral",
+
+      "sneezing",
+
+      "runny nose"
+    ],
+
+    prevalence: "very_common",
+
     severity: "mild",
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -36,6 +62,32 @@ export const COMMON_COLD = [
       }
     },
 
+    // ==========================
+    // RISK FACTORS
+    // ==========================
+
+    risk_factors: {
+
+      seasonal_change: {
+        present: true,
+        weight: 15
+      },
+
+      school_exposure: {
+        present: true,
+        weight: 15
+      },
+
+      crowded_area_exposure: {
+        present: true,
+        weight: 15
+      }
+    },
+
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
       sneezing: {
@@ -44,9 +96,18 @@ export const COMMON_COLD = [
       },
 
       runny_nose: {
-        present: true,
-        weight: 50
-      },
+
+  present: true,
+
+  weight: 50,
+
+  aliases: [
+
+    "nasal_discharge",
+    "watery_nose"
+
+  ]
+},
 
       nasal_congestion: {
         present: true,
@@ -59,9 +120,16 @@ export const COMMON_COLD = [
       },
 
       mild_cough: {
-        present: true,
-        weight: 25
-      },
+
+  present: true,
+
+  weight: 25,
+
+  aliases: [
+
+    "cough"
+  ]
+},
 
       mild_fever: {
         present: true,
@@ -86,8 +154,17 @@ export const COMMON_COLD = [
       body_ache: {
         present: true,
         weight: 15
+      },
+
+      post_nasal_drip: {
+        present: true,
+        weight: 20
       }
     },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -107,6 +184,10 @@ export const COMMON_COLD = [
       }
     },
 
+    // ==========================
+    // TESTS
+    // ==========================
+
     tests: {
 
       cbc_viral_pattern: {
@@ -124,6 +205,10 @@ export const COMMON_COLD = [
         weight: 25
       }
     },
+
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
 
     complications: {
 
@@ -145,8 +230,6 @@ export const COMMON_COLD = [
 
     // ==========================
     // RED FLAGS
-    // Reduced weights to avoid
-    // false severe classification
     // ==========================
 
     red_flags: {
@@ -157,9 +240,9 @@ export const COMMON_COLD = [
       },
 
       severe_breathlessness: {
-  present: false,
-  weight: -40
-},
+        present: false,
+        weight: -40
+      },
 
       chest_pain: {
         present: true,
@@ -177,23 +260,174 @@ export const COMMON_COLD = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+
+        symptoms: [
+
+          "sneezing",
+
+          "runny_nose"
+        ],
+
+        match: "all",
+
+        bonus: 35
+      },
+
+      {
+
+        symptoms: [
+
+          "nasal_congestion",
+
+          "sore_throat"
+        ],
+
+        match: "all",
+
+        bonus: 25
+      },
+
+      {
+
+        symptoms: [
+
+          "watery_eyes"
+        ],
+
+        match: "all",
+
+        bonus: 10
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+
+        symptoms: [
+
+          "loss_of_smell"
+        ],
+
+        match: "all",
+
+        penalty: 25
+      },
+
+      {
+
+        symptoms: [
+
+          "blood_in_sputum"
+        ],
+
+        match: "all",
+
+        penalty: 30
+      },
+
+      {
+
+        symptoms: [
+
+          "severe_breathlessness"
+        ],
+
+        match: "all",
+
+        penalty: 40
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      sneezing: 15,
+
+      runny_nose: 15,
+
+      nasal_congestion: 10
+    },
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+
+        min_days: 10,
+
+        penalty: 15
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY SYMPTOMS
+    // ==========================
+
+    emergency_symptoms: [
+
+      "spo2_below_90",
+
+      "unconsciousness"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Paracetamol",
+
       "Cetirizine",
+
       "Cough Syrup",
+
       "Vitamin C"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Steam Inhalation",
+
       "Rest",
+
       "Hydration"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Drink warm fluids",
+
       "Proper rest",
+
       "Avoid cold exposure",
+
       "Hand hygiene"
     ]
   }

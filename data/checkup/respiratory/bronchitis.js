@@ -1,17 +1,43 @@
 // ==============================
 // BRONCHITIS DATASET
+// ADVANCED UNIVERSAL VERSION
 // ==============================
 
 export const BRONCHITIS = [
 
   {
+
     id: "BRO001",
 
     disease: "Bronchitis",
 
+    aliases: [
+
+      "acute bronchitis",
+
+      "chest infection"
+    ],
+
     category: "respiratory",
 
+    tags: [
+
+      "cough",
+
+      "sputum",
+
+      "lungs",
+
+      "airway"
+    ],
+
+    prevalence: "common",
+
     severity: "moderate",
+
+    // ==========================
+    // CAUSES
+    // ==========================
 
     causes: {
 
@@ -41,18 +67,53 @@ export const BRONCHITIS = [
       }
     },
 
+    // ==========================
+    // RISK FACTORS
+    // ==========================
+
+    risk_factors: {
+
+      chronic_smoking: {
+        present: true,
+        weight: 25
+      },
+
+      weak_immunity: {
+        present: true,
+        weight: 15
+      },
+
+      asthma_history: {
+        present: true,
+        weight: 20
+      },
+
+      copd_history: {
+        present: true,
+        weight: 25
+      }
+    },
+
+    // ==========================
+    // SYMPTOMS
+    // ==========================
+
     symptoms: {
 
       cough: {
-        present: true,
-        weight: 50
-      },
 
-      wet_cough: {
-        present: true,
-        weight: 45
-      },
+  present: true,
 
+  weight: 50,
+
+  aliases: [
+
+    "wet_cough",
+    "productive_cough",
+    "mucus_cough"
+
+  ]
+},
       sputum: {
         present: true,
         weight: 40
@@ -91,8 +152,22 @@ export const BRONCHITIS = [
       breathing_difficulty: {
         present: true,
         weight: 35
+      },
+
+      chest_congestion: {
+        present: true,
+        weight: 30
+      },
+
+      cough_more_than_1_week: {
+        present: true,
+        weight: 25
       }
     },
+
+    // ==========================
+    // PHYSICAL EXAM
+    // ==========================
 
     physical_exam: {
 
@@ -109,8 +184,17 @@ export const BRONCHITIS = [
       mild_low_spo2: {
         present: true,
         weight: 30
+      },
+
+      rapid_breathing: {
+        present: true,
+        weight: 25
       }
     },
+
+    // ==========================
+    // TESTS
+    // ==========================
 
     tests: {
 
@@ -135,6 +219,10 @@ export const BRONCHITIS = [
       }
     },
 
+    // ==========================
+    // COMPLICATIONS
+    // ==========================
+
     complications: {
 
       pneumonia: {
@@ -152,6 +240,10 @@ export const BRONCHITIS = [
         weight: 50
       }
     },
+
+    // ==========================
+    // RED FLAGS
+    // ==========================
 
     red_flags: {
 
@@ -181,23 +273,175 @@ export const BRONCHITIS = [
       }
     },
 
+    // ==========================
+    // BONUS RULES
+    // ==========================
+
+    bonus_rules: [
+
+      {
+
+        symptoms: [
+
+          "wet_cough",
+
+          "yellow_sputum"
+        ],
+
+        match: "all",
+
+        bonus: 35
+      },
+
+      {
+
+        symptoms: [
+
+          "wheezing",
+
+          "chest_congestion"
+        ],
+
+        match: "all",
+
+        bonus: 25
+      },
+
+      {
+
+        symptoms: [
+
+          "cough_more_than_1_week"
+        ],
+
+        match: "all",
+
+        bonus: 15
+      }
+    ],
+
+    // ==========================
+    // EXCLUSION RULES
+    // ==========================
+
+    exclusion_rules: [
+
+      {
+
+        symptoms: [
+
+          "loss_of_smell"
+        ],
+
+        match: "all",
+
+        penalty: 20
+      },
+
+      {
+
+        symptoms: [
+
+          "night_sweats",
+
+          "weight_loss"
+        ],
+
+        match: "all",
+
+        penalty: 30
+      }
+    ],
+
+    // ==========================
+    // FOLLOWUP BOOSTS
+    // ==========================
+
+    followup_boosts: {
+
+      wet_cough: 15,
+
+      yellow_sputum: 15,
+
+      wheezing: 10
+    },
+
+    // ==========================
+    // DURATION RULES
+    // ==========================
+
+    duration_rules: [
+
+      {
+
+        min_days: 5,
+
+        bonus: 10
+      },
+
+      {
+
+        min_days: 21,
+
+        penalty: 15
+      }
+    ],
+
+    // ==========================
+    // EMERGENCY SYMPTOMS
+    // ==========================
+
+    emergency_symptoms: [
+
+      "spo2_below_90",
+
+      "cyanosis",
+
+      "unconsciousness",
+
+      "severe_breathlessness"
+    ],
+
+    // ==========================
+    // MEDICINES
+    // ==========================
+
     medicines: [
+
       "Azithromycin",
+
       "Salbutamol",
+
       "Cough Syrup",
+
       "Paracetamol"
     ],
 
+    // ==========================
+    // TREATMENTS
+    // ==========================
+
     treatments: [
+
       "Steam Inhalation",
+
       "Nebulization",
+
       "Hydration"
     ],
 
+    // ==========================
+    // LIFESTYLE
+    // ==========================
+
     lifestyle_changes: [
+
       "Avoid smoking",
+
       "Avoid dust",
+
       "Drink warm fluids",
+
       "Proper rest"
     ]
   }
