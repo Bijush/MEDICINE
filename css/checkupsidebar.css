@@ -1,0 +1,241 @@
+/* ==========================================================================
+   SIDEBAR UI STYLES
+   ========================================================================== */
+
+/* হ্যামবার্গার টগল বাটন */
+.sidebar-toggle-btn {
+  position: absolute;
+  left: 20px;
+  top: 24px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  z-index: 10;
+}
+
+.sidebar-toggle-btn:hover {
+  transform: scale(1.1);
+}
+
+/* সাইডবার কন্টেইনার */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.08);
+  z-index: 99999;
+  transform: translateX(-100%);
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+/* সাইডবার একটিভ হলে স্ক্রিনে আসবে */
+.sidebar.active {
+  transform: translateX(0);
+}
+
+/* সাইডবার হেডার */
+.sidebar-header {
+  padding: 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.sidebar-brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* বন্ধ করার বাটন */
+.sidebar-close-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+  transition: all 0.2s ease;
+}
+
+.sidebar-close-btn:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* নেভিগেশন মেনু লিস্ট */
+.sidebar-menu {
+  list-style: none;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sidebar-menu li a {
+  display: block;
+  padding: 12px 16px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+}
+
+.sidebar-menu li a:hover {
+  background: #eef2ff;
+  color: #2563eb;
+  padding-left: 20px;
+}
+
+.sidebar-menu li a.active {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+.sidebar-menu li a.text-danger {
+  color: #ef4444;
+}
+.sidebar-menu li a.text-danger:hover {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+/* ব্যাকগ্রাউন্ড ওভারলে ব্লার ইফেক্ট */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   UPDATED MOBILE RESPONSIVE STYLES (FOR NATIVE APP FEEL)
+   ========================================================================== */
+@media (max-width: 768px) {
+  
+  /* হেডারটিকে কমপ্যাক্ট অ্যাপ-বারের মতো করা হলো */
+  .app-header {
+    position: relative;
+    padding: 16px 16px 16px 50px !important; /* বামে মেনু বাটনের জন্য জায়গা রাখা হলো */
+    text-align: left !important; /* নেটিভ অ্যাপের মতো বামে অ্যালাইনমেন্ট */
+    border-radius: 0 0 20px 20px !important; /* ফুল কার্ডের বদলে টপ অ্যাপ বার লুক */
+    margin-bottom: 16px !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 70px;
+  }
+
+  /* মেনু বাটনটিকে টাইটেল লাইনের সাথে সোজা রাখার জন্য ওপরে ফিক্সড করা হলো (আপডেটেড) */
+  .sidebar-toggle-btn {
+    top: 18px !important;
+    left: 16px !important;
+    transform: none !important; /* একদম নিখুঁত টাইটেল অ্যালাইনমেন্ট */
+    font-size: 22px !important;
+    margin: 0 !important;
+  }
+
+  /* টাইটেল এবং সাবটাইটেল সাইজ মোবাইলের উপযোগী করা */
+  .app-title {
+    font-size: 20px !important;
+    margin-bottom: 2px !important;
+    text-shadow: none !important;
+  }
+
+  .app-subtitle {
+    font-size: 12px !important;
+    opacity: 0.85;
+  }
+
+  /* সেকশন এবং ইনপুট স্পেসিং আরও নিখুঁত করা */
+  .app { 
+    padding: 0 8px 80px 8px !important; /* নিচের অ্যাকশন বারের জন্য প্যাডিং */
+  }
+  
+  .section {
+    padding: 14px !important; 
+    border-radius: 14px !important; 
+    margin-bottom: 12px !important; 
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02) !important;
+  }
+
+  .section-title {
+    font-size: 15px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* সিলেক্টেড সিম্পটম বক্সটি খালি থাকলে স্বয়ংক্রিয়ভাবে লুকিয়ে থাকবে (নতুন যোগ করা হয়েছে) */
+  .selected-symptoms:empty {
+    display: none !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .selected-symptoms {
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    min-height: 0px !important;
+  }
+
+  /* ড্রপডাউন এবং ইনপুট ফিল্ডকে আরও প্রিমিয়াম করা */
+  .disease-select, .symptom-search {
+    padding: 12px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+  }
+
+  /* ট্যাবগুলোকে মোবাইলে স্ক্রল করার সুবিধা এবং স্লিক লুক দেওয়া */
+  .tabs-container {
+    padding: 4px !important;
+    border-radius: 12px !important;
+    gap: 4px !important;
+  }
+  
+  .tab-btn {
+    padding: 8px 12px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+  }
+
+  /* নিচের ফিক্সড অ্যাকশন বারটি আরও ক্লিন করা */
+  .bottom-action-bar {
+    padding: 10px 16px 24px 16px !important; /* মোবাইল নেভিগেশন বারের সেফ জোন */
+    background: rgba(255, 255, 255, 0.95) !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.8) !important;
+  }
+
+  .bottom-action-bar button {
+    height: 44px !important;
+    font-size: 14px !important;
+    border-radius: 10px !important;
+  }
+}
