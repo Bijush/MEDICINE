@@ -1,161 +1,135 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  
-  <head>
-  
-    <meta charset="UTF-8" />
-  
-    <meta
-      name="viewport"
-      content="
-        width=device-width,
-        initial-scale=1.0
-      "
-    />
-  
-    <title>
-      AI Medical Diagnosis
-    </title>
-  
-    <!-- CSS -->
-  
-    <link
-      rel="stylesheet"
-      href="./css/checkup.css"
-    />
-  
-  </head>
-  
-  <body>
-  
-    <!-- ===================== -->
-    <!-- APP -->
-    <!-- ===================== -->
-  
-    <div class="app">
-  
-      <!-- HEADER -->
-  
-      <div class="app-header">
-  
-        <div class="app-title">
-  
-          🩺 AI Medical Diagnosis
-  
-        </div>
-  
-        <div class="app-subtitle">
-  
-          Smart symptom-based
-          disease prediction system
-  
-        </div>
-  
-      </div>
-  
-      <!-- ===================== -->
-      <!-- SYMPTOM INPUT -->
-      <!-- ===================== -->
-  
-      <div class="section">
-  
-        <div class="section-title">
-  
-          Symptoms
-  
-        </div>
-  
-        <div id="symptomInput"></div>
+<!DOCTYPE html>
+<html lang="en">
 
-      </div>
-  
-      <!-- ===================== -->
-      <!-- BUTTON -->
-      <!-- ===================== -->
-  <div class="bottom-action-bar">
-  <button
-    id="diagnoseBtn"
-    class="diagnose-btn"
-  >
-    🔍 Diagnose
-  </button>
-  <button
-    id="clearFollowupBtn"
-    class="clear-btn"
-  >
-    🗑 Clear
-  </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Medical Diagnosis</title>
 
+  <!-- CSS -->
+  <link rel="stylesheet" href="./css/checkup.css" />
+  <!-- নতুন সাইডবার সিএসএস ফাইল লিঙ্ক -->
+  <link rel="stylesheet" href="./css/checkupsidebar.css" />
+  
+</head>
 
+<body>
 
-</div>
-  
-      <!-- ===================== -->
-      <!-- EMERGENCY -->
-      <!-- ===================== -->
-  
-      <div
-        id="emergencyBanner"
-        class="section"
-      ></div>
-  
-      <!-- ===================== -->
-      <!-- TOP CONFIDENCE -->
-      <!-- ===================== -->
-  
-      <div
-        id="confidenceBar"
-        class="section"
-      ></div>
-  
-      <!-- ===================== -->
-      <!-- RESULTS -->
-      <!-- ===================== -->
-  
-      <div class="section">
-  
-        <div class="section-title">
-  
-          Diagnosis Results
-  
-        </div>
-  <div id="followupQuestions"></div>
-        <div
-          id="diagnosisResults"
-        ></div>
-  
-      </div>
-  
-      <!-- ===================== -->
-      <!-- ALL CONFIDENCE -->
-      <!-- ===================== -->
-  
-      <div class="section">
-  
-        <div class="section-title">
-  
-          Disease Confidence
-  
-        </div>
-  
-        <div
-          id="allConfidenceBars"
-        ></div>
-  
-      </div>
+  <!-- সাইডবার ওভারলে (ব্যাকগ্রাউন্ড আবছা করার জন্য) -->
+  <div id="sidebarOverlay" class="sidebar-overlay"></div>
 
+  <!-- ===================== -->
+  <!-- SIDEBAR NAVIGATION -->
+  <!-- ===================== -->
+  <div id="sidebar" class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-brand">菜单 Menu</div>
+      <button id="sidebarClose" class="sidebar-close-btn">&times;</button>
     </div>
-    <button id="backToTopBtn">
-  ⬆️
-</button>
-    <!-- ===================== -->
-    <!-- JS -->
-    <!-- ===================== -->
-  
-    <script
-      type="module"
-      src="./js/checkup/checkup.js"
-    ></script>
-  
-  </body>
-  </html>
+    <ul class="sidebar-menu">
+      <li><a href="#" class="menu-item active">🏠 Home</a></li>
+      <li><a href="#" class="menu-item">📋 Patient History</a></li>
+      <li><a href="#" class="menu-item">📊 Reports Analysis</a></li>
+      <li><a href="#" class="menu-item">⚙️ Settings</a></li>
+      <li><a href="#" class="menu-item text-danger">🚪 Logout</a></li>
+    </ul>
+  </div>
+
+  <!-- ===================== -->
+  <!-- APP -->
+  <!-- ===================== -->
+  <div class="app">
+
+    <!-- HEADER -->
+    <div class="app-header">
+      <!-- সাইডবার ওপেন করার হ্যামবার্গার বাটন -->
+      <button id="sidebarToggle" class="sidebar-toggle-btn">☰</button>
+      
+      <div class="app-title">
+        🩺 AI Medical Diagnosis
+      </div>
+      <div class="app-subtitle">
+        Smart symptom-based disease prediction system
+      </div>
+    </div>
+
+    <!-- DISEASE DROPDOWN CONTAINER -->
+    <div class="section">
+      <div class="section-title">
+        Select Disease
+      </div>
+      <select id="diseaseDropdown" class="disease-select">
+        <option value="">-- Choose a Disease --</option>
+      </select>
+    </div>
+
+    <!-- Modern Tabs Navigation -->
+    <div id="dynamicTabsContainer" class="tabs-container"></div>
+
+    <!-- Main Input Target for Dynamic Symptoms JS -->
+    <div id="symptomInput"></div>
+
+    <!-- BUTTON -->
+    <div class="bottom-action-bar">
+      <button id="diagnoseBtn" class="diagnose-btn">
+        🔍 Diagnose
+      </button>
+      <button id="clearFollowupBtn" class="clear-btn">
+        🗑 Clear
+      </button>
+    </div>
+
+    <!-- EMERGENCY -->
+    <div id="emergencyBanner" class="section"></div>
+
+    <!-- TOP CONFIDENCE -->
+    <div id="confidenceBar" class="section"></div>
+
+    <!-- RESULTS -->
+    <div class="section">
+      <div class="section-title">
+        Diagnosis Results
+      </div>
+      <div id="followupQuestions"></div>
+      <div id="diagnosisResults"></div>
+    </div>
+
+    <!-- ALL CONFIDENCE -->
+    <div class="section">
+      <div class="section-title">
+        Disease Confidence
+      </div>
+      <div id="allConfidenceBars"></div>
+    </div>
+
+  </div>
+
+  <!-- Back to top button -->
+  <button id="backToTopBtn">⬆️</button>
+
+  <!-- ===================== -->
+  <!-- JS -->
+  <!-- ===================== -->
+  <script type="module" src="./js/checkup/checkup.js"></script>
+  <!-- নতুন সাইডবার জাভাস্ক্রিপ্ট ফাইল লিঙ্ক -->
+  <script src="./js/checkup/sidebar.js" defer></script>
+
+  <!-- Inline Script to handle tab UI toggle classes safely -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      tabButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          e.currentTarget.classList.add('active');
+          
+          const tabName = e.currentTarget.getAttribute('data-tab');
+          const event = new CustomEvent('tabChanged', { detail: tabName });
+          document.dispatchEvent(event);
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>
