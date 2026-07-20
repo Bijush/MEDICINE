@@ -52,6 +52,16 @@ import {
 }
 from "./GdEngine/processSection.js";
 
+import {
+  applySpecificityBonus
+}
+from "./GdEngine/applySpecificityBonus.js";
+
+import {
+  applyBayesianProbability
+}
+from "./GdEngine/bayesianProbability.js";
+
 // ==============================
 // UNIQUE PUSH HELPER
 // ==============================
@@ -792,6 +802,15 @@ if (
       disease,
       totalMatches
     });
+    
+     score = applySpecificityBonus({
+
+  score,
+
+  matchedSymptoms
+
+});
+
 
     // ==========================
     // EMERGENCY
@@ -848,6 +867,9 @@ if (
 
       contradictionData
         .contradictionLevel;
+        const totalContradictions =
+
+contradictionData.totalContradictions;
 
     score =
       contradictionData.score;
@@ -903,13 +925,43 @@ if (
     // NO MATCH
     // ==========================
 
-    if (
-      actualMatches.length === 0
-    ) {
+    const effectiveMatchCount =
 
-      continue;
-    }
+matchedSymptoms.length * 1.5 +
 
+matchedTests.length * 2 +
+
+matchedRedFlags.length * 2 +
+
+matchedPhysicalExam.length;
+
+
+if (
+
+effectiveMatchCount <
+
+(disease.minimum_match || 1)
+
+) {
+
+continue;
+
+}
+    
+// ==========================
+// GLOBAL MINIMUM MATCH
+// ==========================
+
+if (
+
+  actualMatches.length <
+
+  (disease.minimum_match || 1)
+
+) {
+
+  continue;
+}
     // ==========================
     // LOW SCORE
     // ==========================
@@ -945,10 +997,10 @@ if (
         matchedPhysicalExam,
         matchedComplications,
         matchedRedFlags,
-
         contradictions,
-contradictionLevel,
-clusterAnalysis
+        contradictionLevel,
+        totalContradictions,
+         clusterAnalysis
       });
 
     // ==========================

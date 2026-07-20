@@ -1,23 +1,7 @@
-
-import { ALL_DISEASES }
-from "./register/dataRegistry.js";
-
-import {
-  renderLiveFollowupQuestions
-}
-from "./renderFollowupQuestions.js";
-
-import {
-  getCanonicalSymptom
-}
-from "./symptomIntelligence.js";
-
-import {
-  isUserFriendlySymptom,
-  generateSectionItems
-}
-from "./UIEngine/uiFunction.js";
-
+import { ALL_DISEASES } from "./register/dataRegistry.js";
+import { renderLiveFollowupQuestions } from "./renderFollowupQuestions.js";
+import { getCanonicalSymptom } from "./symptomIntelligence.js";
+import { isUserFriendlySymptom, generateSectionItems } from "./UIEngine/uiFunction.js";
 import {
   renderMainLayout,
   setupTabs,
@@ -25,437 +9,162 @@ import {
   setupSearch,
   setupCheckboxEvents,
   setupLiveInputs,
-  setupSymptomInfoModal
-}
-from "./UIEngine/renderEngine.js";
+  setupSymptomInfoModal,
+  setupAccordion
+} from "./UIEngine/renderEngine.js";
+import { updateSelectedSymptoms } from "./UIEngine/updateSelectedSymptoms.js";
+import { buildCategoryMap } from "./UIEngine/buildCategoryMap.js";
+import { setupAdvancedAccordion } from "./UIEngine/advancedAccordion.js";
 
-import {
-  updateSelectedSymptoms
-}
-from "./UIEngine/updateSelectedSymptoms.js";
-
-import {
-  buildCategoryMap
-}
-from "./UIEngine/buildCategoryMap.js";
-
-
-// ==============================
+// ==========================================================================
 // GLOBAL SYMPTOM METADATA
-// ==============================
-
+// ==========================================================================
 window.symptomMetadata = {};
 
-// ==============================
+// ==========================================================================
 // GENERATE CLEAN SYMPTOMS
-// ==============================
+// ==========================================================================
 function generateSymptoms() {
   window.symptomMetadata = {};
+  const symptomSet = new Set();
 
-  const symptomSet =
-    new Set();
+  ALL_DISEASES.forEach(disease => {
+    Object.entries(disease.symptoms || {}).forEach(([symptom, data]) => {
+      const oldMeta = window.symptomMetadata?.[symptom] || {};
 
-  ALL_DISEASES.forEach(
-    disease => {
+      window.symptomMetadata[symptom] = {
+        ...data,
+        ...oldMeta,
+        label: oldMeta.label || data.label,
+        description: oldMeta.description || data.description,
+        warning: oldMeta.warning || data.warning,
+        tips: oldMeta.tips || data.tips,
+        icon: oldMeta.icon || data.icon
+      };
 
-      Object.entries(
-  disease.symptoms || {}
-)
-
-.forEach(
-
-  ([symptom, data]) => {
-
-    // ======================
-    // SAVE METADATA
-    // ======================
-
-    const oldMeta =
-
-  window
-  .symptomMetadata?.[
-    symptom
-  ] || {};
-
-window.symptomMetadata[
-  symptom
-] = {
-
-  ...data,
-
-  ...oldMeta,
-
-  // ======================
-  // KEEP RICH DATA
-  // ======================
-
-  label:
-    oldMeta.label ||
-    data.label,
-
-  description:
-    oldMeta.description ||
-    data.description,
-
-  warning:
-    oldMeta.warning ||
-    data.warning,
-
-  tips:
-    oldMeta.tips ||
-    data.tips,
-
-  icon:
-    oldMeta.icon ||
-    data.icon
-};
-
-    // ======================
-    // UI FILTER
-    // ======================
-
-    if (
-
-      isUserFriendlySymptom(
-        symptom
-      )
-
-    ) {
-
-      symptomSet.add(
-        symptom
-      );
-    }
-  }
-);
-    }
-  );
-
-  return Array.from(
-    symptomSet
-  )
-
-  .sort(
-
-    (a, b) =>
-
-      a.localeCompare(b)
-  );
-}
-
-// ==============================
-// INITIALIZE UI
-// ==============================
-
-function initializeUI(
-
-  selectedSymptoms,
-  symptomCounter
-
-) {
-
-  updateSelectedSymptoms(
-
-    selectedSymptoms,
-
-    symptomCounter
-  );
-
-  requestAnimationFrame(
-    () => {
-
-      renderLiveFollowupQuestions();
-    }
-  );
-}
-
-
-// ==============================
-// RENDER UI
-// ==============================
-
-export function renderSymptomInputUI(
-
-  containerId =
-    "symptomInput"
-
-) {
-
-  // ==========================
-  // WAIT FOR DOM
-  // ==========================
-
-  if (
-    document.readyState ===
-    "loading"
-  ) {
-
-    window.addEventListener(
-
-      "DOMContentLoaded",
-
-      () => {
-
-        renderSymptomInputUI(
-          containerId
-        );
+      if (isUserFriendlySymptom(symptom)) {
+        symptomSet.add(symptom);
       }
-    );
+    });
+  });
 
+  return Array.from(symptomSet).sort((a, b) => a.localeCompare(b));
+}
+
+// ==========================================================================
+// INITIALIZE UI HELPERS
+// ==========================================================================
+function initializeUI(selectedSymptoms, symptomCounter) {
+  updateSelectedSymptoms(selectedSymptoms, symptomCounter);
+  requestAnimationFrame(() => {
+    renderLiveFollowupQuestions();
+  });
+}
+
+// ==========================================================================
+// RENDER UI INPUT CORE
+// ==========================================================================
+export function renderSymptomInputUI(containerId = "symptomInput") {
+  // Wait for DOM to load fully if state is loading
+  if (document.readyState === "loading") {
+    window.addEventListener("DOMContentLoaded", () => {
+      renderSymptomInputUI(containerId);
+    });
     return;
   }
 
-  // ==========================
-  // CONTAINER
-  // ==========================
-
-  const container =
-
-    document.getElementById(
-      containerId
-    );
-
+  const container = document.getElementById(containerId);
   if (!container) {
-
-    console.error(
-      `Container '${containerId}' not found`
-    );
-
+    console.error(`Container '${containerId}' not found`);
     return;
   }
 
+  // 1. Refresh Dynamic Metadata Map
+  generateSymptoms();
 
-generateSymptoms();
+  // 2. Build Structural UI Object Dataset
+  const uiData = generateUIData();
 
-  // ==========================
-  // AUTO GENERATE
-  // ==========================
+  // 3. Inject Layout Base Shell into Container
+  container.innerHTML = renderMainLayout(uiData);
 
-  const uiData =
-  generateUIData();
+  // 4. Capture Necessary Core Form Context Elements
+  const selectedSymptoms = document.getElementById("selectedSymptoms");
+  const symptomCounter = document.getElementById("symptomCounter");
 
-  // ==========================
-  // HTML
-  // ==========================
-
-  container.innerHTML =
-  renderMainLayout(
-    uiData
-  );
-
-  // ==========================
-  // ELEMENTS
-  // ==========================
-
-  
-  const selectedSymptoms =
-
-  document.getElementById(
-    "selectedSymptoms"
-  );
-
-const selectedSymptomsTab =
-
-  document.getElementById(
-    "selectedSymptomsTab"
-  );
-
-  const symptomCounter =
-
-    document.getElementById(
-      "symptomCounter"
-    );
-// ==========================
-// DROPDOWN TABS
-// ==========================
-
-setupTabs();
-
-  // ==========================
-// ADVANCED TOGGLE
-// ==========================
-
-setupAdvancedToggle();
-
-  // ==========================
-  // SEARCH
-  // ==========================
-
+  // 5. Initialize Core Interactivity Controllers
+  setupTabs();
+  setupAccordion();
+  setupAdvancedAccordion();
+  setupAdvancedToggle();
   setupSearch();
   
-  // ==========================
-  // CHECKBOX
-  // ==========================
+  // 6. Bind Global Form States and Events
+  setupCheckboxEvents(container, selectedSymptoms, symptomCounter);
 
-  setupCheckboxEvents(
+  requestAnimationFrame(() => {
+    setupSymptomInfoModal();
+  });
 
-  container,
-  selectedSymptoms,
-  symptomCounter
-  
+  setupLiveInputs(selectedSymptoms, symptomCounter);
 
-);
-
-requestAnimationFrame(() => {
-
-  setupSymptomInfoModal();
-
-});
-// ==========================
-// LIVE EXTRA INPUT UPDATE
-// ==========================
-
-setupLiveInputs(
-
-  selectedSymptoms,
-  symptomCounter
-
-);
-
-  // INIT
-
-  initializeUI(
-
-  selectedSymptoms,
-  symptomCounter
-
-);
-
+  // 7. Fire Up First UI Paint Engine
+  initializeUI(selectedSymptoms, symptomCounter);
 }
 
-// ==============================
-// GENERATE UI DATA
-// ==============================
-
+// ==========================================================================
+// GENERATE UI DATA OBJECT DISTRIBUTOR
+// ==========================================================================
 function generateUIData() {
-  
-generateSymptoms();
-
-  const autoSymptoms =
-    generateSectionItems(
-      "symptoms"
-    );
+  generateSymptoms();
+  const autoSymptoms = generateSectionItems("symptoms");
 
   return {
-
-    examItems:
-      generateSectionItems(
-        "physical_exam"
-      ),
-
-    testItems:
-      generateSectionItems(
-        "tests"
-      ),
-
-    redFlagItems:
-      generateSectionItems(
-        "red_flags"
-      ),
-
-    categories:
-      buildCategoryMap(
-        autoSymptoms
-      )
-
+    examItems: generateSectionItems("physical_exam"),
+    testItems: generateSectionItems("tests"),
+    redFlagItems: generateSectionItems("red_flags"),
+    categories: buildCategoryMap(autoSymptoms)
   };
 }
 
-// ==============================
-// GET SELECTED SYMPTOMS
-// ==============================
-
+// ==========================================================================
+// GET SELECTED SYMPTOMS DATA FROM CHECKBOXES & INPUTS
+// ==========================================================================
 export function getSelectedSymptoms() {
-
   const data = {};
-
-  const checkboxes =
-
-  document.querySelectorAll(
-    '.symptom-ui input[type="checkbox"]'
-  );
+  const checkboxes = document.querySelectorAll('.symptom-ui input[type="checkbox"]');
 
   checkboxes.forEach(box => {
-
     if (box.checked) {
+      const symptom = box.value.trim();
+      
+      // Map direct absolute key state
+      data[symptom] = true;
 
-      const symptom =
-
-  box.value.trim();
-
-// ==========================
-// ORIGINAL
-// ==========================
-
-data[symptom] = true;
-
-// ==========================
-// CANONICAL
-// ==========================
-
-const canonical =
-
-  getCanonicalSymptom(
-    symptom
-  );
-
-data[
-  canonical
-] = true;
+      // Extract and map corresponding canonical key form
+      const canonical = getCanonicalSymptom(symptom);
+      data[canonical] = true;
     }
   });
 
-  // AGE
-
-  const ageValue =
-
-    document.getElementById(
-      "userAge"
-    )?.value;
-
+  // Extract Age Property Context
+  const ageValue = document.getElementById("userAge")?.value;
   if (ageValue) {
-
-    data.age =
-      Number(ageValue);
+    data.age = Number(ageValue);
   }
 
-  // GENDER
-
-  const gender =
-
-    document.getElementById(
-      "userGender"
-    )?.value;
-
+  // Extract Gender Property Context
+  const gender = document.getElementById("userGender")?.value;
   if (gender) {
-
-    data.gender =
-      gender;
+    data.gender = gender;
   }
 
-  // DURATION
-
-  const durationValue =
-
-    document.getElementById(
-      "symptomDuration"
-    )?.value;
-
+  // Extract Duration Context Value
+  const durationValue = document.getElementById("symptomDuration")?.value;
   if (durationValue) {
-
-    data.duration =
-      Number(durationValue);
+    data.duration = Number(durationValue);
   }
 
-  console.log(
-    "FINAL USER DATA:",
-    data
-  );
-
+  console.log("FINAL GENERATED USER DATA:", data);
   return data;
 }
-
-
-
-
-

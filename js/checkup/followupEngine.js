@@ -129,15 +129,51 @@ export function getFollowupQuestions(
         ([symptom, rule]) => {
 
           // ======================
-          // HAS FOLLOWUP?
+          // NO FOLLOWUP
+          // ======================
+
+          if (
+            !rule.followup
+          ) {
+
+            return;
+          }
+
+          // ======================
+          // QUESTION TEXT
+          // ======================
+
+          const questionText =
+
+            typeof rule.followup.question ===
+            "object"
+
+              ? (
+
+                  rule.followup.question.bn ||
+
+                  rule.followup.question.en ||
+
+                  ""
+
+                )
+
+              : (
+
+                  rule.followup.question ||
+
+                  `More about ${symptom}?`
+
+                );
+
+          // ======================
+          // ALREADY ANSWERED
           // ======================
 
           if (
 
-            !rule.followup ||
-
             window.followupAnswers?.[
-              rule.followup.question
+              questionText
             ]
 
           ) {
@@ -183,11 +219,7 @@ export function getFollowupQuestions(
           questions.push({
 
             question:
-
-              rule.followup
-                .question ||
-
-              `More about ${symptom}?`,
+              questionText,
 
             options:
 
@@ -196,6 +228,7 @@ export function getFollowupQuestions(
 
                 "Yes",
                 "No"
+
               ],
 
             symptomKey:
@@ -214,8 +247,11 @@ export function getFollowupQuestions(
 
               rule.followup
                 .priority || 1
+
           });
+
         }
+
       );
 
       // ==========================
@@ -230,12 +266,52 @@ export function getFollowupQuestions(
 
         ([symptom, rule]) => {
 
+          // ======================
+          // NO FOLLOWUP
+          // ======================
+
+          if (
+            !rule.followup
+          ) {
+
+            return;
+          }
+
+          // ======================
+          // QUESTION TEXT
+          // ======================
+
+          const questionText =
+
+            typeof rule.followup.question ===
+            "object"
+
+              ? (
+
+                  rule.followup.question.bn ||
+
+                  rule.followup.question.en ||
+
+                  ""
+
+                )
+
+              : (
+
+                  rule.followup.question ||
+
+                  `More about ${symptom}?`
+
+                );
+
+          // ======================
+          // ALREADY ANSWERED
+          // ======================
+
           if (
 
-            !rule.followup ||
-
             window.followupAnswers?.[
-              rule.followup.question
+              questionText
             ]
 
           ) {
@@ -243,14 +319,14 @@ export function getFollowupQuestions(
             return;
           }
 
+          // ======================
+          // ADD QUESTION
+          // ======================
+
           questions.push({
 
             question:
-
-              rule.followup
-                .question ||
-
-              `More about ${symptom}?`,
+              questionText,
 
             options:
 
@@ -259,6 +335,7 @@ export function getFollowupQuestions(
 
                 "Yes",
                 "No"
+
               ],
 
             symptomKey:
@@ -276,10 +353,15 @@ export function getFollowupQuestions(
                 .symptomMap || {},
 
             priority: 100
+
           });
+
         }
+
       );
+
     }
+
   );
 
   // ==========================
@@ -299,11 +381,14 @@ export function getFollowupQuestions(
         index ===
 
         self.findIndex(
+
           q =>
 
             q.question ===
             item.question
+
         )
+
     );
 
   // ==========================
@@ -317,6 +402,7 @@ export function getFollowupQuestions(
       (b.priority || 0) -
 
       (a.priority || 0)
+
   );
 
   // ==========================
@@ -325,4 +411,5 @@ export function getFollowupQuestions(
 
   return uniqueQuestions
     .slice(0, 6);
+
 }

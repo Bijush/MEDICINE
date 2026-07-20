@@ -149,7 +149,19 @@ export function renderMultipleConfidenceBars(
     results.map(
       item => `
 
-      <div class="multi-confidence-card">
+<div
+  class="multi-confidence-card"
+  onclick="
+    document
+      .querySelector(
+        '.diag-card[data-disease=&quot;${item.disease}&quot;]'
+      )
+      ?.scrollIntoView({
+        behavior:'smooth',
+        block:'start'
+      });
+  "
+>
 
         <!-- HEADER -->
 

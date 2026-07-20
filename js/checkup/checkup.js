@@ -1,373 +1,214 @@
+import { ALL_DISEASES } from "./register/dataRegistry.js";
+import { renderSymptomInputUI, getSelectedSymptoms } from "./symptomInputUI.js";
+import { renderCheckupResults } from "./checkupRender.js";
+import { renderEmergencyBanner } from "./emergencyBanner.js";
+import { renderMultipleConfidenceBars } from "./confidenceBar.js";
+import { diagnosePatient } from "./masterDiagnosisEngine.js";
+import { getFollowupQuestions } from "./followupEngine.js";
+import { renderLiveFollowupQuestions } from "./renderFollowupQuestions.js";
 
+export let CURRENT_LANG = "bn";
 
-
-// ==============================
-// CHECKUP MAIN
-// ==============================
-
-import {
-  renderSymptomInputUI,
-  getSelectedSymptoms
-} from "./symptomInputUI.js";
-
-import {
-  renderCheckupResults
-} from "./checkupRender.js";
-
-import {
-  renderEmergencyBanner
-} from "./emergencyBanner.js";
-
-import {
-  renderMultipleConfidenceBars
-} from "./confidenceBar.js";
-
-import {
-  diagnosePatient
-} from "./masterDiagnosisEngine.js";
-
-import {
-  getFollowupQuestions
-} from "./followupEngine.js";
-
-import {
-  renderLiveFollowupQuestions
-}
-from "./renderFollowupQuestions.js";
-
-
-
-// ==============================
-// CURRENT LANGUAGE
-// ==============================
-
-export let CURRENT_LANG =
-  "bn";
-// ==============================
-// INIT
-// ==============================
-
+// ==========================================================================
+// INIT FUNCTION
+// ==========================================================================
 function initCheckup() {
+  
+  
+  
+  // 1. Render Dynamic Symptoms & setup tabs automatically
+  renderSymptomInputUI();
 
-//generateSymptomIntelligence();
-// ==========================
-// RENDER SYMPTOM UI
-// ==========================
-
-renderSymptomInputUI();
-  // ==========================
-  // BUTTON
-  // ==========================
-
-  const diagnoseBtn =
-
-    document.getElementById(
-      "diagnoseBtn"
-    );
-
+  // 2. Setup Core Diagnose Button
+  const diagnoseBtn = document.getElementById("diagnoseBtn");
   if (!diagnoseBtn) return;
 
-  // ==========================
-  // CLICK EVENT
-  // ==========================
+  diagnoseBtn.addEventListener("click", () => {
+  diagnoseBtn.disabled = true;
+  diagnoseBtn.innerHTML = "Analyzing...";
 
-  diagnoseBtn.addEventListener(
+  const dropdown = document.getElementById("diseaseDropdown");
+  const selectedIndex = dropdown ? dropdown.value : "";
 
-    "click",
+  // ===================================================
+  // DISEASE MODE
+  // ===================================================
+  if (selectedIndex !== "") {
 
-    () => {
+    const disease = ALL_DISEASES[selectedIndex];
 
-      // ======================
-      // BUTTON LOADING
-      // ======================
+    const matchedSymptoms = Object.keys(disease.symptoms || {})
+  .filter(key => disease.symptoms[key]?.present);
 
-      diagnoseBtn.disabled = true;
+const matchedTests = Object.keys(disease.tests || {})
+  .filter(key => disease.tests[key]?.present);
 
-      diagnoseBtn.innerHTML =
-        "Analyzing Symptoms...";
+const matchedRedFlags = Object.keys(disease.red_flags || {})
+  .filter(key => disease.red_flags[key]?.present);
 
-      // ======================
-      // USER DATA
-      // ======================
+const diseaseResult = {
+  ...disease,
 
-      const userData =
+  disease: disease.disease,
+  category: disease.category,
 
-        getSelectedSymptoms();
-        
-        // ======================
-// SAVE INITIAL SYMPTOMS
-// ======================
+  confidence: 100,
+  confidenceLabel: "Confirmed",
 
-window.currentUserSymptoms = {
-  ...userData
+  severity: disease.severity || "moderate",
+
+  matchCount: matchedSymptoms.length,
+
+  matchedSymptoms,
+  matchedTests,
+  matchedRedFlags,
+
+  reason: "Disease selected manually.",
+
+  medicines: disease.medicines || {},
+  homeopathic_medicines: disease.homeopathic_medicines || [],
+  ayurvedic_medicines: disease.ayurvedic_medicines || {},
+
+  emergency: disease.emergency || false
 };
 
-      console.log(
-        "Symptoms:",
-        userData
-      );
-
-      // ======================
-      // EMPTY CHECK
-      // ======================
-
-      if (
-
-        Object.keys(userData)
-          .length === 0
-
-      ) {
-
-        alert(
-          "Please select at least one symptom"
-        );
-
-        diagnoseBtn.disabled = false;
-
-        diagnoseBtn.innerHTML =
-          " 🔍 Diagnose";
-
-        return;
-      }
-
-// ======================
-// AI DIAGNOSIS
-// ======================
-
-const result =
-  diagnosePatient(
-    userData
-  );
-window.latestDiagnosisResult =
-  result;
-
-console.log(
-  "LATEST RESULT",
-  result
-);
-// ======================
-// FOLLOWUP QUESTIONS
-// ======================
-
-const followupQuestions =
-
-  getFollowupQuestions(
-
-    userData,
-
-    result.allResults
-      .map(
-        item => item.disease
-      )
-  );
-
-console.log(
-  "Followup Questions:",
-  followupQuestions
-);
-result.followupQuestions =
-  followupQuestions;
-window.generatedFollowups =
-  followupQuestions;
-renderLiveFollowupQuestions();
-
-// temporary empty ML results
-
-result.mlResults = [];
-
-// emergency UI
-
-renderEmergencyBanner(
-  result
-);
-
-
-
-// diagnosis UI
-
-renderCheckupResults(
-  result
-);
-
-// confidence bars
-
-renderMultipleConfidenceBars(
-  result.allResults || []
-);
-
-
-setTimeout(() => {
-
-  document
-    .getElementById(
-      "diagnosisResults"
-    )
-    ?.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
-
-}, 200);
-// button reset
-
-diagnoseBtn.disabled = false;
-
-diagnoseBtn.innerHTML =
-  "    🔍 Diagnose";
-
-  } // click function end
-
-); // event listener end
-
-} // initCheckup end
-// ==============================
-// START
-// ==============================
-
-// ==============================
-// FOLLOWUP REDIAGNOSIS
-// ==============================
-
-document.addEventListener(
-
-  "followupUpdated",
-
-  event => {
-
-    console.log(
-      "Followup Event:",
-      event.detail
-    );
-
-    // ==========================
-    // MERGE ORIGINAL + FOLLOWUP
-    // ==========================
-
-    const updatedSymptoms = {
-
-  ...window.currentUserSymptoms,
-
-  ...event.detail
+const result = {
+  topMatch: diseaseResult,
+  allResults: [diseaseResult],
+  overallSeverity: diseaseResult.severity,
+  emergencyDetected: diseaseResult.emergency,
+  followupQuestions: [],
+  mlResults: []
 };
 
-renderLiveFollowupQuestions();
+    renderEmergencyBanner(result);
+    renderCheckupResults(result);
+    renderMultipleConfidenceBars(result.allResults);
+    setTimeout(() => {
+  document.getElementById("diagnosisResults")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}, 100);
 
-    // ==========================
-    // REDIAGNOSIS
-    // ==========================
-
-    const result =
-
-      diagnosePatient(
-        updatedSymptoms
-      );
-
-    // ==========================
-    // FOLLOWUP QUESTIONS
-    // ==========================
-
-    const followupQuestions =
-
-      getFollowupQuestions(
-
-        updatedSymptoms,
-
-        result.allResults.map(
-          item => item.disease
-        )
-      );
-
-    result.followupQuestions =
-      followupQuestions;
-    window.generatedFollowups =
-  followupQuestions;
-renderLiveFollowupQuestions();
-
-    // ==========================
-    // EMPTY ML
-    // ==========================
-
-    result.mlResults = [];
-
-    // ==========================
-    // SAVE GLOBAL
-    // ==========================
-
-    window.currentUserSymptoms =
-      updatedSymptoms;
-
-    // ==========================
-    // RERENDER
-    // ==========================
-
-    renderEmergencyBanner(
-      result
-    );
-
-    renderCheckupResults(
-      result
-    );
-
-    renderMultipleConfidenceBars(
-      result.allResults || []
-    );
-    
-    
+    diagnoseBtn.disabled = false;
+    diagnoseBtn.innerHTML = "🔍 Diagnose";
+    return;
   }
-);
 
-document.addEventListener(
+  // ===================================================
+  // SYMPTOM MODE
+  // ===================================================
+  const userData = getSelectedSymptoms();
+  window.currentUserSymptoms = { ...userData };
 
-  "DOMContentLoaded",
+  if (Object.keys(userData).length === 0) {
+    alert("Please select at least one symptom.");
+    diagnoseBtn.disabled = false;
+    diagnoseBtn.innerHTML = "🔍 Diagnose";
+    return;
+  }
 
-  initCheckup
-);
-// ==============================
-// BACK TO TOP
-// ==============================
+  const result = diagnosePatient(userData);
 
-const backBtn =
-document.getElementById(
-  "backToTopBtn"
-);
+  window.latestDiagnosisResult = result;
 
+  const followupQuestions = getFollowupQuestions(
+    userData,
+    result.allResults.map(x => x.disease)
+  );
+
+  result.followupQuestions = followupQuestions;
+  window.generatedFollowups = followupQuestions;
+
+  renderLiveFollowupQuestions();
+
+  result.mlResults = [];
+
+  renderEmergencyBanner(result);
+  renderCheckupResults(result);
+  renderMultipleConfidenceBars(result.allResults);
+setTimeout(() => {
+  document.getElementById("diagnosisResults")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}, 100);
+
+  diagnoseBtn.disabled = false;
+  diagnoseBtn.innerHTML = "🔍 Diagnose";
+});
+  
+  
+
+function loadDiseaseDropdown() {
+  const dropdown = document.getElementById("diseaseDropdown");
+  if (!dropdown) return;
+
+  dropdown.innerHTML =
+    `<option value="">-- Choose a Disease --</option>`;
+
+  ALL_DISEASES.forEach((disease, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = disease.disease;
+    dropdown.appendChild(option);
+  });
+
+  dropdown.addEventListener("change", e => {
+    const disease = ALL_DISEASES[e.target.value];
+    if (!disease) return;
+
+    console.log(disease);
+    // এখানে আপনার render function কল করবেন
+    // renderDiseaseDetails(disease);
+  });
+}
+
+loadDiseaseDropdown();
+  
+}
+
+// ==========================================================================
+// FOLLOWUP REDIAGNOSIS EVENT
+// ==========================================================================
+document.addEventListener("followupUpdated", event => {
+  const updatedSymptoms = {
+    ...window.currentUserSymptoms,
+    ...event.detail
+  };
+
+  renderLiveFollowupQuestions();
+  const result = diagnosePatient(updatedSymptoms);
+  const followupQuestions = getFollowupQuestions(
+    updatedSymptoms,
+    result.allResults.map(item => item.disease)
+  );
+
+  result.followupQuestions = followupQuestions;
+  window.generatedFollowups = followupQuestions;
+  renderLiveFollowupQuestions();
+
+  result.mlResults = [];
+  window.currentUserSymptoms = updatedSymptoms;
+
+  renderEmergencyBanner(result);
+  renderCheckupResults(result);
+  renderMultipleConfidenceBars(result.allResults || []);
+});
+
+document.addEventListener("DOMContentLoaded", initCheckup);
+
+// ==========================================================================
+// BACK TO TOP CONTROLLER
+// ==========================================================================
+const backBtn = document.getElementById("backToTopBtn");
 if (backBtn) {
-
-  window.addEventListener(
-    "scroll",
-    () => {
-
-      if (
-        window.scrollY > 400
-      ) {
-
-        backBtn.classList.add(
-          "show"
-        );
-
-      } else {
-
-        backBtn.classList.remove(
-          "show"
-        );
-
-      }
-
-    }
-  );
-
-  backBtn.addEventListener(
-    "click",
-    () => {
-
-      window.scrollTo({
-
-        top: 0,
-
-        behavior: "smooth"
-
-      });
-
-    }
-  );
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 400) backBtn.classList.add("show");
+    else backBtn.classList.remove("show");
+  });
+  backBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 }

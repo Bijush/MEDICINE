@@ -13,19 +13,11 @@ import {
 }
 from "./genericDiagnosisEngine.js";
 
-// ==============================
-// DEBUG
-// ==============================
+import {
+  applyMutualExclusion
+}
+from "./GdEngine/mutualExclusionEngine.js";
 
-console.log(
-  "ALL DISEASES:",
-  ALL_DISEASES
-);
-
-console.log(
-  "TOTAL DISEASES:",
-  ALL_DISEASES?.length
-);
 
 // ==============================
 // MASTER ENGINE
@@ -95,12 +87,17 @@ export function diagnosePatient(
 
   const allResults =
 
-    runDiagnosisEngine(
+applyMutualExclusion(
 
-      ALL_DISEASES,
+  runDiagnosisEngine(
 
-      userData
-    );
+    ALL_DISEASES,
+
+    userData
+
+  )
+
+);
 
   // ==========================
 // SORT MEDICINES
