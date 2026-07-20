@@ -16,7 +16,7 @@ export const ALLERGIC_RHINITIS_SINUS = [
       "Allergic Rhinitis / Sinusitis",
 
     category:
-      "ent",
+      "ENT",
 
     severity:
       "mild_to_moderate",
@@ -391,87 +391,147 @@ export const ALLERGIC_RHINITIS_SINUS = [
 
     medicines: {
 
-      first_line: [
+  first_line: [
 
-        {
+    {
+      name: "Fluticasone Nasal Spray",
 
-          name:
-            "Levocetirizine",
+      line: "first_line",
 
-          line:
-            "first_line",
-
-          dosage:
-            "5mg",
-
-          frequency:
-            "Once daily at night",
-
-          purpose:
-            "Allergy symptom control"
-        },
-
-        {
-
-          name:
-            "Montelukast + Levocetirizine",
-
-          line:
-            "first_line",
-
-          dosage:
-            "10mg + 5mg",
-
-          frequency:
-            "Once daily at night",
-
-          purpose:
-            "Allergic rhinitis relief"
-        }
-
+      brands: [
+        "Flomist",
+        "Flixonase",
+        "Nazoflo"
       ],
 
-      second_line: [
+      dosage: "1-2 sprays per nostril",
 
-        {
+      frequency: "Once daily",
 
-          name:
-            "Fexofenadine",
-
-          line:
-            "second_line",
-
-          dosage:
-            "120mg",
-
-          frequency:
-            "Once daily",
-
-          purpose:
-            "Severe allergy control"
-        },
-
-        {
-
-          name:
-            "Fluticasone Nasal Spray",
-
-          line:
-            "second_line",
-
-          dosage:
-            "1-2 sprays",
-
-          frequency:
-            "Once daily",
-
-          purpose:
-            "Reduce nasal inflammation"
-        }
-
-      ]
-
+      purpose: {
+        en: "Allergic rhinitis and nasal inflammation",
+        bn: "অ্যালার্জিজনিত নাকের সমস্যা ও নাকের প্রদাহ কমানো"
+      }
     },
+
+    {
+      name: "Mometasone Nasal Spray",
+
+      line: "first_line",
+
+      brands: [
+        "Metaspray",
+        "Momate"
+      ],
+
+      dosage: "1-2 sprays per nostril",
+
+      frequency: "Once daily",
+
+      purpose: {
+        en: "Moderate to severe allergic rhinitis",
+        bn: "মাঝারি থেকে গুরুতর অ্যালার্জিক রাইনাইটিস নিয়ন্ত্রণ"
+      }
+    }
+
+  ],
+
+  second_line: [
+
+    {
+      name: "Levocetirizine",
+
+      line: "second_line",
+
+      brands: [
+        "LCZ",
+        "Levocet",
+        "Xyzal"
+      ],
+
+      dosage: "5mg",
+
+      frequency: "Once daily at night",
+
+      purpose: {
+        en: "Sneezing and runny nose",
+        bn: "হাঁচি ও নাক দিয়ে পানি পড়া কমানো"
+      }
+    },
+
+    {
+      name: "Fexofenadine",
+
+      line: "second_line",
+
+      brands: [
+        "Allegra",
+        "Fexova",
+        "Histakind",
+        "Fexodil"
+      ],
+
+      dosage: "120mg / 180mg",
+
+      frequency: "Once daily",
+
+      purpose: {
+        en: "Non-drowsy allergy control",
+        bn: "ঘুম কম এনে অ্যালার্জির উপসর্গ নিয়ন্ত্রণ"
+      }
+    }
+
+  ],
+
+  third_line: [
+
+    {
+      name: "Montelukast + Levocetirizine",
+
+      line: "third_line",
+
+      brands: [
+        "Montair-LC",
+        "Montek-LC",
+        "Telekast-L"
+      ],
+
+      dosage: "10mg + 5mg",
+
+      frequency: "Once daily at night",
+
+      purpose: {
+        en: "Persistent allergic rhinitis",
+        bn: "দীর্ঘস্থায়ী অ্যালার্জিক রাইনাইটিস নিয়ন্ত্রণ"
+      }
+    },
+
+{
+  name: "Fexofenadine + Montelukast",
+
+  line: "third_line",
+
+  brands: [
+    "Montair-FX",
+    "Montek-FX",
+    "Allegra-M",
+    "Telekast-F"
+  ],
+
+  dosage: "120mg + 10mg",
+
+  frequency: "Once daily",
+
+  purpose: {
+    en: "Used for severe allergy symptoms such as sneezing, runny nose, watery eyes and allergic rhinitis. Montelukast is a leukotriene antagonist that blocks leukotrienes, reducing inflammation and swelling in the airways and nose. Fexofenadine is an antihistamine that blocks histamine, helping relieve runny nose, watery eyes and sneezing.",
+
+    bn: "তীব্র অ্যালার্জির উপসর্গ যেমন হাঁচি, নাক দিয়ে পানি পড়া, চোখ দিয়ে পানি পড়া এবং অ্যালার্জিক রাইনাইটিস নিয়ন্ত্রণে ব্যবহৃত হয়। Montelukast একটি leukotriene antagonist, যা leukotriene নামক রাসায়নিকের কার্যকারিতা বাধা দিয়ে শ্বাসনালী ও নাকের প্রদাহ ও ফোলাভাব কমায়। Fexofenadine একটি antihistamine, যা histamine-এর কার্যকারিতা বাধা দিয়ে নাক দিয়ে পানি পড়া, চোখ দিয়ে পানি পড়া এবং হাঁচির উপসর্গ উপশম করে।"
+  }
+}
+
+  ]
+
+},
 
     // ======================================
     // TREATMENTS
